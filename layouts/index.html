@@ -1,0 +1,249 @@
+{{- define "main" }}
+
+<div class="academic-home">
+  <div class="profile-section">
+    <!-- 个人头像 -->
+    <div class="profile-card">
+      <div class="avatar-wrapper">
+        <img src="/images/avatar.jpg" alt="{{ .Site.Params.name }}" class="avatar">
+      </div>
+      
+      <!-- 姓名（同时显示英文和中文） -->
+      <h1 class="profile-name">
+        <span class="name-en">{{- .Site.Params.name -}}</span>
+        <span class="name-divider">|</span>
+        <span class="name-zh">{{- .Site.Params.nameZh -}}</span>
+      </h1>
+      
+      <!-- 职位 -->
+      <p class="profile-title">
+        <span data-lang="en">Graduate Student</span>
+        <span data-lang="zh">研究生</span>
+      </p>
+      
+      <!-- 组织 -->
+      <p class="profile-org">
+        <span data-lang="en">Anhui University</span>
+        <span data-lang="zh">安徽大学</span>
+      </p>
+      
+      <!-- 欢迎语 -->
+      <p class="profile-welcome">
+        <span data-lang="en">Welcome! Feel free to reach out via email or GitHub! 🍔</span>
+        <span data-lang="zh">欢迎交流学习，本人邮箱与Github已开放！喜欢您来！🍔</span>
+      </p>
+      
+      <!-- 社交媒体图标 -->
+      <div class="social-icons">
+        {{- range .Site.Params.socialIcons }}
+        <a href="{{ .url }}" target="_blank" rel="noopener noreferrer" title="{{ .name }}" aria-label="{{ .name }}">
+          {{- if eq .name "email" }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          {{- else if eq .name "github" }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          {{- else if eq .name "x" }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          {{- else if eq .name "linkedin" }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          {{- end }}
+        </a>
+        {{- end }}
+      </div>
+    </div>
+  </div>
+  
+  <div class="content-section">
+    <!-- About Me 部分 -->
+    <section class="about-section">
+      <h2 class="section-title">
+        <span data-lang="en">About Me</span>
+        <span data-lang="zh">关于我</span>
+      </h2>
+      
+      <div class="about-content">
+        <p id="typing-text" class="bio-text typing-text"></p>
+        
+        <a href="/cv.pdf" class="btn-download" style="margin-top: 20px; display: inline-flex;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <span data-lang="en">Download CV</span>
+          <span data-lang="zh">下载简历</span>
+        </a>
+      </div>
+    </section>
+    
+    <!-- Interests 和 Education 并排 -->
+    <div class="info-grid">
+      <!-- Interests -->
+      <section class="interests-section">
+        <h3 class="subsection-title">
+          <span data-lang="en">Interests</span>
+          <span data-lang="zh">研究兴趣</span>
+        </h3>
+        <ul class="interests-list" data-lang="en">
+          <li>Path Planning</li>
+          <li>Robotics</li>
+          <li>Obstacle Avoidance Algorithms</li>
+          <li>Intelligent Systems</li>
+        </ul>
+        <ul class="interests-list" data-lang="zh">
+          <li>路径规划</li>
+          <li>机器人技术</li>
+          <li>避障算法</li>
+          <li>智能系统</li>
+        </ul>
+      </section>
+      
+      <!-- Education -->
+      <section class="education-section">
+        <h3 class="subsection-title">
+          <span data-lang="en">Education</span>
+          <span data-lang="zh">教育背景</span>
+        </h3>
+        <ul class="education-list">
+          {{- range .Site.Params.education }}
+          <li>
+            <div class="degree-info">
+              <strong>
+                <span data-lang="en">{{ .degree }}</span>
+                <span data-lang="zh">{{ .degreeZh | default .degree }}</span>
+              </strong>
+              <p>
+                <span data-lang="en">{{ .institution }}</span>
+                <span data-lang="zh">{{ .institutionZh | default .institution }}</span>
+              </p>
+            </div>
+          </li>
+          {{- end }}
+        </ul>
+      </section>
+    </div>
+    
+    <!-- Projects Section -->
+    {{ if .Site.Params.projects }}
+    <section class="projects-section">
+      <div class="section-header">
+        <h3 class="subsection-title">
+          <span data-lang="en">Projects</span>
+          <span data-lang="zh">项目展示</span>
+        </h3>
+        <a href="/projects/" class="view-all-link">
+          <span data-lang="en">View All →</span>
+          <span data-lang="zh">查看全部 →</span>
+        </a>
+      </div>
+      <div class="projects-grid">
+        {{ range .Site.Params.projects }}
+        {{ if .url }}
+        <a href="{{ .url }}" class="project-card-link" target="_blank" rel="noopener noreferrer">
+        {{ else }}
+        <div class="project-card-link project-card-no-link">
+        {{ end }}
+          <div class="project-card">
+            <div class="project-header">
+              <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+                <h4 class="project-title">
+                  <span data-lang="en">{{ .name }}</span>
+                  <span data-lang="zh">{{ .nameZh | default .name }}</span>
+                </h4>
+                {{ if .private }}
+                <span class="private-badge-small">🔒</span>
+                {{ end }}
+              </div>
+              {{ if .url }}
+              <svg class="project-link-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 012-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+              {{ end }}
+            </div>
+            <p class="project-description">
+              <span data-lang="en">{{ .description }}</span>
+              <span data-lang="zh">{{ .descriptionZh | default .description }}</span>
+            </p>
+            {{ if .tags }}
+            <div class="project-tags">
+              {{ range .tags }}
+              <span class="project-tag">{{ . }}</span>
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+        {{ if .url }}
+        </a>
+        {{ else }}
+        </div>
+        {{ end }}
+        {{ end }}
+      </div>
+    </section>
+    {{ end }}
+    
+    <!-- Skills Section -->
+    <section class="skills-section">
+      <h3 class="subsection-title">
+        <span data-lang="en">Skills</span>
+        <span data-lang="zh">技术栈</span>
+      </h3>
+      <div class="skills-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">LLM</span>
+        <span class="skill-tag">Prompt Engineering</span>
+        <span class="skill-tag">RAG</span>
+        <span class="skill-tag">Transformers</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">Simulation Engine</span>
+        <span class="skill-tag">ROS</span>
+        <span class="skill-tag">Vue.js</span>
+        <span class="skill-tag">Full-Stack Dev</span>
+        <span class="skill-tag">PCB Design</span>
+        <span class="skill-tag">Hardware Design</span>
+        <span class="skill-tag">Embedded Systems</span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+// 打字机效果
+document.addEventListener('DOMContentLoaded', function() {
+  const typingElement = document.getElementById('typing-text');
+  if (!typingElement) return;
+  
+  // 打字机效果的文本内容
+  const textContent = {
+    zh: "{{ .Site.Params.bioZh | default .Site.Params.bio }}",
+    en: "{{ .Site.Params.bio }}"
+  };
+  
+  function getCurrentLang() {
+    return localStorage.getItem('site-lang') || 'en';
+  }
+  
+  let charIndex = 0;
+  let textToType = textContent[getCurrentLang()] || textContent.en;
+  
+  function typeWriter() {
+    if (charIndex < textToType.length) {
+      typingElement.textContent += textToType.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeWriter, 50);
+    }
+  }
+  
+  // 监听语言切换事件
+  window.addEventListener('languageChanged', function(e) {
+    textToType = textContent[e.detail.lang] || textContent.en;
+    typingElement.textContent = '';
+    charIndex = 0;
+    typeWriter();
+  });
+  
+  // 开始打字
+  typeWriter();
+});
+</script>
+
+{{- end }}

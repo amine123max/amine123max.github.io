@@ -1,0 +1,61 @@
+{{- define "main" }}
+
+<header class="page-header">
+    <h1>
+        <span data-lang="en">Search</span>
+        <span data-lang="zh">搜索</span>
+        &nbsp;
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+    </h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description }}
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+        {{- partial "translation_list.html" . -}}
+    </div>
+    {{- end }}
+</header>
+
+<div id="searchbox">
+    <input id="searchInput" autofocus aria-label="search" type="search" autocomplete="off" maxlength="64">
+    <ul id="searchResults" aria-label="search results"></ul>
+</div>
+
+<script>
+// 更新搜索框placeholder
+function updateSearchPlaceholder() {
+  const lang = localStorage.getItem('site-lang') || 'en';
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.placeholder = lang === 'zh' ? '搜索 ↵' : 'Search ↵';
+  }
+}
+
+// 初始化和监听语言切换
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', updateSearchPlaceholder);
+} else {
+  updateSearchPlaceholder();
+}
+window.addEventListener('languageChanged', updateSearchPlaceholder);
+</script>
+
+{{- end }}{{/* end main */}}
+
+{{- define "footer" }}
+{{- partial "footer.html" . }}
+
+{{- /* 确保语言切换脚本加载 */ -}}
+{{ $langSwitch := resources.Get "js/lang-switch.js" }}
+{{ if $langSwitch }}
+  {{ $langSwitch := $langSwitch | minify | fingerprint }}
+  <script src="{{ $langSwitch.RelPermalink }}" integrity="{{ $langSwitch.Data.Integrity }}"></script>
+{{ end }}
+{{- end }}

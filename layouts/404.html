@@ -1,0 +1,30 @@
+{{- define "main" }}
+<main class="main">
+  <div class="not-found" style="font-size: 5rem;">🚀</div>
+  <h1 style="font-size: 3rem; font-weight: 700; margin: 20px 0; text-align: center;">
+    <span data-lang="en">Coming Soon!</span>
+    <span data-lang="zh">即将推出！</span>
+  </h1>
+  <p style="font-size: 1.2rem; color: var(--secondary); margin-bottom: 30px; text-align: center;">
+    <span data-lang="en">This page is under construction</span>
+    <span data-lang="zh">此页面正在建设中</span>
+  </p>
+  <p style="text-align: center;">
+    <a href="{{ "" | absLangURL }}" style="font-size: 1.1rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+      <span data-lang="en">← Back to Home</span>
+      <span data-lang="zh">← 返回首页</span>
+    </a>
+  </p>
+</main>
+{{- end }}{{/* end main */ -}}
+
+{{- define "footer" }}
+{{- partial "footer.html" . }}
+
+{{- /* 确保语言切换脚本加载 */ -}}
+{{ $langSwitch := resources.Get "js/lang-switch.js" }}
+{{ if $langSwitch }}
+  {{ $langSwitch := $langSwitch | minify | fingerprint }}
+  <script src="{{ $langSwitch.RelPermalink }}" integrity="{{ $langSwitch.Data.Integrity }}"></script>
+{{ end }}
+{{- end }}
