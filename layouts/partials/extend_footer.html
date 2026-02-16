@@ -15,4 +15,11 @@
   <script src="{{ $langSwitch.RelPermalink }}" integrity="{{ $langSwitch.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* 加载移动端菜单脚本 */ -}}
+{{ $mobileMenu := resources.Get "js/mobile-menu.js" }}
+{{ if $mobileMenu }}
+  {{ $mobileMenu := $mobileMenu | minify | fingerprint }}
+  <script src="{{ $mobileMenu.RelPermalink }}" integrity="{{ $mobileMenu.Data.Integrity }}"></script>
+{{ end }}
+
 {{- /* Footer custom content area end */ -}}
