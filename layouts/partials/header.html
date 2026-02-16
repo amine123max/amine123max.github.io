@@ -108,6 +108,13 @@
                 </ul>
             </div>
         </div>
+        
+        {{- /* 汉堡菜单按钮 - 仅在移动端显示 */ -}}
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
         {{- $currentPage := . }}
         <ul id="menu">
             {{- range site.Menus.main }}
