@@ -52,14 +52,15 @@ body:not(.dark) .interests-list li::before {
   width: 100%;
 }
 
-/* 导航栏样式 - 单独设置，全页面宽度 */
+/* 导航栏样式 - 自适应全页面宽度 */
 .header {
   position: fixed;
   top: 0;
   left: 0;
-  width: 1200px !important;
-  max-width: 1200px !important;
-  padding: 12px 50px !important;
+  right: 0;
+  width: 100% !important;
+  max-width: 100vw !important;
+  padding: 12px calc((100vw - 1400px) / 2 + 50px) !important;
   margin: 0 !important;
   background: var(--theme);
   border-bottom: 1px solid var(--border);
@@ -67,11 +68,18 @@ body:not(.dark) .interests-list li::before {
   box-sizing: border-box;
 }
 
+/* 当屏幕小于1400px时使用固定padding */
+@media (max-width: 1400px) {
+  .header {
+    padding: 12px 50px !important;
+  }
+}
+
 .header nav {
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
