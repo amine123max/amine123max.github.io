@@ -1,0 +1,18 @@
+{{- /* Footer custom content area start */ -}}
+{{- /*     Insert any custom code (web-analytics, resources, etc.) - it will appear in the <footer></footer> section of every page. */ -}}
+
+{{- /* 加载搜索按钮脚本 */ -}}
+{{ $searchJS := resources.Get "js/search-button.js" }}
+{{ if $searchJS }}
+  {{ $searchJS := $searchJS | minify | fingerprint }}
+  <script src="{{ $searchJS.RelPermalink }}" integrity="{{ $searchJS.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* 加载语言切换脚本 */ -}}
+{{ $langSwitch := resources.Get "js/lang-switch.js" }}
+{{ if $langSwitch }}
+  {{ $langSwitch := $langSwitch | minify | fingerprint }}
+  <script src="{{ $langSwitch.RelPermalink }}" integrity="{{ $langSwitch.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* Footer custom content area end */ -}}

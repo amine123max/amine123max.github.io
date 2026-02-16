@@ -1,0 +1,236 @@
+baseURL = 'http://localhost:1313/'
+defaultContentLanguage = 'en'
+title = 'Amine'
+theme = "hugo-PaperMod"
+
+#主页英文设置
+enableInlineShortcodes = true
+enableRobotsTXT = true
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+enableEmoji = true
+
+pygmentsUseClasses = true
+mainsections = [ "posts", "papermod" ]
+
+# 多语言支持
+[languages]
+  [languages.en]
+    languageCode = 'en-us'
+    languageName = "ENGLISH"
+    weight = 1
+    title = "Amine"
+    
+    [[languages.en.menu.main]]
+      name = "BIO"
+      url = "/"
+      weight = 1
+    
+    [[languages.en.menu.main]]
+      name = "PAPERS"
+      url = "/papers/"
+      weight = 2
+    
+    [[languages.en.menu.main]]
+      name = "BLOG"
+      url = "/posts/"
+      weight = 3
+    
+    [[languages.en.menu.main]]
+      name = "EXPERIENCE"
+      url = "/experience/"
+      weight = 4
+    
+    [[languages.en.menu.main]]
+      name = "PROJECTS"
+      url = "/projects/"
+      weight = 5
+    
+    [[languages.en.menu.main]]
+      name = "TEACHING"
+      url = "/teaching/"
+      weight = 6
+  
+  [languages.zh]
+    languageCode = 'zh-cn'
+    languageName = "中文"
+    weight = 2
+    title = "Amine"
+    
+    [[languages.zh.menu.main]]
+      name = "简介"
+      url = "/zh/"
+      weight = 1
+    
+    [[languages.zh.menu.main]]
+      name = "论文"
+      url = "/zh/papers/"
+      weight = 2
+    
+    [[languages.zh.menu.main]]
+      name = "博客"
+      url = "/zh/posts/"
+      weight = 3
+    
+    [[languages.zh.menu.main]]
+      name = "经历"
+      url = "/zh/experience/"
+      weight = 4
+    
+    [[languages.zh.menu.main]]
+      name = "项目"
+      url = "/zh/projects/"
+      weight = 5
+    
+    [[languages.zh.menu.main]]
+      name = "教学"
+      url = "/zh/teaching/"
+      weight = 6
+
+[minify]
+disableXML = true
+
+[pagination]
+disableAliases = false
+pagerSize = 5
+
+# 网站参数配置
+[params]
+  # 个人信息
+  name = "Amine"
+  nameZh = "阿明"
+  title = "Graduate Student"
+  titleZh = "研究生"
+  organization = "Anhui University"
+  organizationZh = "安徽大学"
+  bio = "Graduate student in Intelligent Science and Technology at Anhui University (211 Project). Research interests include path planning, robotics, and obstacle avoidance algorithms."
+  bioZh = "安徽大学（211工程）智能科学与技术专业研究生。研究方向包括路径规划、机器人技术和避障算法。"
+  
+  showBreadCrumbs = false
+  ShowShareButtons = false
+  ShowReadingTime = false
+  ShowPostNavLinks = false
+  ShowCodeCopyButtons = true
+  
+  # 搜索功能
+  ShowSearchButton = true
+  
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ["title", "permalink", "summary", "content"]
+  
+  # 社交媒体链接
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:13409951849@163.com"
+  
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/amine123max"
+  
+  # 研究兴趣（英文）
+  interests = ["Path Planning", "Robotics", "Obstacle Avoidance Algorithms", "Intelligent Systems"]
+  
+  # 研究兴趣（中文）
+  interestsZh = ["路径规划", "机器人技术", "避障算法", "智能系统"]
+  
+  # 项目展示
+  [[params.projects]]
+    name = "Fuzzy MPC for Autonomous Driving"
+    nameZh = "融合模糊意图预测的自动驾驶MPC"
+    description = "Model Predictive Control integrated with fuzzy intention prediction for autonomous driving, complete with simulation"
+    descriptionZh = "融合模糊意图预测的自动驾驶模型预测控制，包含完整代码和仿真程序"
+    url = "https://github.com/amine123max/Fuzzy_MPC"
+    tags = ["Python", "MPC", "Autonomous Driving"]
+  
+  [[params.projects]]
+    name = "Collision Avoidance System"
+    nameZh = "碰撞避让系统"
+    description = "Simplified simulation model for AUV and ROV collision avoidance using Dynamic Bayesian Networks"
+    descriptionZh = "AUV与ROV碰撞避让系统仿真，使用动态贝叶斯网络评估碰撞概率"
+    url = "https://github.com/amine123max/amine123max-CollisionAvoidanceSystem-"
+    tags = ["Python", "Robotics", "Simulation"]
+  
+  [[params.projects]]
+    name = "GAN-based LST Prediction"
+    nameZh = "基于GAN的地表温度预测"
+    description = "Land Surface Temperature prediction model using Generative Adversarial Networks"
+    descriptionZh = "基于生成对抗网络(GAN)的地表温度预测模型"
+    url = "https://github.com/amine123max/GAN_LST"
+    tags = ["Python", "GAN", "Deep Learning"]
+  
+  [[params.projects]]
+    name = "OneStepUpdate"
+    nameZh = "一键更新工具"
+    description = "Desktop application for pushing code to GitHub and creating releases with one click"
+    descriptionZh = "一键推送本地代码到GitHub并创建发布的桌面应用程序"
+    url = "https://github.com/amine123max/OneStepUpdate"
+    tags = ["Python", "DevOps", "Automation"]
+  
+  [[params.projects]]
+    name = "Random Forest Regression"
+    nameZh = "随机森林残差校正回归"
+    description = "Regression model with Random Forest residual correction on multiple datasets"
+    descriptionZh = "使用随机森林残差校正的回归模型，包含四种回归任务"
+    url = "https://github.com/amine123max/RegressionWithRandomForestResidualCorrection"
+    tags = ["Python", "Machine Learning", "Regression"]
+  
+  [[params.projects]]
+    name = "Formula Export Tool"
+    nameZh = "公式导出工具"
+    description = "Program for extracting links and mathematical formulas from PDF documents"
+    descriptionZh = "从PDF文档中导出链接和数学公式的实用工具"
+    url = "https://github.com/amine123max/FormulaExport"
+    tags = ["Python", "PDF", "Tool"]
+  
+  # 技术栈
+  skills = ["Python", "C++", "Git", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
+  
+  # 教育背景
+  [[params.education]]
+    degree = "MSc in Intelligent Science and Technology"
+    degreeZh = "智能科学与技术硕士"
+    institution = "Anhui University (211 Project)"
+    institutionZh = "安徽大学（211工程）"
+    year = "2023 - Present"
+  
+  [[params.education]]
+    degree = "BEng in Communication Engineering"
+    degreeZh = "通信工程学士"
+    institution = "Hubei University"
+    institutionZh = "湖北大学"
+    year = "2019 - 2023"
+  
+  [params.cover]
+    linkFullImages = true
+  
+  [params.assets]
+    disableHLJS = true
+    favicon = "/favicon.ico"
+
+[markup.goldmark.renderer]
+unsafe = true
+
+[markup.highlight]
+noClasses = false
+
+[services.instagram]
+disableInlineCSS = true
+
+[services.x]
+disableInlineCSS = true
+
+
+##hugo搜索功能
+[outputs]
+home = ["HTML", "RSS", "JSON"]
+
+
+
+
