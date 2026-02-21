@@ -52,33 +52,37 @@ body:not(.dark) .interests-list li::before {
   width: 100%;
 }
 
-/* 导航栏样式 - 自适应全页面宽度 */
+/* 导航栏样式 - 内容靠近边缘 */
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100% !important;
-  max-width: 100vw !important;
-  padding: 12px calc((100vw - 1400px) / 2 + 50px) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100vw !important;
   margin: 0 !important;
-  background: var(--theme);
-  border-bottom: 1px solid var(--border);
-  z-index: 1000;
-  box-sizing: border-box;
+  padding: 0 !important;
+  background: var(--theme) !important;
+  border-bottom: 1px solid var(--border) !important;
+  z-index: 1000 !important;
+  box-sizing: border-box !important;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
-/* 当屏幕小于1400px时使用固定padding */
-@media (max-width: 1400px) {
-  .header {
-    padding: 12px 50px !important;
-  }
+/* 隐藏滚动条 */
+.header::-webkit-scrollbar {
+  display: none;
 }
 
 .header nav {
-  display: flex;
-  align-items: center;
-  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-width: fit-content !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 12px 20px !important;
+  box-sizing: border-box !important;
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -595,6 +599,13 @@ body.dark .skill-tag {
   padding: 100px 60px 60px 60px;
 }
 
+/* ==================== Experience页面专用样式 ==================== */
+.experience-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px 60px 60px 60px;
+}
+
 .projects-page .page-header {
   text-align: center;
   margin-bottom: 50px;
@@ -782,6 +793,10 @@ body.dark .private-badge {
 /* 响应式设计 */
 @media (max-width: 1400px) {
   .projects-page {
+    padding: 80px 60px 60px 60px;
+  }
+  
+  .experience-page {
     padding: 80px 60px 60px 60px;
   }
 }
@@ -1168,8 +1183,16 @@ body.dark .typewriter.typing-complete::after {
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 1400px) {
   /* 导航栏 */
-  .header {
-    padding: 12px 40px !important;
+  .header nav {
+    padding: 12px 20px !important;
+  }
+  
+  #menu {
+    gap: 25px !important;
+  }
+  
+  .logo-switches {
+    margin-left: 30px;
   }
   
   /* Bio主页 */
@@ -1207,8 +1230,16 @@ body.dark .typewriter.typing-complete::after {
 
 @media (max-width: 1200px) {
   /* 导航栏 */
-  .header {
-    padding: 12px 30px !important;
+  .header nav {
+    padding: 12px 20px !important;
+  }
+  
+  #menu {
+    gap: 20px !important;
+  }
+  
+  .logo-switches {
+    margin-left: 25px;
   }
   
   /* Bio主页 */
@@ -1246,17 +1277,25 @@ body.dark .typewriter.typing-complete::after {
 
 @media (max-width: 800px) {
   /* 导航栏 */
-  .header {
-    padding: 12px 30px !important;
+  .header nav {
+    padding: 10px 15px !important;
+  }
+  
+  .logo {
+    font-size: 1.2rem !important;
   }
   
   #menu {
-    gap: 25px;
+    gap: 18px !important;
   }
   
   #menu li a {
     font-size: 0.9rem !important;
-    padding: 6px 0;
+  }
+  
+  .logo-switches {
+    margin-left: 20px !important;
+    gap: 12px !important;
   }
   
   /* Bio主页 - 在小屏幕上改为垂直布局 */
@@ -1313,26 +1352,25 @@ body.dark .typewriter.typing-complete::after {
 }
 
 @media (max-width: 600px) {
-  /* 导航栏 */
-  .header {
-    padding: 10px 20px !important;
+  .header nav {
+    padding: 10px 12px !important;
   }
   
   #menu {
-    gap: 15px;
+    gap: 15px !important;
   }
   
   #menu li a {
     font-size: 0.85rem !important;
-    padding: 6px 0;
   }
   
   .logo {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
   
   .logo-switches {
-    gap: 15px;
+    margin-left: 15px !important;
+    gap: 10px !important;
   }
   
   /* Bio主页 */
@@ -1377,6 +1415,11 @@ body.dark .typewriter.typing-complete::after {
   
   /* Projects页面 */
   .projects-page {
+    padding: 50px 20px 40px 20px;
+  }
+  
+  /* Experience页面 */
+  .experience-page {
     padding: 50px 20px 40px 20px;
   }
 }
