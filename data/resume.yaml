@@ -1,0 +1,132 @@
+personal:
+  name: "Amine"
+  nameZh: "阿明"
+  title: "Graduate Student"
+  subtitle: "Student, software engineer, aspiring entrepreneur. Love tech, design, marketing. Obsessed with automation and snappiness."
+  location: "Anhui University"
+  email: "13409951849@163.com"
+  github: "https://github.com/amine123max"
+  linkedin: ""
+  twitter: ""
+  avatar: "/images/avatar.jpg"
+
+about: |
+  Graduate student in Intelligent Science and Technology at Anhui University (211 Project). 
+  Research interests include path planning, robotics, and obstacle avoidance algorithms.
+
+experience:
+  # Campus Experience
+  - company: "National 3D Digital Innovation Design Competition"
+    companyZh: "全国三维数字化创新设计大赛"
+    role: "Team Member"
+    roleZh: "小组成员"
+    period: "Feb 2020 - Jul 2020"
+    location: "Campus Competition Project"
+    locationZh: "校园竞赛项目"
+    type: "campus"
+    description: |
+      Collaborated in a team to design and implement a "Multi-functional Foldable Dining Table". 
+      Responsible for 3D modeling using SolidWorks, conducting stress analysis and material optimization. 
+      Participated in model refinement based on project requirements and contributed to final presentation and evaluation.
+      Awarded Provincial Third Prize.
+    descriptionZh: |
+      在团队中协作设计并实现"多功能坐票式可折叠餐桌"项目。
+      负责使用SolidWorks进行3D建模，装刀分析以及材料优化工作。
+      根据项目目标要求进行模型完善，并参与最终答辩与评审工作。
+      获得省级三等奖。
+      
+  - company: "National College Student Innovation and Entrepreneurship Training Program"
+    companyZh: "全国大学生创新创业训练"
+    role: "Research Team Member"
+    roleZh: "研究小组成员"
+    period: "Jul 2021 - Oct 2022"
+    location: "University Research Project"
+    locationZh: "校级科研项目"
+    type: "campus"
+    description: |
+      Participated in research project "Safe Reinforcement Learning for Autonomous Vehicle Starting Control".
+      Implemented safety mechanisms including penalty functions and risk perception modules to prevent unsafe actions.
+      Conducted extensive literature review and assisted in experiment design and data analysis.
+      Contributed to project documentation and participated in mid-term evaluation achieving excellent results.
+    descriptionZh: |
+      参与"基于安全强化学习的起步驾驶辅助研究"创新项目研究。
+      实现安全机制包括引入惩罚函数、安全风险感知机制，识别并修正不安全动作。
+      负责前期文献调研、实验设计与数据分析等相关工作。
+      参与项目文档撰写，中期评审获得优秀成绩。
+      
+  # Internship Experience  
+  - company: "Wuhan Weishixun Information Technology Co., Ltd."
+    companyZh: "武汉威士讯信息技术有限公司"
+    companyUrl: "https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A8%81%E5%A3%AB%E8%AE%AF%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/13129367"
+    role: "Software & Hardware Engineer Intern"
+    roleZh: "软硬件工程师实习生"
+    period: "Jun 2022 - Sep 2022"
+    location: "Wuhan, China"
+    locationZh: "湖北武汉"
+    type: "internship"
+    description: |
+      Led full-stack implementation of "Smart Home System Based on ZigBee Protocol".
+      Hardware: Designed circuit schematics, completed PCB layout and component selection.
+      Software: Developed ZigBee communication protocol stack, implemented sensor data acquisition and processing algorithms.
+      Firmware: Programmed embedded C code for wireless node communication and network topology management.
+      Conducted comprehensive circuit analysis, signal integrity testing, and system integration.
+      Successfully deployed the complete solution and received individual recognition for outstanding performance.
+    descriptionZh: |
+      负责"基于ZigBee协议的智能家居系统"的软硬件全栈开发。
+      硬件方面：设计电路原理图，完成PCB布局布线及元器件选型。
+      软件方面：开发ZigBee通信协议栈，实现传感器数据采集与处理算法。
+      固件开发：编写嵌入式C代码实现无线节点通信及网络拓扑管理。
+      进行电路分析、信号完整性测试及系统集成调试。
+      成功交付完整解决方案并获得个人表彰。
+
+education:
+  - institution: "Anhui University"
+    institutionZh: "安徽大学（211工程）"
+    degree: "M.S. in Intelligent Science and Technology"
+    degreeZh: "智能科学与技术硕士"
+    period: "Sep 2023 - Present"
+    
+  - institution: "Hubei University"
+    institutionZh: "湖北大学"
+    degree: "B.Eng. in Communication Engineering"
+    degreeZh: "通信工程学士"
+    period: "Sep 2019 - Jun 2023"
+
+skills:
+  - "Python"
+  - "C++"
+  - "Git"
+  - "LLM"
+  - "Prompt Engineering"
+  - "RAG"
+  - "Transformers"
+  - "LangChain"
+  - "Simulation Engine"
+  - "ROS"
+  - "Vue.js"
+  - "Full-Stack Dev"
+  - "PCB Design"
+  - "Hardware Design"
+  - "Embedded Systems"
+
+projects:
+  - name: "Fuzzy MPC for Autonomous Driving"
+    nameZh: "融合模糊意图预测的自动驾驶MPC"
+    description: "Model Predictive Control integrated with fuzzy intention prediction for autonomous driving, complete with simulation"
+    descriptionZh: "融合模糊意图预测的自动驾驶模型预测控制，包含完整代码和仿真程序"
+    url: "https://github.com/amine123max/Fuzzy_MPC"
+    tags: ["Python", "MPC", "Autonomous Driving"]
+    
+  - name: "Collision Avoidance System"
+    nameZh: "碰撞避让系统"
+    description: "Simplified simulation model for AUV and ROV collision avoidance using Dynamic Bayesian Networks"
+    descriptionZh: "AUV与ROV碰撞避让系统仿真，使用动态贝叶斯网络评估碰撞概率"
+    url: "https://github.com/amine123max/amine123max-CollisionAvoidanceSystem-"
+    tags: ["Python", "Robotics", "Simulation"]
+    
+  - name: "GAN-based LST Prediction"
+    nameZh: "基于GAN的地表温度预测"
+    description: "Land Surface Temperature prediction model using Generative Adversarial Networks"
+    descriptionZh: "基于生成对抗网络(GAN)的地表温度预测模型"
+    url: "https://github.com/amine123max/GAN_LST"
+    tags: ["Python", "GAN", "Deep Learning"]
