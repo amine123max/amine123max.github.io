@@ -69,22 +69,27 @@ body:not(.dark) .interests-list li::before {
   overflow-y: visible;
 }
 
-/* 隐藏滚动条 */
+/* 显示滚动条以便在小屏幕上滑动 */
 .header::-webkit-scrollbar {
-  display: none;
+  height: 6px;
+}
+
+.header::-webkit-scrollbar-track {
+  background: var(--theme);
+}
+
+.header::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
 }
 
 .header nav {
   display: flex !important;
   align-items: center !important;
-  width: 100% !important;
-  min-width: fit-content !important;
-  max-width: 1400px !important;
-  margin: 0 auto !important;
+  width: max-content !important;
+  min-width: 1400px !important;
   padding: 12px 20px !important;
   box-sizing: border-box !important;
-  max-width: 1400px;
-  margin: 0 auto;
 }
 
 .logo {
@@ -380,15 +385,7 @@ body.home .main,
   box-sizing: border-box;
 }
 
-/* 当屏幕小于1400px时使用固定padding */
-@media (max-width: 1400px) {
-  .academic-home {
-    padding: 80px 80px;
-    padding-top: 40px;
-    margin-left: 0;
-    width: 100%;
-  }
-}
+/* 保持桌面版布局 - 媒体查询已禁用 */
 
 /* ==================== Blog页面统一样式 ==================== */
 /* Blog列表页 */
@@ -790,52 +787,7 @@ body.dark .private-badge {
   }
 }
 
-/* 响应式设计 */
-@media (max-width: 1400px) {
-  .projects-page {
-    padding: 80px 60px 60px 60px;
-  }
-  
-  .experience-page {
-    padding: 80px 60px 60px 60px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .projects-grid-full {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  }
-  
-  .projects-page {
-    padding: 70px 40px 40px 40px;
-  }
-}
-
-@media (max-width: 800px) {
-  .projects-page {
-    padding: 60px 30px 30px 30px;
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-page {
-    padding: 60px 20px 40px 20px;
-  }
-}
-  
-  .projects-page .page-header h1 {
-    font-size: 2rem;
-  }
-  
-  .projects-grid-full {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .project-card-full {
-    padding: 24px;
-  }
-}
+/* 响应式设计已禁用 - 保持桌面版布局 */
 
 /* 图片容器 */
 .post-single .post-content figure,
@@ -1180,251 +1132,10 @@ body.dark .typewriter.typing-complete::after {
   line-height: 1.5;
 }
 
-/* ==================== 响应式设计 ==================== */
-@media (max-width: 1400px) {
-  /* 导航栏 */
-  .header nav {
-    padding: 12px 20px !important;
-  }
-  
-  #menu {
-    gap: 25px !important;
-  }
-  
-  .logo-switches {
-    margin-left: 30px;
-  }
-  
-  /* Bio主页 */
-  .home .academic-home {
-    padding: 50px 40px;
-    gap: 80px;
-  }
-  
-  /* Blog页面 */
-  .list .main {
-    padding: 80px 60px 50px 60px !important;
-  }
-  
-  .post-single .main {
-    padding: 0 60px 50px 60px !important;
-  }
-  
-  .post-single .post-header {
-    padding-top: 80px !important;
-    padding-left: 60px !important;
-    padding-right: 60px !important;
-    margin-bottom: 30px !important;
-  }
-  
-  .post-single .post-content {
-    padding-left: 60px !important;
-    padding-right: 60px !important;
-  }
-  
-  .post-single .post-footer {
-    padding-left: 60px !important;
-    padding-right: 60px !important;
-  }
-}
+/* ==================== 强制桌面版布局 - 所有屏幕尺寸 ==================== */
+/* 所有响应式媒体查询已禁用，保持统一的桌面版布局 */
+/* 用户可以通过缩放查看页面 */
 
-@media (max-width: 1200px) {
-  /* 导航栏 */
-  .header nav {
-    padding: 12px 20px !important;
-  }
-  
-  #menu {
-    gap: 20px !important;
-  }
-  
-  .logo-switches {
-    margin-left: 25px;
-  }
-  
-  /* Bio主页 */
-  .home .academic-home {
-    padding: 40px 30px;
-    gap: 60px;
-  }
-  
-  /* Blog页面 */
-  .list .main {
-    padding: 70px 40px 40px 40px !important;
-  }
-  
-  .post-single .main {
-    padding: 0 40px 40px 40px !important;
-  }
-  
-  .post-single .post-header {
-    padding-top: 70px !important;
-    padding-left: 40px !important;
-    padding-right: 40px !important;
-    margin-bottom: 30px !important;
-  }
-  
-  .post-single .post-content {
-    padding-left: 40px !important;
-    padding-right: 40px !important;
-  }
-  
-  .post-single .post-footer {
-    padding-left: 40px !important;
-    padding-right: 40px !important;
-  }
-}
-
-@media (max-width: 800px) {
-  /* 导航栏 */
-  .header nav {
-    padding: 10px 15px !important;
-  }
-  
-  .logo {
-    font-size: 1.2rem !important;
-  }
-  
-  #menu {
-    gap: 18px !important;
-  }
-  
-  #menu li a {
-    font-size: 0.9rem !important;
-  }
-  
-  .logo-switches {
-    margin-left: 20px !important;
-    gap: 12px !important;
-  }
-  
-  /* Bio主页 - 在小屏幕上改为垂直布局 */
-  .academic-home {
-    flex-direction: column;
-    padding: 40px 30px;
-    padding-top: 40px;
-    gap: 40px;
-    margin-left: 0;
-  }
-  
-  .profile-section {
-    flex: none !important;
-    position: relative;
-    top: 0;
-    align-self: center;
-  }
-  
-  .profile-card {
-    max-width: 350px;
-    margin: 0 auto;
-  }
-  
-  .info-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-  
-  /* Blog页面 */
-  .list .main {
-    padding: 60px 30px 30px 30px !important;
-  }
-  
-  .post-single .main {
-    padding: 0 30px 30px 30px !important;
-  }
-  
-  .post-single .post-header {
-    padding-top: 60px !important;
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-    margin-bottom: 20px !important;
-  }
-  
-  .post-single .post-content {
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-  }
-  
-  .post-single .post-footer {
-    padding-left: 30px !important;
-    padding-right: 30px !important;
-  }
-}
-
-@media (max-width: 600px) {
-  .header nav {
-    padding: 10px 12px !important;
-  }
-  
-  #menu {
-    gap: 15px !important;
-  }
-  
-  #menu li a {
-    font-size: 0.85rem !important;
-  }
-  
-  .logo {
-    font-size: 1.1rem !important;
-  }
-  
-  .logo-switches {
-    margin-left: 15px !important;
-    gap: 10px !important;
-  }
-  
-  /* Bio主页 */
-  .academic-home {
-    padding: 30px 20px;
-  }
-  
-  .section-title {
-    font-size: 1.8rem !important;
-  }
-  
-  .avatar-wrapper {
-    width: 150px;
-    height: 150px;
-  }
-  
-  /* Blog页面 */
-  .list .main {
-    padding: 50px 20px 20px 20px !important;
-  }
-  
-  .post-single .main {
-    padding: 0 20px 20px 20px !important;
-  }
-  
-  .post-single .post-header {
-    padding-top: 50px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    margin-bottom: 20px !important;
-  }
-  
-  .post-single .post-content {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  
-  .post-single .post-footer {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-  }
-  
-  /* Projects页面 */
-  .projects-page {
-    padding: 50px 20px 40px 20px;
-  }
-  
-  /* Experience页面 */
-  .experience-page {
-    padding: 50px 20px 40px 20px;
-  }
-}
-
-/* ==================== 强制桌面版布局 - 所有屏幕 ==================== */
 /* 隐藏汉堡菜单按钮 */
 .mobile-menu-toggle {
   display: none !important;
