@@ -22,4 +22,74 @@
   <script src="{{ $mobileMenu.RelPermalink }}" integrity="{{ $mobileMenu.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* 加载PDF生成库和脚本（仅在主页） */ -}}
+{{ if .IsHome }}
+  <!-- html2pdf.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+  
+  <!-- Resume PDF Generator - 动态加载 -->
+  <script>
+    (function() {
+      let currentGenerator = null;
+      
+      function loadPDFGenerator(lang) {
+        console.log('Loading PDF generator for language:', lang);
+        
+        // 移除旧的脚本
+        if (currentGenerator) {
+          document.head.removeChild(currentGenerator);
+          currentGenerator = null;
+        }
+        
+        // 加载新的脚本
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        
+        if (lang === 'zh') {
+          script.src = '/js/resume-pdf-generator-CN.js';
+          console.log('✓ Loading Chinese PDF generator script');
+        } else {
+          script.src = '/js/resume-pdf-generator-EN.js';
+          console.log('✓ Loading English PDF generator script');
+        }
+        
+        script.onload = function() {
+          console.log('PDF generator script loaded successfully');
+          // 调用初始化函数
+          setTimeout(function() {
+            if (lang === 'zh' && typeof window.initResumePDFGeneratorCN === 'function') {
+              window.initResumePDFGeneratorCN();
+            } else if (typeof window.initResumePDFGeneratorEN === 'function') {
+              window.initResumePDFGeneratorEN();
+            }
+          }, 100);
+        };
+        
+        document.head.appendChild(script);
+        currentGenerator = script;
+      }
+      
+      // 初始化
+      function init() {
+        const currentLang = localStorage.getItem('site-lang') || 'en';
+        console.log('localStorage site-lang:', currentLang);
+        loadPDFGenerator(currentLang);
+      }
+      
+      // 监听语言切换事件
+      window.addEventListener('languageChanged', function(e) {
+        console.log('Language changed to:', e.detail.lang);
+        loadPDFGenerator(e.detail.lang);
+      });
+      
+      // 页面加载完成后初始化
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+{{ end }}
+
 {{- /* Footer custom content area end */ -}}
