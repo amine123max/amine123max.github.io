@@ -279,101 +279,117 @@ function generateVisitorEmail(token) {
 
 function generateAdminDownloadEmail(email, reason, requestTime, downloadTime) {
   return `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f5f5f5; border-radius: 8px;">
-      <div style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-        <!-- English Section - Black Background -->
-        <div style="background-color: #1b1b1b; padding: 48px 40px;">
-          <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #ffffff; text-align: left;">
-            PersonalINFO Download Notification
-          </h1>
-          <p style="margin: 0 0 32px; font-size: 14px; color: #a0a0a0; text-align: left;">
-            Your PersonalINFO was successfully downloaded
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            Email
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #ffffff; text-align: left;">
-            ${email}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            Reason
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
-            ${reason}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            Requested
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
-            ${requestTime}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            Downloaded
-          </p>
-          <p style="margin: 0 0 32px; font-size: 15px; color: #d4d4d4; text-align: left;">
-            ${downloadTime}
-          </p>
-          
-          <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
-            Verified and downloaded successfully
-          </p>
-        </div>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>CV Download Notification</title>
+    </head>
+    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+      
+      <!-- English Section - Black Background -->
+      <div style="background-color: #1b1b1b; padding: 48px 40px;">
+        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #ffffff; text-align: left;">
+          PersonalINFO Download Notification
+        </h1>
+        <p style="margin: 0 0 32px; font-size: 14px; color: #a0a0a0; text-align: left;">
+          Your PersonalINFO was successfully downloaded
+        </p>
         
-        <!-- Chinese Section - White Background -->
-        <div style="background-color: #ffffff; padding: 48px 40px;">
-          <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #1b1b1b; text-align: left;">
-            简历下载通知
-          </h1>
-          <p style="margin: 0 0 32px; font-size: 14px; color: #666666; text-align: left;">
-            你的简历已成功下载
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            邮箱
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #1b1b1b; text-align: left;">
-            ${email}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            下载原因
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
-            ${reason}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            申请时间
-          </p>
-          <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
-            ${requestTime}
-          </p>
-          
-          <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-            下载时间
-          </p>
-          <p style="margin: 0 0 32px; font-size: 15px; color: #333333; text-align: left;">
-            ${downloadTime}
-          </p>
-          
-          <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
-            验证成功，已完成下载
-          </p>
-        </div>
+        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #d4d4d4; text-align: left;">
+          The user <strong style="color: #ffffff;">${email}</strong> has successfully downloaded your CV using the verification system.
+        </p>
         
-        <!-- Footer -->
-        <div style="background-color: #f8f8f8; padding: 24px 40px;">
-          <p style="margin: 0; font-size: 11px; color: #999999; text-align: left; line-height: 1.6;">
-            This is an automated email, please do not reply.<br>
-            此邮件由系统自动发送，请勿回复。
-          </p>
-        </div>
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          Email
+        </p>
+        <p style="margin: 0 0 24px; font-size: 18px; font-weight: 600; color: #ffffff; text-align: left; font-family: 'Courier New', monospace;">
+          ${email}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          Reason
+        </p>
+        <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
+          ${reason}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          Requested
+        </p>
+        <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
+          ${requestTime}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          Downloaded
+        </p>
+        <p style="margin: 0 0 32px; font-size: 15px; color: #d4d4d4; text-align: left;">
+          ${downloadTime}
+        </p>
+        
+        <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
+          Verified and downloaded successfully
+        </p>
       </div>
-    </div>
+      
+      <!-- Chinese Section - White Background -->
+      <div style="background-color: #ffffff; padding: 48px 40px;">
+        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #1b1b1b; text-align: left;">
+          简历下载通知
+        </h1>
+        <p style="margin: 0 0 32px; font-size: 14px; color: #666666; text-align: left;">
+          你的简历已成功下载
+        </p>
+        
+        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #333333; text-align: left;">
+          用户 <strong style="color: #1b1b1b;">${email}</strong> 已通过验证系统成功下载了你的简历。
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          邮箱
+        </p>
+        <p style="margin: 0 0 24px; font-size: 18px; font-weight: 600; color: #1b1b1b; text-align: left; font-family: 'Courier New', monospace;">
+          ${email}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          下载原因
+        </p>
+        <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
+          ${reason}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          申请时间
+        </p>
+        <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
+          ${requestTime}
+        </p>
+        
+        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
+          下载时间
+        </p>
+        <p style="margin: 0 0 32px; font-size: 15px; color: #333333; text-align: left;">
+          ${downloadTime}
+        </p>
+        
+        <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
+          验证成功，已完成下载
+        </p>
+      </div>
+      
+      <!-- Footer -->
+      <div style="background-color: #f8f8f8; padding: 24px 40px;">
+        <p style="margin: 0; font-size: 11px; color: #999999; text-align: left; line-height: 1.6;">
+          This is an automated email, please do not reply.<br>
+          此邮件由系统自动发送，请勿回复。
+        </p>
+      </div>
+      
+    </body>
+    </html>
   `;
 }
 

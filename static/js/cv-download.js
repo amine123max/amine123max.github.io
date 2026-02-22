@@ -25,7 +25,7 @@
           <div id="step-1" class="cv-step">
             <div class="cv-modal-header">
               <h2 class="cv-modal-title">
-                <span data-lang="en">CV Download Request</span>
+                <span data-lang="en">PersonalINFO Download Request</span>
                 <span data-lang="zh">简历下载申请</span>
               </h2>
               <p class="cv-modal-subtitle">
