@@ -517,61 +517,26 @@ async function generatePDF() {
       
       // Cleanup
       document.body.removeChild(tempDiv);
-      btn.innerHTML = originalHTML;
-      btn.style.pointerEvents = '';
+      if (btn) {
+        btn.innerHTML = originalHTML;
+        btn.style.pointerEvents = '';
+      }
     }
   } catch (error) {
     console.error('PDF generation error:', error);
-    alert('Failed to generate PDF. Please try again.');
     
-    // Restore button state
     const btn = document.querySelector('.btn-download');
     if (btn) {
       btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg><span data-lang="en">Download CV</span><span data-lang="zh">Download CV</span>';
       btn.style.pointerEvents = '';
     }
+    throw error;
   }
 }
 
-// Initialize Chinese PDF Generator
 function initResumePDFGeneratorCN() {
-  console.log('初始化PDF生成器...');
-  console.log('Initializing PDF generator...');
-  
-  // Check if html2pdf library is loaded
-  if (typeof html2pdf === 'undefined') {
-    console.error('html2pdf library not loaded');
-    setTimeout(initResumePDFGenerator, 500);
-    return;
-  }
-  
-  console.log('html2pdf library loaded');
-  
-  // Modify download button behavior
-  const downloadBtn = document.querySelector('.btn-download');
-  if (downloadBtn) {
-    console.log('Found download button, attaching event listener');
-    
-    // 克隆按钮以移除所有旧的事件监听器
-    const newBtn = downloadBtn.cloneNode(true);
-    downloadBtn.parentNode.replaceChild(newBtn, downloadBtn);
-    
-    // Remove original href to prevent navigation
-    newBtn.removeAttribute('href');
-    newBtn.style.cursor = 'pointer';
-    
-    console.log('找到下载按钮，绑定CN事件监听器');
-    newBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('[CN] 点击下载按钮');
-      generatePDF();
-    });
-  } else {
-    console.error('Download button not found');
-  }
+  console.log('CN PDF Generator loaded');
 }
 
-// Ensure initialization after DOM loads
-// Chinese version - will be called by main script
 window.initResumePDFGeneratorCN = initResumePDFGeneratorCN;
+window.generatePDFCN = generatePDF;

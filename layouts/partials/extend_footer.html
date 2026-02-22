@@ -55,12 +55,19 @@
         
         script.onload = function() {
           console.log('PDF generator script loaded successfully');
-          // 调用初始化函数
           setTimeout(function() {
             if (lang === 'zh' && typeof window.initResumePDFGeneratorCN === 'function') {
               window.initResumePDFGeneratorCN();
             } else if (typeof window.initResumePDFGeneratorEN === 'function') {
               window.initResumePDFGeneratorEN();
+            }
+            
+            if (!document.getElementById('cv-download-loaded')) {
+              const downloadScript = document.createElement('script');
+              downloadScript.src = '/js/cv-download.js';
+              downloadScript.id = 'cv-download-loaded';
+              document.head.appendChild(downloadScript);
+              console.log('CV download script loaded');
             }
           }, 100);
         };

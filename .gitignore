@@ -24,3 +24,16 @@ node_modules/
 # Environment files
 .env
 .env.local
+
+# Cloudflare Workers sensitive information
+cloudflare-worker/INFO.txt
+cloudflare-worker/KV_NAMESPACE_INFO.txt
+cloudflare-worker/.wrangler/
+cloudflare-worker/wrangler.toml
+cloudflare-worker/TEST_EMAIL.md
+cloudflare-worker/EMAIL_TROUBLESHOOTING.md
+
+# Test server
+test-server/
+test-email*.ps1
+test-email*.bat
