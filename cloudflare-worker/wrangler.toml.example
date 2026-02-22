@@ -1,0 +1,12 @@
+name = "cv-download-worker"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "CV_TOKENS"
+id = "YOUR_KV_NAMESPACE_ID"  # 运行 wrangler kv namespace create CV_TOKENS 获取
+
+[vars]
+ADMIN_EMAIL = "your-email@example.com"  # 接收下载通知的管理员邮箱
+SENDER_NAME = "Your Name"  # 发件人名称
+SENDER_EMAIL = "onboarding@resend.dev"  # 发件人邮箱（Resend测试邮箱）
