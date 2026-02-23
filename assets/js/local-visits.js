@@ -1,9 +1,9 @@
-// Local visits simulation: start at 0, then increase by +2..+6 per day without any API.
+// Local visits simulation: start at 10, then increase by +2..+6 per day without any API.
 document.addEventListener('DOMContentLoaded', function () {
   const visitNodes = Array.from(document.querySelectorAll('[data-visits-counter]'));
   if (!visitNodes.length) return;
 
-  const STORAGE_KEY = 'amine_local_visits_state_v2_start0';
+  const STORAGE_KEY = 'amine_local_visits_state_v3_start10';
 
   function toYmdLocal(date) {
     const y = date.getFullYear();
@@ -33,12 +33,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function formatVisits(n) {
-    if (!Number.isFinite(n)) return '0';
+    if (!Number.isFinite(n)) return '10';
     if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
     return String(Math.floor(n));
   }
 
-  const base = 0;
+  const base = 10;
 
   const today = toYmdLocal(new Date());
   let state = { count: base, lastDate: today };
