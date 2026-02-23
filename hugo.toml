@@ -1,6 +1,6 @@
 baseURL = 'http://localhost:1313/'
 defaultContentLanguage = 'en'
-title = 'Amine'
+title = 'PersonalInfo'
 theme = "hugo-PaperMod"
 
 #主页英文设置
@@ -20,7 +20,7 @@ mainsections = [ "posts", "papermod" ]
     languageCode = 'en-us'
     languageName = "ENGLISH"
     weight = 1
-    title = "Amine"
+    title = "PersonalInfo"
     
     [[languages.en.menu.main]]
       name = "BIO"
@@ -56,7 +56,7 @@ mainsections = [ "posts", "papermod" ]
     languageCode = 'zh-cn'
     languageName = "中文"
     weight = 2
-    title = "Amine"
+    title = "PersonalInfo"
     
     [[languages.zh.menu.main]]
       name = "简介"
@@ -97,10 +97,6 @@ pagerSize = 5
 
 # 网站参数配置
 [params]
-  # 导航栏左上角标题
-  [params.label]
-    text = "Amine"
-  
   # 个人信息
   name = "Amine"
   nameZh = "阿明"
@@ -110,6 +106,10 @@ pagerSize = 5
   organizationZh = "安徽大学"
   bio = "Graduate student in Intelligent Science and Technology at Anhui University (211 Project). Research interests include path planning, robotics, and obstacle avoidance algorithms."
   bioZh = "安徽大学（211工程）智能科学与技术专业研究生。研究方向包括路径规划、机器人技术和避障算法。"
+  
+  # 导航栏左上角标题
+  [params.label]
+    text = "Amine"
   
   showBreadCrumbs = false
   ShowShareButtons = false
