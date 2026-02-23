@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const visitNodes = Array.from(document.querySelectorAll('[data-visits-counter]'));
   if (!visitNodes.length) return;
 
-  const STORAGE_KEY = 'amine_local_visits_state_v3_start10';
+  const STORAGE_KEY = 'visits_state';
 
   function toYmdLocal(date) {
     const y = date.getFullYear();
