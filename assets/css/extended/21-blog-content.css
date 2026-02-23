@@ -1,14 +1,14 @@
 /* ==================== Blog文章详情页专用样式 ==================== */
 
 /* 确保滚动条贴合右边缘 */
-body.post-single > .main {
+html body.post-single > .main {
   padding: 0 !important;
   margin: 0 !important;
   width: 100% !important;
 }
 
-/* 所有内容（包括footer）使用统一的居中容器 */
-body.post-single > .main > * {
+/* 所有内容（包括footer）使用统一的居中容器 - 与列表页一致 */
+html body.post-single > .main > * {
   max-width: 1200px !important;
   width: 100% !important;
   margin-left: auto !important;
@@ -19,7 +19,7 @@ body.post-single > .main > * {
 }
 
 /* 文章顶部的上内边距 */
-body.post-single .post-header {
+html body.post-single .post-header {
   padding-top: 20px !important;
 }
 
