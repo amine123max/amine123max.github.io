@@ -1,0 +1,192 @@
+/* ==================== Teaching页面专用样式 ==================== */
+.teaching-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 44px 40px 44px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.teaching-page .page-header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  margin-bottom: 28px;
+  padding: 0;
+}
+
+.teaching-page .page-header h1 {
+  margin: 0;
+  margin-top: 0 !important;
+  padding: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--primary);
+}
+
+.teaching-page .page-description {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  max-width: 100%;
+  margin: 16px 0 0 0;
+}
+
+/* Teaching网格布局 */
+.teaching-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* Course卡片 */
+.course-card {
+  padding: 24px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary);
+}
+
+.course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.course-title-section {
+  flex: 1;
+}
+
+.course-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 8px 0;
+  line-height: 1.4;
+}
+
+.course-code {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  font-family: monospace;
+  background: var(--code-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0 0 8px 0;
+  display: inline-block;
+}
+
+.course-role {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.course-semester {
+  font-size: 0.85rem;
+  color: var(--secondary);
+  white-space: nowrap;
+  background: var(--code-bg);
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+.course-description {
+  line-height: 1.6;
+  color: var(--content);
+  font-size: 0.9rem;
+  margin: 0 0 14px 0;
+}
+
+.course-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.course-topic {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--code-bg);
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.course-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.course-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--code-bg);
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.course-link:hover {
+  background: var(--primary);
+  color: var(--theme);
+  transform: translateY(-2px);
+}
+
+.external-link-icon {
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.course-link:hover .external-link-icon {
+  opacity: 1;
+  transform: translateX(2px) translateY(-2px);
+}
+
+/* 深色模式优化 */
+body.dark .course-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .course-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .teaching-page {
+    padding: 8px 20px 40px 20px;
+  }
+
+  .course-header {
+    flex-direction: column;
+  }
+
+  .course-semester {
+    align-self: flex-start;
+  }
+
+  .teaching-page .page-header h1 {
+    font-size: 2rem;
+  }
+}

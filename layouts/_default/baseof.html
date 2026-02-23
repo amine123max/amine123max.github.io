@@ -10,7 +10,10 @@
 </head>
 
 <body class="
-{{- if (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`)) -}}
+{{- if .IsHome -}}
+{{- print "home" -}}
+{{- end -}}
+{{- if (and (not .IsHome) (or (ne .Kind `page` ) (eq .Layout `archives`) (eq .Layout `search`))) -}}
 {{- print "list" -}}
 {{- end -}}
 {{- if eq site.Params.defaultTheme `dark` -}}
@@ -20,8 +23,13 @@
     {{- partialCached "header.html" . .Page -}}
     <main class="main">
         {{- block "main" . }}{{ end }}
+        {{- if not .IsHome }}
+        {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+        {{- end }}
     </main>
+    {{- if .IsHome }}
     {{ partialCached "footer.html" . .Layout .Kind (.Param "hideFooter") (.Param "ShowCodeCopyButtons") -}}
+    {{- end }}
 </body>
 
 </html>

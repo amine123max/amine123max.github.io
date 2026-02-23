@@ -1,0 +1,404 @@
+/* ==================== Bio主页专属 - 右侧内容区域 ==================== */
+.content-section {
+  flex: 1 !important;
+  min-width: 0;
+  height: 100%;
+  padding-right: 0;
+}
+
+/* Bio页面底部版权信息 */
+body.home .home-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 20px 0 12px;
+  padding-top: 20px;
+  border-top: none;
+  text-align: center;
+  font-size: 12px;
+  line-height: 24px;
+  color: var(--secondary);
+}
+
+body.home .home-meta span {
+  margin-inline-start: 1px;
+  margin-inline-end: 1px;
+}
+
+body.home .home-meta a {
+  color: inherit;
+  border-bottom: 1px solid var(--secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+body.home .home-meta a:hover {
+  color: var(--primary);
+  border-bottom: 1px solid var(--primary);
+}
+
+@media (max-width: 650px) {
+  body.home .main,
+  .home .main,
+  .academic-home {
+    height: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0 !important;
+  }
+
+  .profile-section,
+  .content-section {
+    height: auto;
+  }
+}
+
+.about-section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  padding-bottom: 0;
+  border-bottom: none;
+  display: inline-block;
+}
+
+/* 打字机效果 */
+.typewriter {
+  display: inline-block;
+  position: relative;
+  padding-right: 12px;
+}
+
+/* 打字中的光标 */
+.typewriter.typing::after,
+.typewriter.typing-complete::after {
+  content: '|';
+  position: absolute;
+  right: 0;
+  font-weight: 400;
+  animation: blink-cursor 1s step-start infinite;
+}
+
+/* 光标闪烁动画 */
+@keyframes blink-cursor {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* 确保白色模式下光标可见 */
+body:not(.dark) .typewriter.typing::after,
+body:not(.dark) .typewriter.typing-complete::after {
+  color: #000 !important;
+}
+
+/* 确保深色模式下光标可见 */
+body.dark .typewriter.typing::after,
+body.dark .typewriter.typing-complete::after {
+  color: #fff !important;
+}
+
+.about-content {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.bio-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 2px solid;
+}
+
+.btn-download svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 信息网格布局 - 按照参考图片 */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 36px;
+  margin-top: 0;
+}
+
+.interests-section,
+.education-section {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.subsection-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: white;
+}
+
+.interests-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.interests-list li {
+  padding: 6px 0;
+  padding-left: 28px;
+  position: relative;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 1.02rem;
+  line-height: 1.45;
+  display: block;
+}
+
+.interests-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 700;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.education-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.education-list li {
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.education-list li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.degree-info strong {
+  display: block;
+  color: white;
+  font-size: 1.02rem;
+  margin-bottom: 4px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+
+
+.degree-info p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+/* ==================== Projects Section on Bio Page ==================== */
+.projects-section {
+  margin-top: 28px;
+  margin-bottom: 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.view-all-link {
+  font-size: 0.9rem;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.view-all-link:hover {
+  opacity: 0.7;
+  transform: translateX(4px);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.project-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-card {
+  padding: 24px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+}
+
+.project-card-link:hover .project-card {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary);
+}
+
+.project-card-no-link {
+  cursor: default;
+}
+
+.project-card-no-link:hover .project-card {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.project-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0;
+  flex: 1;
+}
+
+.project-link-icon {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+  margin-left: 8px;
+}
+
+.project-card-link:hover .project-link-icon {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.project-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--content);
+  margin: 0 0 16px 0;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.project-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: var(--code-bg);
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.private-badge-small {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ==================== Skills Section on Bio Page ==================== */
+.skills-section {
+  margin-top: 24px;
+  margin-bottom: 14px;
+}
+
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.skill-tag {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: var(--theme);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+/* 白色模式下的技能标签 */
+body:not(.dark) .skill-tag {
+  background: #000;
+  color: #fff;
+}
+
+/* 深色模式下的技能标签 */
+body.dark .skill-tag {
+  background: #fff;
+  color: #000;
+}
+
+.skill-tag:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ==================== 响应式设计 ==================== */
+@media (max-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

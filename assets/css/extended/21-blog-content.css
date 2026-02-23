@@ -1,0 +1,343 @@
+/* ==================== Blog文章详情页专用样式 ==================== */
+/* 确保滚动条贴合右边缘 */
+body.post-single > .main {
+  padding: 8px 0 0 0 !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+/* 文章内容容器居中 */
+body.post-single > .main > :not(.footer) {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+  padding-bottom: 40px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* footer使用1200px最大宽度，与内容一致 */
+body.post-single > .main > .footer {
+  max-width: 1200px !important;
+  width: 100% !important;
+  margin: 20px auto 0 auto !important;
+  padding-top: 20px !important;
+  padding-bottom: 12px !important;
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+  box-sizing: border-box !important;
+}
+
+/* 文章标题区域 */
+body.post-single .post-header {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-bottom: 24px !important;
+  margin-top: 0 !important;
+}
+
+body.post-single .post-header .post-title {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  color: var(--primary);
+  margin: 0 0 16px 0 !important;
+}
+
+body.post-single .post-header .post-description {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+/* 文章元信息 */
+body.post-single .post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+body.post-single .post-meta > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 文章内容区域 */
+body.post-single .post-content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  line-height: 1.8;
+  font-size: 1.05rem;
+}
+
+/* 标题样式 */
+body.post-single .post-content h1 {
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  margin: 40px 0 24px 0 !important;
+  color: var(--primary);
+  line-height: 1.3;
+}
+
+body.post-single .post-content h2 {
+  font-size: 1.6rem !important;
+  font-weight: 700 !important;
+  margin: 32px 0 20px 0 !important;
+  color: var(--primary);
+  line-height: 1.35;
+}
+
+body.post-single .post-content h3 {
+  font-size: 1.3rem !important;
+  font-weight: 700 !important;
+  margin: 28px 0 16px 0 !important;
+  color: var(--primary);
+  line-height: 1.4;
+}
+
+body.post-single .post-content h4 {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  margin: 24px 0 12px 0 !important;
+  color: var(--primary);
+}
+
+/* 段落 */
+body.post-single .post-content p {
+  margin: 0 0 1.2em 0;
+  line-height: 1.8;
+}
+
+/* 列表 */
+body.post-single .post-content ul,
+body.post-single .post-content ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+body.post-single .post-content li {
+  margin: 0.5em 0;
+  line-height: 1.7;
+}
+
+/* 引用块 */
+body.post-single .post-content blockquote {
+  margin: 1.5em 0;
+  padding: 16px 20px;
+  border-left: 4px solid var(--primary);
+  background: var(--code-bg);
+  border-radius: 4px;
+}
+
+body.post-single .post-content blockquote p {
+  margin: 0;
+}
+
+/* 代码块 */
+body.post-single .post-content code {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--primary);
+}
+
+body.post-single .post-content pre {
+  margin: 1.5em 0;
+  padding: 16px;
+  background: var(--code-block-bg);
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+
+body.post-single .post-content pre code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.9em;
+  color: rgb(213, 213, 214);
+  line-height: 1.6;
+}
+
+/* 表格 */
+body.post-single .post-content table {
+  width: 100%;
+  margin: 1.5em 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+body.post-single .post-content table th,
+body.post-single .post-content table td {
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
+body.post-single .post-content table th {
+  background: var(--code-bg);
+  font-weight: 700;
+  color: var(--primary);
+}
+
+body.post-single .post-content table tr:hover {
+  background: var(--code-bg);
+}
+
+/* 图片 */
+body.post-single .post-content img {
+  display: block !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 24px auto !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 分隔线 */
+body.post-single .post-content hr {
+  margin: 40px 0;
+  border: none;
+  height: 2px;
+  background: var(--border);
+}
+
+/* 链接 */
+body.post-single .post-content a {
+  color: #0066cc;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+body.post-single .post-content a:hover {
+  color: #0052a3;
+  border-bottom-color: #0066cc;
+}
+
+body.dark .post-content a {
+  color: #4da6ff;
+}
+
+body.dark .post-content a:hover {
+  color: #66b3ff;
+  border-bottom-color: #4da6ff;
+}
+
+/* 文章底部 */
+body.post-single .post-footer {
+  margin-top: 56px;
+  padding-top: 32px;
+  border-top: 2px solid var(--border);
+}
+
+/* 标签 */
+body.post-single .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+body.post-single .post-tags a {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--code-bg);
+  color: var(--secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+}
+
+body.post-single .post-tags a:hover {
+  background: var(--primary);
+  color: var(--theme);
+  transform: translateY(-2px);
+}
+
+/* 目录（TOC） */
+body.post-single .toc {
+  margin: 0 0 32px 0;
+  padding: 20px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+body.post-single .toc summary {
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+body.post-single .toc .inner {
+  margin-top: 12px;
+  padding-left: 20px;
+}
+
+body.post-single .toc a {
+  color: var(--secondary);
+  text-decoration: none;
+  border-bottom: none;
+}
+
+body.post-single .toc a:hover {
+  color: var(--primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body.post-single > .main > :not(.footer) {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  body.post-single .post-header .post-title {
+    font-size: 1.8rem !important;
+  }
+
+  body.post-single .post-content {
+    font-size: 1rem;
+  }
+
+  body.post-single .post-content h1 {
+    font-size: 1.6rem !important;
+  }
+
+  body.post-single .post-content h2 {
+    font-size: 1.4rem !important;
+  }
+
+  body.post-single .post-content h3 {
+    font-size: 1.2rem !important;
+  }
+
+  body.post-single .post-content code {
+    font-size: 0.85em !important;
+  }
+
+  body.post-single .post-content pre code {
+    font-size: 0.8em !important;
+  }
+
+  body.post-single .post-content img {
+    margin: 16px auto !important;
+  }
+}

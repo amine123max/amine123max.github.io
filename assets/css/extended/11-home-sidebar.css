@@ -1,0 +1,292 @@
+/* ==================== Bio主页专属 - 左侧个人信息卡片 ==================== */
+.profile-section {
+  flex: 0 0 350px !important;
+  position: relative;
+  top: 0;
+  height: 100%;
+  align-self: flex-start;
+  overflow: hidden;
+}
+
+.profile-card {
+  text-align: center;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.avatar-wrapper {
+  width: 170px;
+  height: 170px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--border);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  font-size: 1.08rem !important;
+  font-weight: 700 !important;
+  margin: 0 0 8px !important;
+  line-height: 1.4 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-align: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.name-en {
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.name-divider {
+  font-size: 1rem;
+  font-weight: 300;
+  opacity: 0.5;
+}
+
+.name-zh {
+  font-size: 1.08rem;
+  font-weight: 700;
+}
+
+.profile-title {
+  font-size: 0.82rem !important;
+  font-weight: 600 !important;
+  margin: 0 0 6px !important;
+  display: block !important;
+  text-align: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.profile-org {
+  font-size: 0.8rem !important;
+  margin: 0 0 14px !important;
+  display: block !important;
+  text-align: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.profile-welcome {
+  font-size: 0.76rem !important;
+  line-height: 1.5 !important;
+  margin: 0 0 12px !important;
+  padding: 7px 11px !important;
+  display: block !important;
+  text-align: center !important;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 8px;
+  color: var(--secondary) !important;
+  font-style: italic;
+}
+
+/* 白色模式下的欢迎语 */
+body:not(.dark) .profile-welcome {
+  background: rgba(0, 0, 0, 0.04);
+  color: #666 !important;
+}
+
+/* 深色模式下的欢迎语 */
+body.dark .profile-welcome {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  transition: all 0.3s ease;
+}
+
+.social-icons a svg {
+  width: 21px;
+  height: 21px;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+  opacity: 0.7;
+}
+
+.profile-stats {
+  margin-top: 18px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.stats-grid-card {
+  display: grid;
+  grid-template-columns: repeat(5, max-content);
+  justify-content: center;
+  column-gap: 14px;
+  row-gap: 4px;
+  align-items: end;
+  width: 100%;
+}
+
+.stats-metric-item {
+  text-align: center;
+  min-width: 0;
+}
+
+.metric-value {
+  display: block;
+  font-size: 1.66rem;
+  line-height: 1.05;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0;
+  white-space: nowrap;
+  font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", "Times New Roman", serif;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
+}
+
+.metric-label {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  line-height: 1.15;
+  color: #6f7f98;
+  word-break: break-word;
+  opacity: 0.95;
+}
+
+.sidebar-widgets {
+  margin-top: 20px;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-widget {
+  text-align: left;
+  border-right: 1px solid var(--border);
+  padding-right: 12px;
+}
+
+.sidebar-widget-title {
+  margin: 0 0 6px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.sidebar-recent-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-recent-list li {
+  margin: 0;
+}
+
+.sidebar-recent-link {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 30px 6px 10px;
+  font-size: 0.82rem;
+  line-height: 1.25;
+  color: #6f6f6f;
+  text-decoration: none;
+  display: block;
+  gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  background: var(--entry);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.sidebar-link-mark {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  transition: all 0.3s ease;
+}
+
+.sidebar-recent-link:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.sidebar-recent-link:hover .sidebar-link-mark {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.sidebar-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sidebar-tag-item {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  color: #6f6f6f;
+  line-height: 1.2;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a.sidebar-tag-item:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+body.dark .metric-label {
+  color: rgba(173, 186, 204, 0.9);
+}
+
+@media (max-width: 650px) {
+  .profile-card {
+    min-height: auto;
+  }
+
+  .profile-stats {
+    margin-top: 14px;
+  }
+
+  .metric-value {
+    font-size: 1.48rem;
+  }
+}
+
+
+

@@ -1,0 +1,72 @@
+/* ==================== 非Bio页面底部信息样式 ==================== */
+
+/* 为所有非Bio页面添加底部信息样式 - 与Bio页面完全一致 */
+body:not(.home) .footer {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  padding-top: 20px !important;
+  padding-bottom: 12px !important;
+  padding-left: 44px !important;
+  padding-right: 44px !important;
+  margin: 20px auto 0 auto !important;
+  border-top: none !important;
+  font-size: 12px !important;
+  line-height: 24px !important;
+  color: var(--secondary) !important;
+  gap: 0 !important;
+  max-width: 1200px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+body:not(.home) .footer span {
+  margin-inline-start: 1px !important;
+  margin-inline-end: 1px !important;
+}
+
+body:not(.home) .footer a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: 1px solid var(--secondary) !important;
+  transition: all 0.2s ease !important;
+}
+
+body:not(.home) .footer a:hover {
+  color: var(--primary) !important;
+  border-bottom: 1px solid var(--primary) !important;
+}
+
+/* 确保footer在内容区域底部（在滚动容器内） */
+body:not(.home) > .main {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* 内容区域包裹器 */
+body:not(.home) > .main > :not(.footer) {
+  flex: 0 0 auto !important;
+}
+
+/* 将footer推到底部 */
+body:not(.home) .footer {
+  margin-top: auto !important;
+  flex-shrink: 0 !important;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body:not(.home) .footer {
+    padding: 15px 20px 25px 20px !important;
+    font-size: 0.75rem !important;
+  }
+  
+  body.list > .main > .footer,
+  body.post-single > .main > .footer {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}

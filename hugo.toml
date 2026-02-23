@@ -1,6 +1,6 @@
 baseURL = 'http://localhost:1313/'
 defaultContentLanguage = 'en'
-title = 'Amine'
+title = 'PersonalInfo'
 theme = "hugo-PaperMod"
 
 #主页英文设置
@@ -20,7 +20,7 @@ mainsections = [ "posts", "papermod" ]
     languageCode = 'en-us'
     languageName = "ENGLISH"
     weight = 1
-    title = "Amine"
+    title = "PersonalInfo"
     
     [[languages.en.menu.main]]
       name = "BIO"
@@ -56,7 +56,7 @@ mainsections = [ "posts", "papermod" ]
     languageCode = 'zh-cn'
     languageName = "中文"
     weight = 2
-    title = "Amine"
+    title = "PersonalInfo"
     
     [[languages.zh.menu.main]]
       name = "简介"
@@ -133,6 +133,29 @@ pagerSize = 5
   [[params.socialIcons]]
     name = "github"
     url = "https://github.com/amine123max"
+
+  [[params.socialIcons]]
+    name = "xiaohongshu"
+    url = "https://www.xiaohongshu.com/"
+
+  [[params.socialIcons]]
+    name = "phone"
+    url = "tel:13409951849"
+
+  # 侧边栏状态信息（邮箱和 GitHub 下方）
+  sidebarStats = { visits = "10,268", completedProjects = "39", totalProjects = "52", pendingProjects = "13" }
+
+  # 侧边栏最近更新
+  sidebarRecent = [
+    "OGG2KAFKA",
+    "nvim 利用 pwsh 自动切换输入法",
+    "powershell 切换输入法",
+    "oceanbase 社区版源码编译安装",
+    "mssql-创建和修改链接服务器"
+  ]
+
+  # 侧边栏热门标签
+  sidebarHotTags = ["Vim", "PostgreSQL", "Oracle", "OGG", "WSL", "Python", "WAL", "链接服务器", "随笔", "awk"]
   
   # 研究兴趣（英文）
   interests = ["Path Planning", "Robotics", "Obstacle Avoidance Algorithms", "Intelligent Systems"]
@@ -188,9 +211,84 @@ pagerSize = 5
     descriptionZh = "从PDF文档中导出链接和数学公式的实用工具"
     url = "https://github.com/amine123max/FormulaExport"
     tags = ["Python", "PDF", "Tool"]
+
+  [[params.projects]]
+    name = "OceanSimulator V1"
+    nameZh = "OceanSimulator V1"
+    description = "In Development"
+    descriptionZh = "开发中"
+    tags = ["私密"]
+
+  [[params.projects]]
+    name = "Large Language Model OceanSim Platform"
+    nameZh = "大语言模型 OceanSim 平台"
+    description = "In Development"
+    descriptionZh = "开发中"
+    tags = ["私密"]
+
+  [[params.projects]]
+    name = "AChat Multi-Agent Interface"
+    nameZh = "AChat 多智能体交互界面"
+    description = "In Development"
+    descriptionZh = "开发中"
+    tags = ["私密"]
+
+  [[params.projects]]
+    name = "OceanSimulator V2"
+    nameZh = "OceanSimulator V2"
+    description = "In Development"
+    descriptionZh = "开发中"
+    tags = ["私密"]
   
   # 技术栈
   skills = ["Python", "C++", "Git", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
+  
+  # 学术论文
+  [[params.papers]]
+    title = "Research Paper Example 1"
+    titleZh = "研究论文示例1"
+    authors = "Amine, Co-Author1, Co-Author2"
+    venue = "Conference/Journal Name 2024"
+    venueZh = "会议/期刊名称 2024"
+    year = "2024"
+    abstract = "This is a brief abstract of the research paper describing the main contributions and findings."
+    abstractZh = "这是研究论文的简要摘要，描述了主要贡献和发现。"
+    pdfUrl = "https://example.com/paper1.pdf"
+    codeUrl = "https://github.com/amine123max/research-project"
+  
+  [[params.papers]]
+    title = "Research Paper Example 2"
+    titleZh = "研究论文示例2"
+    authors = "Amine, Another Author"
+    venue = "International Conference on AI 2023"
+    venueZh = "国际人工智能会议 2023"
+    year = "2023"
+    abstract = "Another research paper abstract explaining the methodology and results."
+    abstractZh = "另一篇研究论文摘要，解释了方法和结果。"
+    url = "https://example.com/paper2"
+  
+  # 教学经历
+  [[params.teaching]]
+    title = "Introduction to Python Programming"
+    titleZh = "Python编程入门"
+    code = "CS101"
+    role = "Teaching Assistant"
+    roleZh = "助教"
+    semester = "Fall 2023"
+    description = "Assisted in teaching fundamental programming concepts using Python. Conducted lab sessions and graded assignments."
+    descriptionZh = "协助教授使用Python的基本编程概念。主持实验课程并批改作业。"
+    topics = ["Python", "Data Structures", "Algorithms"]
+    
+  [[params.teaching]]
+    title = "Machine Learning Fundamentals"
+    titleZh = "机器学习基础"
+    code = "CS301"
+    role = "Guest Lecturer"
+    roleZh = "客座讲师"
+    semester = "Spring 2024"
+    description = "Delivered guest lectures on neural networks and deep learning applications."
+    descriptionZh = "讲授关于神经网络和深度学习应用的客座讲座。"
+    topics = ["Machine Learning", "Neural Networks", "Deep Learning"]
   
   # 校园经历
   [[params.campusExperience]]
@@ -244,7 +342,8 @@ pagerSize = 5
   
   [params.assets]
     disableHLJS = true
-    favicon = "/favicon.ico"
+    favicon = "/Cat.ico"
+    disableScrollBarStyle = true
 
 [markup.goldmark.renderer]
 unsafe = true
@@ -262,7 +361,3 @@ disableInlineCSS = true
 ##hugo搜索功能
 [outputs]
 home = ["HTML", "RSS", "JSON"]
-
-
-
-

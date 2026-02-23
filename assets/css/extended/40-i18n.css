@@ -1,0 +1,66 @@
+/* ==================== 语言切换样式 ==================== */
+/* 默认显示英文内容 */
+[data-lang="zh"] {
+  display: none;
+}
+
+[data-lang="en"] {
+  display: inline;
+}
+
+/* 光标样式 */
+.typing-text::after {
+  content: '|';
+  animation: blink-cursor 1s step-start infinite;
+  color: var(--content);
+}
+
+@keyframes blink-cursor {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 响应式设计已禁用 - 保持桌面版布局 */
+
+/* 图片容器 */
+.post-single .post-content figure,
+.post-content figure {
+  margin: 20px 0 !important;
+  text-align: center !important;
+}
+
+/* 图片说明文字 */
+.post-single .post-content figcaption,
+.post-content figcaption {
+  font-size: 0.9rem !important;
+  color: var(--secondary) !important;
+  margin-top: 10px !important;
+}
+
+/* Blog文章底部标签区域 - 添加左右页边距 */
+.post-single .post-footer {
+  padding-left: 80px !important;
+  padding-right: 80px !important;
+  margin-top: 40px !important;
+}
+
+/* 标签列表 */
+.post-single .post-tags {
+  padding-left: 0 !important;
+}
+
+.post-entry {
+  margin-bottom: 30px;
+  max-width: 100%;
+}
+
+/* 调整文章宽度 */
+.post-content {
+  max-width: 100%;
+}
+
+article.post-single {
+  max-width: 100%;
+}
+
