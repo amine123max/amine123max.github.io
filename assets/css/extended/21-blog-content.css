@@ -1,14 +1,14 @@
-/* ==================== Blog文章详情页专用样式 ==================== */
+/* ==================== Blog文章详情页专用样�?==================== */
 
 /* 确保滚动条贴合右边缘 */
-html body.post-single > .main {
+html html body.post-single > .main {
   padding: 0 !important;
   margin: 0 !important;
   width: 100% !important;
 }
 
-/* 所有内容（包括footer）使用统一的居中容器 - 与列表页一致 */
-html body.post-single > .main > * {
+/* 所有内容（包括footer）使用统一的居中容�?- 与列表页一�?*/
+html html body.post-single > .main > * {
   max-width: 1200px !important;
   width: 100% !important;
   margin-left: auto !important;
@@ -18,13 +18,13 @@ html body.post-single > .main > * {
   box-sizing: border-box !important;
 }
 
-/* 文章顶部的上内边距 */
-html body.post-single .post-header {
+/* 文章顶部的上内边�?*/
+html html body.post-single .post-header {
   padding-top: 20px !important;
 }
 
 /* 文章标题区域 */
-body.post-single .post-header {
+html html body.post-single .post-header {
   padding-top: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
@@ -32,7 +32,7 @@ body.post-single .post-header {
   margin-top: 0 !important;
 }
 
-body.post-single .post-header .post-title {
+html html body.post-single .post-header .post-title {
   font-size: 2.2rem !important;
   font-weight: 700 !important;
   line-height: 1.2;
@@ -40,15 +40,15 @@ body.post-single .post-header .post-title {
   margin: 0 0 16px 0 !important;
 }
 
-body.post-single .post-header .post-description {
+html html body.post-single .post-header .post-description {
   font-size: 1.1rem;
   color: var(--secondary);
   line-height: 1.6;
   margin: 0 0 16px 0;
 }
 
-/* 文章元信息 */
-body.post-single .post-meta {
+/* 文章元信�?*/
+html html body.post-single .post-meta {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -61,14 +61,14 @@ body.post-single .post-meta {
   margin-bottom: 24px;
 }
 
-body.post-single .post-meta > * {
+html body.post-single .post-meta > * {
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
 /* 文章内容区域 */
-body.post-single .post-content {
+html body.post-single .post-content {
   padding-left: 0 !important;
   padding-right: 0 !important;
   line-height: 1.8;
@@ -76,7 +76,7 @@ body.post-single .post-content {
 }
 
 /* 标题样式 */
-body.post-single .post-content h1 {
+html body.post-single .post-content h1 {
   font-size: 2rem !important;
   font-weight: 700 !important;
   margin: 40px 0 24px 0 !important;
@@ -84,7 +84,7 @@ body.post-single .post-content h1 {
   line-height: 1.3;
 }
 
-body.post-single .post-content h2 {
+html body.post-single .post-content h2 {
   font-size: 1.6rem !important;
   font-weight: 700 !important;
   margin: 32px 0 20px 0 !important;
@@ -92,7 +92,7 @@ body.post-single .post-content h2 {
   line-height: 1.35;
 }
 
-body.post-single .post-content h3 {
+html body.post-single .post-content h3 {
   font-size: 1.3rem !important;
   font-weight: 700 !important;
   margin: 28px 0 16px 0 !important;
@@ -100,7 +100,7 @@ body.post-single .post-content h3 {
   line-height: 1.4;
 }
 
-body.post-single .post-content h4 {
+html body.post-single .post-content h4 {
   font-size: 1.1rem !important;
   font-weight: 700 !important;
   margin: 24px 0 12px 0 !important;
@@ -108,25 +108,25 @@ body.post-single .post-content h4 {
 }
 
 /* 段落 */
-body.post-single .post-content p {
+html body.post-single .post-content p {
   margin: 0 0 1.2em 0;
   line-height: 1.8;
 }
 
 /* 列表 */
-body.post-single .post-content ul,
-body.post-single .post-content ol {
+html body.post-single .post-content ul,
+html body.post-single .post-content ol {
   margin: 1em 0;
   padding-left: 2em;
 }
 
-body.post-single .post-content li {
+html body.post-single .post-content li {
   margin: 0.5em 0;
   line-height: 1.7;
 }
 
-/* 引用块 */
-body.post-single .post-content blockquote {
+/* 引用�?*/
+html body.post-single .post-content blockquote {
   margin: 1.5em 0;
   padding: 16px 20px;
   border-left: 4px solid var(--primary);
@@ -134,12 +134,12 @@ body.post-single .post-content blockquote {
   border-radius: 4px;
 }
 
-body.post-single .post-content blockquote p {
+html body.post-single .post-content blockquote p {
   margin: 0;
 }
 
-/* 代码块 */
-body.post-single .post-content code {
+/* 代码�?*/
+html body.post-single .post-content code {
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   font-size: 0.9em;
   background: var(--code-bg);
@@ -148,7 +148,7 @@ body.post-single .post-content code {
   color: var(--primary);
 }
 
-body.post-single .post-content pre {
+html body.post-single .post-content pre {
   margin: 1.5em 0;
   padding: 16px;
   background: var(--code-block-bg);
@@ -157,7 +157,7 @@ body.post-single .post-content pre {
   border: 1px solid var(--border);
 }
 
-body.post-single .post-content pre code {
+html body.post-single .post-content pre code {
   background: transparent;
   padding: 0;
   font-size: 0.9em;
@@ -166,7 +166,7 @@ body.post-single .post-content pre code {
 }
 
 /* 表格 */
-body.post-single .post-content table {
+html body.post-single .post-content table {
   width: 100%;
   margin: 1.5em 0;
   border-collapse: collapse;
@@ -174,25 +174,25 @@ body.post-single .post-content table {
   border-radius: 8px;
 }
 
-body.post-single .post-content table th,
-body.post-single .post-content table td {
+html body.post-single .post-content table th,
+html body.post-single .post-content table td {
   padding: 12px 16px;
   border: 1px solid var(--border);
   text-align: left;
 }
 
-body.post-single .post-content table th {
+html body.post-single .post-content table th {
   background: var(--code-bg);
   font-weight: 700;
   color: var(--primary);
 }
 
-body.post-single .post-content table tr:hover {
+html body.post-single .post-content table tr:hover {
   background: var(--code-bg);
 }
 
 /* 图片 */
-body.post-single .post-content img {
+html body.post-single .post-content img {
   display: block !important;
   max-width: 100% !important;
   height: auto !important;
@@ -201,8 +201,8 @@ body.post-single .post-content img {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-/* 分隔线 */
-body.post-single .post-content hr {
+/* 分隔�?*/
+html body.post-single .post-content hr {
   margin: 40px 0;
   border: none;
   height: 2px;
@@ -210,14 +210,14 @@ body.post-single .post-content hr {
 }
 
 /* 链接 */
-body.post-single .post-content a {
+html body.post-single .post-content a {
   color: #0066cc;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: all 0.2s ease;
 }
 
-body.post-single .post-content a:hover {
+html body.post-single .post-content a:hover {
   color: #0052a3;
   border-bottom-color: #0066cc;
 }
@@ -232,21 +232,21 @@ body.dark .post-content a:hover {
 }
 
 /* 文章底部 */
-body.post-single .post-footer {
+html body.post-single .post-footer {
   margin-top: 56px;
   padding-top: 32px;
   border-top: 2px solid var(--border);
 }
 
 /* 标签 */
-body.post-single .post-tags {
+html body.post-single .post-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 24px;
 }
 
-body.post-single .post-tags a {
+html body.post-single .post-tags a {
   display: inline-block;
   padding: 6px 14px;
   background: var(--code-bg);
@@ -259,14 +259,14 @@ body.post-single .post-tags a {
   border: 1px solid var(--border);
 }
 
-body.post-single .post-tags a:hover {
+html body.post-single .post-tags a:hover {
   background: var(--primary);
   color: var(--theme);
   transform: translateY(-2px);
 }
 
-/* 目录（TOC） */
-body.post-single .toc {
+/* 目录（TOC�?*/
+html body.post-single .toc {
   margin: 0 0 32px 0;
   padding: 20px;
   background: var(--entry);
@@ -274,64 +274,64 @@ body.post-single .toc {
   border-radius: 12px;
 }
 
-body.post-single .toc summary {
+html body.post-single .toc summary {
   font-weight: 700;
   color: var(--primary);
   cursor: pointer;
   user-select: none;
 }
 
-body.post-single .toc .inner {
+html body.post-single .toc .inner {
   margin-top: 12px;
   padding-left: 20px;
 }
 
-body.post-single .toc a {
+html body.post-single .toc a {
   color: var(--secondary);
   text-decoration: none;
   border-bottom: none;
 }
 
-body.post-single .toc a:hover {
+html body.post-single .toc a:hover {
   color: var(--primary);
 }
 
-/* 响应式设计 */
+/* 响应式设�?*/
 @media (max-width: 768px) {
-  body.post-single > .main > * {
+  html body.post-single > .main > * {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
 
-  body.post-single .post-header .post-title {
+  html body.post-single .post-header .post-title {
     font-size: 1.8rem !important;
   }
 
-  body.post-single .post-content {
+  html body.post-single .post-content {
     font-size: 1rem;
   }
 
-  body.post-single .post-content h1 {
+  html body.post-single .post-content h1 {
     font-size: 1.6rem !important;
   }
 
-  body.post-single .post-content h2 {
+  html body.post-single .post-content h2 {
     font-size: 1.4rem !important;
   }
 
-  body.post-single .post-content h3 {
+  html body.post-single .post-content h3 {
     font-size: 1.2rem !important;
   }
 
-  body.post-single .post-content code {
+  html body.post-single .post-content code {
     font-size: 0.85em !important;
   }
 
-  body.post-single .post-content pre code {
+  html body.post-single .post-content pre code {
     font-size: 0.8em !important;
   }
 
-  body.post-single .post-content img {
+  html body.post-single .post-content img {
     margin: 16px auto !important;
   }
 }
