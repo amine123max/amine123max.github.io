@@ -1,0 +1,138 @@
+/* Shared nav/canvas behavior for non-home pages */
+
+:root {
+  --app-header-height: 56px;
+}
+
+/* Keep non-home pages consistent with Bio: fixed header + main internal scroll */
+html:has(body:not(.home)),
+body:not(.home) {
+  height: 100%;
+  overflow: hidden;
+}
+
+body:not(.home) .header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+}
+
+body:not(.home) .header .nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  margin-inline: 0 !important;
+  padding: 6px clamp(8px, 2vw, 24px) !important;
+  box-sizing: border-box !important;
+}
+
+body:not(.home) .logo {
+  margin-right: 0 !important;
+}
+
+body:not(.home) #menu {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end !important;
+  margin: 0;
+  margin-left: auto !important;
+  gap: clamp(10px, 1.5vw, 22px);
+}
+
+body:not(.home):not(.list):not(.post-single) > .main {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: var(--app-header-height) !important;
+  height: calc((var(--app-vh, 1vh) * 100) - var(--app-header-height)) !important;
+  padding-top: 0 !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+/* Blog列表页和文章详情页特殊处理 */
+body.list > .main,
+body.post-single > .main {
+  margin-top: var(--app-header-height) !important;
+  height: calc((var(--app-vh, 1vh) * 100) - var(--app-header-height)) !important;
+  padding-top: 0 !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+}
+
+/* Scrollbar appearance is centralized in `assets/css/extended/85-scrollbar-manager.css`. */
+
+/* Align with Bio: remove extra top gap in page header */
+body:not(.home) > .main .page-header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+@media (max-width: 650px) {
+  :root {
+    --app-header-height: 56px;
+  }
+
+  html:has(body:not(.home)),
+  body:not(.home) {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+  }
+
+  body:not(.home) .header .nav {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 8px 10px !important;
+  }
+
+  body:not(.home) #menu {
+    display: none !important;
+  }
+
+  body:not(.home) > .main {
+    margin-top: var(--app-header-height) !important;
+    height: calc((var(--app-vh, 1vh) * 100) - var(--app-header-height)) !important;
+    min-height: calc((var(--app-vh, 1vh) * 100) - var(--app-header-height)) !important;
+    padding-top: 0 !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+  }
+
+}
+
+/* Typography aligned with Bio (non-home pages) */
+body:not(.home) > .main h1,
+body:not(.home) > .main .page-header h1,
+body:not(.home) > .main .post-title {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+}
+
+body:not(.home) > .main h2,
+body:not(.home) > .main .section-title,
+body:not(.home) > .main .subsection-title {
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35;
+}
+
+body:not(.home) > .main p,
+body:not(.home) > .main li,
+body:not(.home) > .main .page-description,
+body:not(.home) > .main .project-description,
+body:not(.home) > .main .project-description-full,
+body:not(.home) > .main .exp-description,
+body:not(.home) > .main .exp-role,
+body:not(.home) > .main .entry-content {
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+}

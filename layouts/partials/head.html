@@ -42,11 +42,6 @@
 {{- $includes := slice }}
 {{- $includes = $includes | append (" " | resources.FromString "assets/css/includes-blank.css")}}
 
-{{- if not (eq site.Params.assets.disableScrollBarStyle true) }}
-    {{- $ScrollStyle := (resources.Get "css/includes/scroll-bar.css") }}
-    {{- $includes = (append $ScrollStyle $includes) }}
-{{- end }}
-
 {{- $includes_all := $includes | resources.Concat "assets/css/includes.css" }}
 
 {{- $theme_vars := (resources.Get "css/core/theme-vars.css") }}
@@ -133,13 +128,6 @@
                 background: var(--theme);
             }
 
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
         }
 
     </style>

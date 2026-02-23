@@ -1,0 +1,179 @@
+/* ==================== Projects页面专用样式 ==================== */
+.projects-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 44px 40px 44px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.projects-page .page-header {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.projects-page .page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0 !important;
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+
+.projects-page .page-description {
+  font-size: 1.1rem;
+  color: var(--secondary);
+  max-width: 100%;
+  margin: 0;
+}
+
+.projects-grid-full {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.project-card-full-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.project-card-full {
+  padding: 24px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card-full-link:hover .project-card-full {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border-color: var(--primary);
+}
+
+.project-header-full {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.project-title-full {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.project-link-icon-full {
+  flex-shrink: 0;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+  margin-left: 12px;
+}
+
+.project-card-full-link:hover .project-link-icon-full {
+  opacity: 1;
+  transform: translate(3px, -3px);
+}
+
+.project-description-full {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--content);
+  margin: 0 0 14px 0;
+  flex: 1;
+}
+
+.project-tags-full {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.project-tag-full {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--code-bg);
+  color: var(--secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+}
+
+.project-footer-full {
+  display: flex;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.project-view-github {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.project-view-github svg {
+  transition: transform 0.3s ease;
+}
+
+.project-card-full-link:hover .project-view-github svg {
+  transform: scale(1.1);
+}
+
+/* 私有项目样式 */
+.project-card-no-link {
+  cursor: default;
+}
+
+.project-card-no-link:hover .project-card-full {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+
+.private-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(251, 189, 8, 0.15);
+  color: #d97706;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1px solid rgba(251, 189, 8, 0.3);
+}
+
+body.dark .private-badge {
+  background: rgba(251, 189, 8, 0.1);
+  color: #fbbf24;
+  border-color: rgba(251, 189, 8, 0.2);
+}
+
+.private-badge-small {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Align top H1 with Bio About Me */
+.projects-page .page-header h1 {
+  font-size: 2.2rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+}

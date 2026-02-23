@@ -1,0 +1,48 @@
+/* ==================== Bio主页样式 ==================== */
+/* 只针对首页 - 严格按照参考图片布局 */
+
+/* 让Bio主页的main容器布满全宽 */
+body.home {
+  height: 100vh;
+  overflow: hidden;
+}
+
+html:has(body.home) {
+  height: 100%;
+  overflow: hidden;
+}
+
+body.home .footer {
+  display: none !important;
+}
+
+body.home .main,
+.home .main {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 100vh !important;
+  padding-top: 56px !important;
+  overflow: hidden;
+}
+
+/* Bio主页的内容容器 - 布满全宽 */
+.academic-home {
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0 0 0 28px;
+  gap: 40px;
+  height: 100%;
+  background: var(--theme);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 保持桌面版布局 - 媒体查询已禁用 */
+
+
+

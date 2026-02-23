@@ -1,0 +1,454 @@
+/* 个人主页样式 */
+
+/* 覆盖主题默认样式 */
+html {
+  height: 100%;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--theme);
+}
+
+/* 白色模式下强制所有字体为黑色 */
+body:not(.dark) .profile-name,
+body:not(.dark) .profile-title,
+body:not(.dark) .profile-org,
+body:not(.dark) .section-title,
+body:not(.dark) .bio-text,
+body:not(.dark) .subsection-title,
+body:not(.dark) .interests-list li,
+body:not(.dark) .degree-info strong,
+body:not(.dark) .degree-info p {
+  color: #000 !important;
+}
+
+
+
+/* 深色模式下的文字颜色 */
+body.dark .profile-name,
+body.dark .profile-title,
+body.dark .profile-org {
+  color: #fff !important;
+}
+
+body:not(.dark) .social-icons a,
+body:not(.dark) .social-icons a svg {
+  color: #333 !important;
+  stroke: #333 !important;
+}
+
+body:not(.dark) .btn-download {
+  color: #fff !important;
+  background: #000 !important;
+  border-color: #000 !important;
+}
+
+body:not(.dark) .interests-list li::before {
+  color: #000 !important;
+}
+
+.main {
+  padding: 0 !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  width: 100%;
+}
+
+/* 导航栏样式 - 内容靠近边缘 */
+.header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--theme) !important;
+  border-bottom: 1px solid var(--border) !important;
+  z-index: 1000 !important;
+  box-sizing: border-box !important;
+  overflow-x: hidden !important;
+  overflow-y: hidden !important;
+}
+
+/* 非Bio页导航/画布统一逻辑已抽离到 `assets/css/extended/80-nav-shared.css` */
+
+.header .nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  margin-inline: 0 !important;
+  padding: 6px clamp(8px, 2vw, 24px) !important;
+  min-height: 56px !important;
+  height: 56px !important;
+  box-sizing: border-box !important;
+}
+
+.logo {
+  font-size: 1.4rem !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  margin-right: 0 !important;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* 导航菜单 - 右侧对齐 */
+#menu {
+  display: flex !important;
+  align-items: center;
+  justify-content: flex-end;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  margin-left: auto !important;
+  gap: clamp(10px, 1.5vw, 22px);
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
+
+#menu li {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-flex;
+}
+
+#menu li a {
+  font-size: clamp(0.92rem, 0.95vw, 1rem) !important;
+  font-weight: 700 !important;
+  color: var(--primary) !important;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  padding: 8px 0;
+  white-space: nowrap;
+}
+
+#menu .active {
+  font-weight: 700;
+  /* 下划线由动画控制，移除静态下划线 */
+}
+
+#menu li a:hover {
+  opacity: 0.7;
+  /* 横线border-bottom在 82-menu-underline.css 中处理 */
+  /* 不要在这里设置border相关属性 */
+}
+
+/* 右侧图标区域 - 确保在最右侧 */
+.logo-switches {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  margin-left: 18px;
+}
+
+#theme-toggle {
+  margin: 0 !important;
+}
+
+/* 搜索按钮样式 */
+#searchBtn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  transition: opacity 0.3s ease;
+  background: none;
+  border: none;
+}
+
+#searchBtn svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+}
+
+#searchBtn {
+  color: var(--primary) !important;
+}
+
+#searchBtn:hover {
+  opacity: 0.7;
+}
+
+#searchBtn svg {
+  stroke: var(--primary) !important;
+  fill: none !important;
+}
+
+/* 搜索弹窗 */
+.search-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  animation: fadeIn 0.3s ease;
+}
+
+.search-overlay.active {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.search-modal {
+  background: var(--entry);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+  padding: 30px;
+  position: relative;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.search-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-modal-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0;
+}
+
+.search-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  color: var(--secondary);
+  transition: color 0.3s ease;
+}
+
+.search-close:hover {
+  color: var(--primary);
+}
+
+.search-close svg {
+  width: 24px;
+  height: 24px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 50px 15px 20px;
+  font-size: 1rem;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--theme);
+  color: var(--primary);
+  outline: none;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+}
+
+.search-input-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary);
+  pointer-events: none;
+}
+
+.search-input-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.search-results {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-result-item {
+  padding: 15px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.search-result-item:hover {
+  background: var(--code-bg);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+.search-result-summary {
+  font-size: 0.9rem;
+  color: var(--secondary);
+  line-height: 1.5;
+}
+
+.search-no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--secondary);
+  font-size: 1rem;
+}
+
+/* Google-like minimal search modal */
+.search-overlay.active {
+  align-items: center;
+  justify-content: center;
+  padding-top: 0;
+}
+
+.search-modal.search-modal-minimal {
+  width: min(92vw, 720px);
+  max-width: 720px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  animation: slideDown 0.12s ease;
+}
+
+.search-input-wrapper.search-input-wrapper-minimal {
+  position: relative;
+  margin: 0;
+}
+
+.search-input-wrapper.search-input-wrapper-minimal .search-input {
+  width: 100%;
+  height: 56px;
+  padding: 0 20px 0 52px;
+  border-radius: 999px;
+  border: 1px solid rgba(128, 128, 128, 0.28);
+  background: #202124;
+  color: #ffffff;
+  font-size: 1.03rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input-wrapper.search-input-wrapper-minimal .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.search-input-wrapper.search-input-wrapper-minimal .search-input:focus {
+  border-color: rgba(66, 133, 244, 0.65);
+  box-shadow: 0 2px 10px rgba(66, 133, 244, 0.2);
+}
+
+.search-input-wrapper.search-input-wrapper-minimal .search-input-icon {
+  left: 18px;
+  right: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.search-input-wrapper.search-input-wrapper-minimal .search-input-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.search-suggest-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #ffffff;
+}
+
+.search-suggest-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: transparent;
+  color: #ffffff !important;
+  text-decoration: none;
+  line-height: 1.35;
+  transition: background 0.16s ease;
+}
+
+.search-suggest-item:visited {
+  color: #ffffff !important;
+}
+
+.search-suggest-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* 语言切换 */
+.lang-switch {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.lang-switch li {
+  list-style: none;
+}
+
+.lang-switch a {
+  font-weight: 600 !important;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+
+

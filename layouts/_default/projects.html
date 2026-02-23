@@ -54,7 +54,14 @@
         {{ if .tags }}
         <div class="project-tags-full">
           {{ range .tags }}
+          {{ if or (eq . "私密") (eq . "Private") }}
+          <span class="project-tag-full">
+            <span data-lang="en">Private</span>
+            <span data-lang="zh">私密</span>
+          </span>
+          {{ else }}
           <span class="project-tag-full">{{ . }}</span>
+          {{ end }}
           {{ end }}
         </div>
         {{ end }}

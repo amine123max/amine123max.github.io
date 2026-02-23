@@ -1,0 +1,54 @@
+{{- $paperPages := where .Site.RegularPages "Section" "papers" -}}
+{{- $postPages := where .Site.RegularPages "Section" "posts" -}}
+{{- $projects := .Site.Params.projects | default (slice) -}}
+{{- $internships := .Site.Params.internshipExperience | default (slice) -}}
+{{- $stats := .Site.Params.sidebarStats | default dict -}}
+
+{{- $papersCount := cond (isset $stats "papers") (index $stats "papers") (len $paperPages) -}}
+{{- $blogsCount := cond (isset $stats "blogs") (index $stats "blogs") (len $postPages) -}}
+{{- $projectsCount := cond (isset $stats "projects") (index $stats "projects") (len $projects) -}}
+{{- $internshipsCount := cond (isset $stats "internshipExperience") (index $stats "internshipExperience") (len $internships) -}}
+{{- $visitsCount := index $stats "visits" | default "10,268" -}}
+
+{{- $papersNumStr := replaceRE "[^0-9]" "" (printf "%v" $papersCount) -}}
+{{- $blogsNumStr := replaceRE "[^0-9]" "" (printf "%v" $blogsCount) -}}
+{{- $projectsNumStr := replaceRE "[^0-9]" "" (printf "%v" $projectsCount) -}}
+{{- $internNumStr := replaceRE "[^0-9]" "" (printf "%v" $internshipsCount) -}}
+{{- $visitsNumStr := replaceRE "[^0-9]" "" (printf "%v" $visitsCount) -}}
+
+{{- $papersNum := cond (ne $papersNumStr "") (int $papersNumStr) 0 -}}
+{{- $blogsNum := cond (ne $blogsNumStr "") (int $blogsNumStr) 0 -}}
+{{- $projectsNum := cond (ne $projectsNumStr "") (int $projectsNumStr) 0 -}}
+{{- $internNum := cond (ne $internNumStr "") (int $internNumStr) 0 -}}
+{{- $visitsNum := cond (ne $visitsNumStr "") (int $visitsNumStr) 0 -}}
+
+{{- $papersDisplay := cond (ge $papersNum 1000) (printf "%.1fK" (div (float $papersNum) 1000)) (printf "%d" $papersNum) -}}
+{{- $blogsDisplay := cond (ge $blogsNum 1000) (printf "%.1fK" (div (float $blogsNum) 1000)) (printf "%d" $blogsNum) -}}
+{{- $projectsDisplay := cond (ge $projectsNum 1000) (printf "%.1fK" (div (float $projectsNum) 1000)) (printf "%d" $projectsNum) -}}
+{{- $internDisplay := cond (ge $internNum 1000) (printf "%.1fK" (div (float $internNum) 1000)) (printf "%d" $internNum) -}}
+{{- $visitsDisplay := cond (ge $visitsNum 1000) (printf "%.1fK" (div (float $visitsNum) 1000)) (printf "%d" $visitsNum) -}}
+
+<div class="profile-stats">
+  <div class="stats-grid-card">
+    <div class="stats-metric-item">
+      <span class="metric-value">{{ $papersDisplay }}</span>
+      <span class="metric-label">Papers</span>
+    </div>
+    <div class="stats-metric-item">
+      <span class="metric-value">{{ $blogsDisplay }}</span>
+      <span class="metric-label">Blogs</span>
+    </div>
+    <div class="stats-metric-item">
+      <span class="metric-value">{{ $projectsDisplay }}</span>
+      <span class="metric-label">Projects</span>
+    </div>
+    <div class="stats-metric-item">
+      <span class="metric-value">{{ $internDisplay }}</span>
+      <span class="metric-label">Internship</span>
+    </div>
+    <div class="stats-metric-item">
+      <span class="metric-value" id="busuanzi_value_site_pv">--</span>
+      <span class="metric-label">Visits</span>
+    </div>
+  </div>
+</div>

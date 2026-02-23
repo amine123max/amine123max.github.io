@@ -22,6 +22,60 @@
   <script src="{{ $mobileMenu.RelPermalink }}" integrity="{{ $mobileMenu.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* 加载导航公用脚本 */ -}}
+{{ $navShared := resources.Get "js/nav-shared.js" }}
+{{ if $navShared }}
+  {{ $navShared := $navShared | minify | fingerprint }}
+  <script src="{{ $navShared.RelPermalink }}" integrity="{{ $navShared.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* 统一滚动条管理脚本 */ -}}
+{{ $scrollbarManager := resources.Get "js/scrollbar-manager.js" }}
+{{ if $scrollbarManager }}
+  {{ $scrollbarManager := $scrollbarManager | minify | fingerprint }}
+  <script src="{{ $scrollbarManager.RelPermalink }}" integrity="{{ $scrollbarManager.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* 横线动画已移除 */ -}}
+
+{{- /* 不蒜子访问量统计 - 仅生产环境 */ -}}
+<script>
+  // 检测是否为localhost/127.0.0.1
+  var isLocal = location.hostname === 'localhost' || 
+                location.hostname === '127.0.0.1' || 
+                location.hostname === '';
+  
+  if (isLocal) {
+    // 开发环境：显示占位符，不加载不蒜子
+    var pv = document.getElementById('busuanzi_value_site_pv');
+    if (pv) pv.textContent = '999';
+    console.log('开发环境：不蒜子已禁用，显示占位符');
+  } else {
+    // 生产环境：加载不蒜子
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+        s.onerror = function() { 
+          var pv = document.getElementById('busuanzi_value_site_pv');
+          if (pv) pv.textContent = '--';
+        };
+        document.body.appendChild(s);
+      }, 500);
+    });
+    
+    {{- /* 不蒜子数字格式化 */ -}}
+    {{ $busuanziFormat := resources.Get "js/busuanzi-format.js" }}
+    {{ if $busuanziFormat }}
+      {{ $busuanziFormat := $busuanziFormat | minify | fingerprint }}
+      var fmt = document.createElement('script');
+      fmt.src = '{{ $busuanziFormat.RelPermalink }}';
+      document.head.appendChild(fmt);
+    {{ end }}
+  }
+</script>
+
 {{- /* 加载PDF生成库和脚本（仅在主页） */ -}}
 {{ if .IsHome }}
   <!-- html2pdf.js CDN -->

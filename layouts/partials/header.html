@@ -109,17 +109,17 @@
             </div>
         </div>
         
-        {{- /* 汉堡菜单按钮 - 仅在移动端显示 */ -}}
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle sidebar">
+            <svg class="mobile-back-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M15 4L7 12L15 20" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
         </button>
         {{- $currentPage := . }}
         <ul id="menu">
             {{- range site.Menus.main }}
             {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL }}
-            {{- $page_url:= $currentPage.Permalink | absLangURL }}
+            {{- $page_url := $currentPage.Permalink | absLangURL }}
+            {{- $is_active := eq $menu_item_url $page_url -}}
             {{- $is_search := eq (site.GetPage .KeyName).Layout `search` }}
             
             {{- /* 获取对应的中文菜单名称 */ -}}
@@ -133,8 +133,9 @@
             
             <li>
                 <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
+                {{- if $is_active }} class="active"{{- end }}
                 {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
-                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
+                    <span {{- if $is_active }} class="active" {{- end }}>
                         {{- .Pre }}
                         <span data-lang="en">{{- .Name -}}</span>
                         <span data-lang="zh">{{- $zhName -}}</span>
@@ -161,5 +162,96 @@
                 </button>
             </li>
         </ul>
+
     </nav>
 </header>
+
+{{- if not .IsHome -}}
+<aside class="mobile-global-sidebar" aria-label="Profile Sidebar">
+  <div class="profile-card">
+    <div class="avatar-wrapper">
+      <img src="/images/avatar.jpg" alt="{{ .Site.Params.name }}" class="avatar">
+    </div>
+
+    <h1 class="profile-name">
+      <span class="name-en">{{- .Site.Params.name -}}</span>
+      <span class="name-divider">|</span>
+      <span class="name-zh">{{- .Site.Params.nameZh -}}</span>
+    </h1>
+
+    <p class="profile-title">
+      <span data-lang="en">Graduate Student</span>
+      <span data-lang="zh">研究生</span>
+    </p>
+
+    <p class="profile-org">
+      <span data-lang="en">Anhui University</span>
+      <span data-lang="zh">安徽大学</span>
+    </p>
+
+    <p class="profile-welcome">
+      <span data-lang="en">Welcome! Feel free to reach out via email or GitHub! 🍔</span>
+      <span data-lang="zh">欢迎交流学习，本人邮箱与Github已开放！喜欢您来！🍔</span>
+    </p>
+
+    {{- partial "sidebar_contact_icons.html" . -}}
+
+    {{- partial "sidebar_stats.html" . -}}
+
+    <div class="sidebar-widgets">
+      <section class="sidebar-widget">
+        <h4 class="sidebar-widget-title">
+          <span data-lang="en">Recent Updates</span>
+          <span data-lang="zh">最近更新</span>
+        </h4>
+        <ul class="sidebar-recent-list">
+          {{- $recentProjects := first 3 (.Site.Params.projects | default (slice)) -}}
+          {{- range $recentProjects }}
+          <li>
+            {{- if .url -}}
+            <a class="sidebar-recent-link" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+              <span data-lang="en">{{ .name }}</span>
+              <span data-lang="zh">{{ .nameZh | default .name }}</span>
+              <svg class="sidebar-link-mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+            {{- else -}}
+            <a class="sidebar-recent-link" href="/projects/">
+              <span data-lang="en">{{ .name }}</span>
+              <span data-lang="zh">{{ .nameZh | default .name }}</span>
+              <svg class="sidebar-link-mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            </a>
+            {{- end -}}
+          </li>
+          {{- end }}
+        </ul>
+      </section>
+
+      <section class="sidebar-widget">
+        <h4 class="sidebar-widget-title">
+          <span data-lang="en">Hot Tags</span>
+          <span data-lang="zh">热门标签</span>
+        </h4>
+        <div class="sidebar-tag-list">
+          {{- $tagTaxonomy := .Site.Taxonomies.tags -}}
+          {{- if gt (len $tagTaxonomy) 0 -}}
+            {{- range first 10 ($tagTaxonomy.ByCount) -}}
+            <a class="sidebar-tag-item" href="{{ .Page.RelPermalink }}">{{ .Name }}</a>
+            {{- end -}}
+          {{- else -}}
+            {{- range first 10 (.Site.Params.sidebarHotTags | default (slice)) -}}
+            <span class="sidebar-tag-item">{{ . }}</span>
+            {{- end -}}
+          {{- end -}}
+        </div>
+      </section>
+    </div>
+
+  </div>
+</aside>
+{{- end -}}
+
+<button class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation panel">
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+    <span class="hamburger-line"></span>
+</button>

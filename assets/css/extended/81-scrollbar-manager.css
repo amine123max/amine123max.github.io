@@ -1,0 +1,130 @@
+/* Unified scrollbar manager based on experience/projects */
+:root {
+  --app-scrollbar-size: 12px;
+  --app-scrollbar-track: rgba(0, 0, 0, 0.08);
+  --app-scrollbar-thumb: rgba(132, 132, 132, 0.95);
+  --app-scrollbar-thumb-hover: rgba(102, 102, 102, 0.98);
+}
+
+body:not(.home) > .main,
+body.home > .main,
+body.home .content-section,
+body:not(.home) .mobile-global-sidebar {
+  scrollbar-gutter: auto !important;
+  scrollbar-width: auto !important;
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track) !important;
+}
+
+/* Keep main scroll rail visually flush to the right edge of its container */
+body.home .content-section,
+body:not(.home) > .main {
+  margin-right: 0 !important;
+}
+
+/* 确保滚动条贴合右边缘 */
+body.list > .main,
+body.post-single > .main {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+body:not(.home) > .main::-webkit-scrollbar,
+body.home > .main::-webkit-scrollbar,
+body.home .content-section::-webkit-scrollbar,
+body:not(.home) .mobile-global-sidebar::-webkit-scrollbar {
+  width: var(--app-scrollbar-size) !important;
+  height: var(--app-scrollbar-size) !important;
+}
+
+body:not(.home) > .main::-webkit-scrollbar-track,
+body.home > .main::-webkit-scrollbar-track,
+body.home .content-section::-webkit-scrollbar-track,
+body:not(.home) .mobile-global-sidebar::-webkit-scrollbar-track {
+  background: var(--app-scrollbar-track) !important;
+  border-radius: 999px !important;
+}
+
+body:not(.home) > .main::-webkit-scrollbar-thumb,
+body.home > .main::-webkit-scrollbar-thumb,
+body.home .content-section::-webkit-scrollbar-thumb,
+body:not(.home) .mobile-global-sidebar::-webkit-scrollbar-thumb {
+  background: var(--app-scrollbar-thumb) !important;
+  border-radius: 999px !important;
+  border: 2px solid transparent !important;
+  background-clip: content-box !important;
+}
+
+body:not(.home) > .main::-webkit-scrollbar-thumb:hover,
+body.home > .main::-webkit-scrollbar-thumb:hover,
+body.home .content-section::-webkit-scrollbar-thumb:hover,
+body:not(.home) .mobile-global-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--app-scrollbar-thumb-hover) !important;
+  background-clip: content-box !important;
+}
+
+/* Hide Bio left sidebar scrollbar by default */
+body.home .profile-section {
+  overflow-y: hidden !important;
+}
+
+/* Bio left sidebar scrollbar: fully hidden in all states */
+body.home .profile-section,
+body.home .profile-section * {
+  scrollbar-width: none !important;
+}
+
+body.home .profile-section::-webkit-scrollbar,
+body.home .profile-section *::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Desktop: Home uses content-section only; non-home uses main */
+@media (min-width: 651px) {
+  body.home > .main {
+    overflow-y: hidden !important;
+    overflow-x: hidden !important;
+  }
+
+  body.home .content-section,
+  body:not(.home) > .main {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+  }
+}
+
+/* Mobile: Home and non-home use main; home content-section must not scroll */
+@media (max-width: 650px) {
+  body.home > .main,
+  body:not(.home) > .main {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+  }
+
+  body.home .content-section {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+}
+
+/* Sidebar popup scroll containers (narrow screens) */
+body.home.mobile-sidebar-open .profile-section,
+body:not(.home) .mobile-global-sidebar {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+@media (max-width: 650px) {
+  /* Mobile popup sidebars: keep scrolling behavior but hide the scrollbar UI */
+  body.home.mobile-sidebar-open .profile-section,
+  body:not(.home) .mobile-global-sidebar {
+    scrollbar-width: none !important;
+  }
+
+  body.home.mobile-sidebar-open .profile-section::-webkit-scrollbar,
+  body:not(.home) .mobile-global-sidebar::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
