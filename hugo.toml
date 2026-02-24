@@ -1,4 +1,5 @@
 baseURL = 'http://localhost:1313/'
+disableLiveReload = true
 defaultContentLanguage = 'en'
 title = 'PersonalInfo'
 theme = "hugo-PaperMod"

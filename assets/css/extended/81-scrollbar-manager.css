@@ -6,6 +6,40 @@
   --app-scrollbar-thumb-hover: rgba(102, 102, 102, 0.98);
 }
 
+/* Root scroll fallback:
+   Some mobile browsers/devtools keep scroll on html/body instead of .main. */
+html:has(body:not(.home)),
+body:not(.home) {
+  scrollbar-width: auto !important;
+  scrollbar-color: var(--app-scrollbar-thumb) var(--app-scrollbar-track) !important;
+}
+
+html:has(body:not(.home))::-webkit-scrollbar,
+body:not(.home)::-webkit-scrollbar {
+  width: var(--app-scrollbar-size) !important;
+  height: var(--app-scrollbar-size) !important;
+}
+
+html:has(body:not(.home))::-webkit-scrollbar-track,
+body:not(.home)::-webkit-scrollbar-track {
+  background: var(--app-scrollbar-track) !important;
+  border-radius: 999px !important;
+}
+
+html:has(body:not(.home))::-webkit-scrollbar-thumb,
+body:not(.home)::-webkit-scrollbar-thumb {
+  background: var(--app-scrollbar-thumb) !important;
+  border-radius: 999px !important;
+  border: 2px solid transparent !important;
+  background-clip: content-box !important;
+}
+
+html:has(body:not(.home))::-webkit-scrollbar-thumb:hover,
+body:not(.home)::-webkit-scrollbar-thumb:hover {
+  background: var(--app-scrollbar-thumb-hover) !important;
+  background-clip: content-box !important;
+}
+
 body:not(.home) > .main,
 body.home > .main,
 body.home .content-section,
@@ -95,6 +129,13 @@ body.home .profile-section *::-webkit-scrollbar {
 
 /* Mobile: Home and non-home use main; home content-section must not scroll */
 @media (max-width: 650px) {
+  :root {
+    --app-scrollbar-size: 10px;
+    --app-scrollbar-track: rgba(0, 0, 0, 0.14);
+    --app-scrollbar-thumb: rgba(96, 96, 96, 0.96);
+    --app-scrollbar-thumb-hover: rgba(70, 70, 70, 0.98);
+  }
+
   body.home > .main,
   body:not(.home) > .main {
     overflow-y: scroll !important;
