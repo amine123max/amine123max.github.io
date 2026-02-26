@@ -16,7 +16,7 @@ social:
 
 **打开Anaconda Prompt**
 
-```
+```bash
 conda create -n highwayEnv python==3.7
 conda activate highwayEnv
 
@@ -26,15 +26,11 @@ pip install pygame==2.1.2
 pip install --upgrade pygame
 ```
 
-
-
-
-
 ### **2.选择python解释器**
 
 **测试代码：**
 
-```
+```python
 import gymnasium
 import highway_env
 from matplotlib import pyplot as plt
@@ -50,10 +46,6 @@ for _ in range(5):
 plt.imshow(env.render())
 plt.show()
 ```
-
-
-
-
 
 ### **3.pycharm配置**
 

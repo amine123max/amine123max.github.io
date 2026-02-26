@@ -49,8 +49,8 @@ mainsections = [ "posts", "papermod" ]
       weight = 5
     
     [[languages.en.menu.main]]
-      name = "TEACHING"
-      url = "/teaching/"
+      name = "TOOLS"
+      url = "/tools/"
       weight = 6
   
   [languages.zh]
@@ -85,8 +85,8 @@ mainsections = [ "posts", "papermod" ]
       weight = 5
     
     [[languages.zh.menu.main]]
-      name = "教学"
-      url = "/zh/teaching/"
+      name = "工具"
+      url = "/zh/tools/"
       weight = 6
 
 [minify]
@@ -272,28 +272,31 @@ pagerSize = 5
     abstractZh = "另一篇研究论文摘要，解释了方法和结果。"
     url = "https://example.com/paper2"
   
-  # 教学经历
-  [[params.teaching]]
-    title = "Introduction to Python Programming"
-    titleZh = "Python编程入门"
-    code = "CS101"
-    role = "Teaching Assistant"
-    roleZh = "助教"
-    semester = "Fall 2023"
-    description = "Assisted in teaching fundamental programming concepts using Python. Conducted lab sessions and graded assignments."
-    descriptionZh = "协助教授使用Python的基本编程概念。主持实验课程并批改作业。"
-    topics = ["Python", "Data Structures", "Algorithms"]
+  # 工具模块
+  [[params.tools]]
+    title = "OneStepUpdate"
+    titleZh = "OneStepUpdate"
+    code = "TOOL-101"
+    role = "Release Automation Desktop Client"
+    roleZh = "发布自动化桌面客户端"
+    description = "One-click push code/projects to GitHub."
+    descriptionZh = "一键推送代码/项目至GitHub。"
+    topics = ["Release Automation", "Git", "Github", "Github Cli"]
+    downloadUrl = "https://github.com/amine123max/OneStepUpdate/releases/tag/v1.0.1"
+    pageUrl = "/tools/onestep/"
+    pageUrlZh = "/zh/tools/onestep/"
     
-  [[params.teaching]]
-    title = "Machine Learning Fundamentals"
-    titleZh = "机器学习基础"
-    code = "CS301"
-    role = "Guest Lecturer"
-    roleZh = "客座讲师"
-    semester = "Spring 2024"
-    description = "Delivered guest lectures on neural networks and deep learning applications."
-    descriptionZh = "讲授关于神经网络和深度学习应用的客座讲座。"
-    topics = ["Machine Learning", "Neural Networks", "Deep Learning"]
+  [[params.tools]]
+    title = "Resume Builder"
+    titleZh = "Resume Builder"
+    code = "TOOL-102"
+    role = "Bilingual Resume Generator"
+    roleZh = "中英文简历生成工具"
+    description = "One-click export personal resume."
+    descriptionZh = "一键导出个人简历。"
+    topics = ["Resume", "PDF", "Bilingual"]
+    pageUrl = "/tools/resume-builder/"
+    pageUrlZh = "/zh/tools/resume-builder/"
   
   # 校园经历
   [[params.campusExperience]]

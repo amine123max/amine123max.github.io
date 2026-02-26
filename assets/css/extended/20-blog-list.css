@@ -1,9 +1,25 @@
 /* ==================== Blog列表页最终覆盖样式 ==================== */
 /* 使用99前缀确保最后加载，覆盖所有其他样式 */
 
+/* === Posts页面容器（对齐 Projects/Experience） === */
+html body.list > .main {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.posts-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 44px 40px 44px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 /* === 强制应用卡片样式 === */
-html body.list .post-entry,
-html body.list .first-entry {
+.posts-page .post-entry,
+.posts-page .first-entry {
   padding: 24px !important;
   background: var(--entry) !important;
   border: 1px solid var(--border) !important;
@@ -11,63 +27,48 @@ html body.list .first-entry {
   margin-bottom: 20px !important;
   transition: all 0.3s ease !important;
   box-shadow: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
 }
 
-html body.list .post-entry:hover,
-html body.list .first-entry:hover {
+.posts-page .post-entry:hover,
+.posts-page .first-entry:hover {
   transform: translateY(-6px) !important;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15) !important;
   border-color: var(--primary) !important;
 }
 
-html body.list .post-entry:active,
-html body.list .first-entry:active {
+.posts-page .post-entry:active,
+.posts-page .first-entry:active {
   transform: translateY(-6px) scale(1) !important;
 }
 
-/* === Blog列表页布局 === */
-html body.list > .main {
-  width: 100% !important;
-  padding: 0 !important;
-  box-sizing: border-box !important;
-}
-
-/* 所有内容（包括footer）使用统一的居中容器 */
-html body.list > .main > * {
-  max-width: 1200px !important;
-  width: 100% !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  padding-left: 44px !important;
-  padding-right: 44px !important;
-  box-sizing: border-box !important;
-}
-
 /* 页面标题和内容的上内边距 */
-html body.list .page-header {
+.posts-page .page-header {
   padding-top: 8px !important;
 }
 
-html body.list .post-entry:first-of-type,
-html body.list .first-entry {
+.posts-page .post-entry:first-of-type,
+.posts-page .first-entry {
   margin-top: 0 !important;
 }
 
 /* === 强制标题可见 === */
-html body.list .page-header {
+.posts-page .page-header {
   display: block !important;
   margin-bottom: 28px !important;
 }
 
-html body.list .page-header h1 {
+.posts-page .page-header h1 {
   font-size: 2.2rem !important;
   font-weight: 700 !important;
   color: var(--primary) !important;
 }
 
 @media (max-width: 768px) {
-  html body.list > .main > * {
-    padding-left: 20px !important;
-    padding-right: 20px !important;
+  .posts-page {
+    padding: 8px 20px 40px 20px;
   }
 }

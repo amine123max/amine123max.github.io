@@ -37,18 +37,24 @@ document.addEventListener('DOMContentLoaded', function() {
   updateSearchModalText();
   window.addEventListener('languageChanged', updateSearchModalText);
 
-  const searchBtn = document.getElementById('searchBtn');
+  const searchButtons = Array.from(document.querySelectorAll('#searchBtn, [data-search-trigger]'));
   const searchInput = searchOverlay.querySelector('.search-input');
   const suggestList = searchOverlay.querySelector('#searchSuggestList');
   const searchIndexCache = new Map();
   let searchDebounce = null;
 
-  if (searchBtn) {
-    searchBtn.addEventListener('click', function() {
-      searchOverlay.classList.add('active');
-      setTimeout(() => searchInput.focus(), 100);
-    });
+  function openSearch() {
+    searchOverlay.classList.add('active');
+    setTimeout(() => searchInput.focus(), 100);
   }
+
+  searchButtons.forEach((btn) => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      openSearch();
+    });
+  });
 
   function closeSearch() {
     searchOverlay.classList.remove('active');

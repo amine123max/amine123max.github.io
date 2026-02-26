@@ -27,6 +27,12 @@
   box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
 }
 
+@media (min-width: 651px) {
+  body.home .avatar-wrapper {
+    margin-top: 8px;
+  }
+}
+
 .avatar {
   width: 100%;
   height: 100%;
@@ -138,9 +144,9 @@ body.dark .profile-welcome {
 
 .stats-grid-card {
   display: grid;
-  grid-template-columns: repeat(5, max-content);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   justify-content: center;
-  column-gap: 14px;
+  column-gap: 8px;
   row-gap: 4px;
   align-items: end;
   width: 100%;
@@ -167,10 +173,12 @@ body.dark .profile-welcome {
 .metric-label {
   display: block;
   margin-top: 8px;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   line-height: 1.15;
   color: #6f7f98;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   opacity: 0.95;
 }
 

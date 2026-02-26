@@ -4,6 +4,11 @@
 {{- partial "index_profile.html" . }}
 {{- else }} {{/* if not profileMode */}}
 
+{{- $isBlogLikeList := and (not .IsHome) (or (eq .Section "posts") (and (eq .Kind "term") (eq .Data.Plural "tags"))) -}}
+{{- if $isBlogLikeList }}
+<div class="posts-page">
+{{- end }}
+
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
   {{- partial "breadcrumbs.html" . }}
@@ -114,6 +119,10 @@
     {{- end }}
   </nav>
 </footer>
+{{- end }}
+
+{{- if $isBlogLikeList }}
+</div>
 {{- end }}
 
 {{- end }}{{/* end profileMode */}}

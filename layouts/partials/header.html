@@ -129,7 +129,7 @@
             {{- if eq .Name "BLOG" }}{{ $zhName = "博客" }}{{ end }}
             {{- if eq .Name "EXPERIENCE" }}{{ $zhName = "经历" }}{{ end }}
             {{- if eq .Name "PROJECTS" }}{{ $zhName = "项目" }}{{ end }}
-            {{- if eq .Name "TEACHING" }}{{ $zhName = "教学" }}{{ end }}
+            {{- if eq .Name "TOOLS" }}{{ $zhName = "工具" }}{{ end }}
             
             <li>
                 <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
@@ -152,7 +152,7 @@
                 </a>
             </li>
             {{- end }}
-            {{- /* 搜索按钮 - 放在TEACHING右边 */ -}}
+            {{- /* 搜索按钮 - 放在TOOLS右边 */ -}}
             <li>
                 <button id="searchBtn" accesskey="/" title="Search (Alt + /)" aria-label="Search" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -254,4 +254,11 @@
     <span class="hamburger-line"></span>
     <span class="hamburger-line"></span>
     <span class="hamburger-line"></span>
+</button>
+
+<button class="mobile-search-toggle" id="mobile-search-toggle" data-search-trigger aria-label="Search">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+    </svg>
 </button>

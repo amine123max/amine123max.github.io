@@ -1,6 +1,11 @@
 {{- /* Head custom content area start */ -}}
 
-{{ if .IsHome }}
+{{ if or
+  .IsHome
+  (eq .Layout "tools")
+  (eq .Layout "tool_onestep")
+  (eq .Layout "tool_resume_builder")
+}}
 <link rel="stylesheet" href="/css/cv-download.css">
 {{ end }}
 
