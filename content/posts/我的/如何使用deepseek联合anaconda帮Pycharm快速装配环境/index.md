@@ -287,7 +287,7 @@ if __name__ == "__main__":
 
 ##### 为上述代码生成 `requirements.txt` 文件，内容如下：
 
-```
+```bash
 pygame==2.5.2
 ```
 

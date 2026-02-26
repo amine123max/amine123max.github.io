@@ -1,0 +1,111 @@
+{{- define "main" }}
+
+{{ $tools := .Site.Params.tools }}
+
+<div class="tools-page" data-page-type="tools">
+  <header class="page-header">
+    <h1>
+      <span data-lang="en">Tools</span>
+      <span data-lang="zh">工具页面</span>
+    </h1>
+    <p class="page-description">
+      <span data-lang="en">Web-based tools and modules</span>
+      <span data-lang="zh">可网页化使用的工具与模块</span>
+    </p>
+  </header>
+
+  <div class="tools-grid">
+    {{ range $tool := $tools }}
+    <article class="course-card">
+      <div class="course-header">
+        <div class="course-title-section">
+          <h2 class="course-title">
+            <span data-lang="en">{{ $tool.title }}</span>
+            <span data-lang="zh">{{ $tool.titleZh | default $tool.title }}</span>
+          </h2>
+        </div>
+        {{ if $tool.semester }}
+        <div class="course-semester">
+          <span data-lang="en">{{ $tool.semester }}</span>
+          <span data-lang="zh">{{ $tool.semesterZh | default $tool.semester }}</span>
+        </div>
+        {{ end }}
+      </div>
+      
+      {{ if $tool.description }}
+      <div class="course-description">
+        <p data-lang="en">{{ $tool.description }}</p>
+        <p data-lang="zh">{{ $tool.descriptionZh | default $tool.description }}</p>
+      </div>
+      {{ end }}
+      
+      {{ if $tool.topics }}
+      <div class="course-topics">
+        {{ range $tool.topics }}
+        <span class="course-topic">{{ . }}</span>
+        {{ end }}
+      </div>
+      {{ end }}
+      
+      {{ if or $tool.pageUrl $tool.syllabusUrl $tool.materialsUrl $tool.websiteUrl }}
+      <div class="course-links">
+        {{ if $tool.pageUrl }}
+        {{ $openUrl := $tool.pageUrl }}
+        {{ if and (eq $.Site.Language.Lang "zh") $tool.pageUrlZh }}
+          {{ $openUrl = $tool.pageUrlZh }}
+        {{ end }}
+        <a href="{{ $openUrl }}" class="course-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+            <path d="M8 20h8"></path>
+            <path d="M12 18v2"></path>
+          </svg>
+          <span data-lang="en">Open Tool</span>
+          <span data-lang="zh">打开工具</span>
+        </a>
+        {{ end }}
+        {{ if $tool.syllabusUrl }}
+        <a href="{{ $tool.syllabusUrl }}" class="course-link" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span data-lang="en">Docs</span>
+          <span data-lang="zh">文档</span>
+        </a>
+        {{ end }}
+        {{ if $tool.materialsUrl }}
+        <a href="{{ $tool.materialsUrl }}" class="course-link" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span data-lang="en">Resources</span>
+          <span data-lang="zh">资源</span>
+        </a>
+        {{ end }}
+        {{ if $tool.websiteUrl }}
+        <a href="{{ $tool.websiteUrl }}" class="course-link" target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span data-lang="en">Open</span>
+          <span data-lang="zh">打开工具</span>
+        </a>
+        {{ end }}
+      </div>
+      {{ end }}
+    </article>
+    {{ end }}
+  </div>
+</div>
+
+{{- end }}
+
+{{- define "footer" }}
+{{- partial "footer.html" . }}
+{{- end }}

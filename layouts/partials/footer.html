@@ -93,52 +93,89 @@
 </script>
 {{- end }}
 
-{{- if (and (eq .Kind "page") (ne .Layout "archives") (ne .Layout "search") (.Param "ShowCodeCopyButtons")) }}
 <script>
-    document.querySelectorAll('pre > code').forEach((codeblock) => {
-        const container = codeblock.parentNode.parentNode;
-
-        const copybutton = document.createElement('button');
-        copybutton.classList.add('copy-code');
-        copybutton.innerHTML = '{{- i18n "code_copy" | default "copy" }}';
-
-        function copyingDone() {
-            copybutton.innerHTML = '{{- i18n "code_copied" | default "copied!" }}';
-            setTimeout(() => {
-                copybutton.innerHTML = '{{- i18n "code_copy" | default "copy" }}';
-            }, 2000);
+    (function () {
+        function getSiteLang() {
+            const storedLang = (localStorage.getItem("site-lang") || "").toLowerCase();
+            if (storedLang === "zh" || storedLang === "en") {
+                return storedLang;
+            }
+            const htmlLang = (document.documentElement.getAttribute("lang") || "").toLowerCase();
+            return htmlLang.startsWith("zh") ? "zh" : "en";
         }
 
-        copybutton.addEventListener('click', (cb) => {
-            if ('clipboard' in navigator) {
-                navigator.clipboard.writeText(codeblock.textContent);
-                copyingDone();
+        function getCopyTextByLang() {
+            const lang = getSiteLang();
+            if (lang === "zh") {
+                return { copy: "复制", copied: "已复制" };
+            }
+            return { copy: "copy", copied: "copied!" };
+        }
+
+        function applyCopyButtonText() {
+            const textSet = getCopyTextByLang();
+            document.querySelectorAll(".copy-code").forEach((btn) => {
+                btn.dataset.copyText = textSet.copy;
+                btn.dataset.copiedText = textSet.copied;
+                if (btn.dataset.state !== "copied") {
+                    btn.textContent = textSet.copy;
+                }
+            });
+        }
+
+        document.querySelectorAll("pre > code").forEach((codeblock) => {
+            const container = codeblock.parentNode.parentNode;
+            if (!container) {
                 return;
             }
 
-            const range = document.createRange();
-            range.selectNodeContents(codeblock);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
-            try {
-                document.execCommand('copy');
-                copyingDone();
-            } catch (e) { };
-            selection.removeRange(range);
+            const copybutton = document.createElement("button");
+            copybutton.classList.add("copy-code");
+            copybutton.setAttribute("type", "button");
+            copybutton.textContent = "copy";
+
+            function copyingDone() {
+                copybutton.dataset.state = "copied";
+                copybutton.textContent = copybutton.dataset.copiedText || "copied!";
+                setTimeout(() => {
+                    copybutton.dataset.state = "";
+                    copybutton.textContent = copybutton.dataset.copyText || "copy";
+                }, 2000);
+            }
+
+            copybutton.addEventListener("click", () => {
+                if ("clipboard" in navigator) {
+                    navigator.clipboard.writeText(codeblock.textContent);
+                    copyingDone();
+                    return;
+                }
+
+                const range = document.createRange();
+                range.selectNodeContents(codeblock);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                try {
+                    document.execCommand("copy");
+                    copyingDone();
+                } catch (e) { }
+                selection.removeRange(range);
+            });
+
+            if (container.classList.contains("highlight")) {
+                container.appendChild(copybutton);
+            } else if (container.parentNode.firstChild == container) {
+                // td containing LineNos
+            } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+                // table containing LineNos and code
+                codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            } else {
+                // code blocks not having highlight as parent class
+                codeblock.parentNode.appendChild(copybutton);
+            }
         });
 
-        if (container.classList.contains("highlight")) {
-            container.appendChild(copybutton);
-        } else if (container.parentNode.firstChild == container) {
-            // td containing LineNos
-        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
-            // table containing LineNos and code
-            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
-        } else {
-            // code blocks not having highlight as parent class
-            codeblock.parentNode.appendChild(copybutton);
-        }
-    });
+        applyCopyButtonText();
+        window.addEventListener("languageChanged", applyCopyButtonText);
+    })();
 </script>
-{{- end }}

@@ -45,6 +45,24 @@
   <script src="{{ $localVisits.RelPermalink }}" integrity="{{ $localVisits.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* Tool page: OneStepUpdate script */ -}}
+{{ if eq .Layout "tool_onestep" }}
+  {{ $toolOne := resources.Get "js/tools/tool-onestep.js" }}
+  {{ if $toolOne }}
+    {{ $toolOne := $toolOne | minify | fingerprint }}
+    <script src="{{ $toolOne.RelPermalink }}" integrity="{{ $toolOne.Data.Integrity }}"></script>
+  {{ end }}
+{{ end }}
+
+{{- /* Tool page: Resume Builder script */ -}}
+{{ if eq .Layout "tool_resume_builder" }}
+  {{ $toolTwo := resources.Get "js/tools/tool-resume-builder.js" }}
+  {{ if $toolTwo }}
+    {{ $toolTwo := $toolTwo | minify | fingerprint }}
+    <script src="{{ $toolTwo.RelPermalink }}" integrity="{{ $toolTwo.Data.Integrity }}"></script>
+  {{ end }}
+{{ end }}
+
 {{- /* 加载PDF生成库和脚本（仅在主页） */ -}}
 {{ if .IsHome }}
   <!-- html2pdf.js CDN -->

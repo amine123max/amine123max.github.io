@@ -1,0 +1,172 @@
+{{- define "main" }}
+
+<div class="tools-page" data-page-type="tool-resume-builder">
+  <header class="page-header">
+    <h1>
+      <span data-lang="en">Resume Builder</span>
+      <span data-lang="zh">Resume Builder</span>
+    </h1>
+    <p class="page-description">
+      <span data-lang="en">One-click export personal resume.</span>
+      <span data-lang="zh">一键导出个人简历。</span>
+    </p>
+  </header>
+
+  <section class="resume-inline-panel tool-standalone-panel" data-resume-inline>
+    <form class="cv-form" data-resume-form autocomplete="off">
+      <div class="resume-input-toolbar">
+        <div class="resume-input-mode" data-input-mode>
+          <button type="button" class="resume-mode-toggle is-en" data-input-toggle>
+            <span class="resume-mode-chip" data-mode-chip="en">
+              <span data-lang="en">English Input</span>
+              <span data-lang="zh">英文输入</span>
+            </span>
+            <span class="resume-mode-chip" data-mode-chip="zh">
+              <span data-lang="en">Chinese Input</span>
+              <span data-lang="zh">中文输入</span>
+            </span>
+          </button>
+        </div>
+        <input type="file" class="resume-import-input" data-resume-import-file accept=".txt,.md,.markdown,.json,text/plain,application/json">
+      </div>
+
+      <div class="resume-import-dropzone" data-resume-import-dropzone role="button" tabindex="0" aria-label="Import resume document by click or drag and drop">
+        <div class="resume-import-dropzone-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 5 17 10"></polyline>
+            <line x1="12" y1="5" x2="12" y2="16"></line>
+          </svg>
+        </div>
+        <p class="resume-import-dropzone-title">
+          <span data-lang="en">Click or drag documents here to import</span>
+          <span data-lang="zh">单击或拖拽文档到此处导入</span>
+        </p>
+        <p class="resume-import-dropzone-subtitle">
+          <span data-lang="en">Supports TXT / MD / JSON for auto-fill parsing</span>
+          <span data-lang="zh">支持 TXT / MD / JSON 自动解析填充</span>
+        </p>
+        <button type="button" class="resume-import-dropzone-btn" data-resume-dropzone-select>
+          <span data-lang="en">Choose File</span>
+          <span data-lang="zh">选择文件</span>
+        </button>
+      </div>
+
+      <div class="resume-inline-grid">
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">Name</span>
+            <span data-lang="zh">姓名</span>
+          </label>
+          <input type="text" name="name" placeholder="Amine" required>
+        </div>
+
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">Title</span>
+            <span data-lang="zh">职位标题</span>
+          </label>
+          <input type="text" name="title" placeholder="Graduate Student | Intelligent Science and Technology">
+        </div>
+
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">Email</span>
+            <span data-lang="zh">邮箱</span>
+          </label>
+          <input type="text" name="email" placeholder="your-email@example.com">
+        </div>
+
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">Phone</span>
+            <span data-lang="zh">电话</span>
+          </label>
+          <input type="text" name="phone" placeholder="+86">
+        </div>
+
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">Location</span>
+            <span data-lang="zh">地点</span>
+          </label>
+          <input type="text" name="location" placeholder="Anhui, China">
+        </div>
+
+        <div class="cv-form-group">
+          <label>
+            <span data-lang="en">GitHub</span>
+            <span data-lang="zh">GitHub</span>
+          </label>
+          <input type="text" name="github" placeholder="https://github.com/your-id">
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">About Me</span>
+            <span data-lang="zh">关于我</span>
+          </label>
+          <textarea name="about" rows="4" placeholder="Professional summary..."></textarea>
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">Campus Experience</span>
+            <span data-lang="zh">校园经历</span>
+          </label>
+          <textarea name="campusExperience" rows="5" placeholder="Competition/Research/Team role&#10;Describe contributions and outcomes..."></textarea>
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">Internship Experience</span>
+            <span data-lang="zh">实习经历</span>
+          </label>
+          <textarea name="internshipExperience" rows="5" placeholder="Company/Role/Period&#10;Describe key responsibilities and outcomes..."></textarea>
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">Education</span>
+            <span data-lang="zh">教育背景</span>
+          </label>
+          <textarea name="education" rows="4" placeholder="Degree - University - Year"></textarea>
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">Skills</span>
+            <span data-lang="zh">技能</span>
+          </label>
+          <textarea name="skills" rows="3" placeholder="Python, C++, ROS, Reinforcement Learning"></textarea>
+        </div>
+
+        <div class="cv-form-group full">
+          <label>
+            <span data-lang="en">Projects</span>
+            <span data-lang="zh">项目经历</span>
+          </label>
+          <textarea name="projects" rows="5" placeholder="Project Name&#10;Describe goals, methods, and results..."></textarea>
+        </div>
+      </div>
+
+      <div class="cv-form-notice" data-resume-status>
+        <span data-lang="en">Choose input language, fill this single form once, then click "Start Export" to generate EN and ZH PDFs.</span>
+        <span data-lang="zh">先选择输入语言，只需填写这一套信息，点击“开始导出”即可生成中英文两份 PDF。</span>
+      </div>
+
+      <div class="resume-form-actions">
+        <button type="button" class="resume-generate-btn" data-resume-generate>
+          <span data-lang="en">Start Export</span>
+          <span data-lang="zh">开始导出</span>
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
+
+{{- end }}
+
+{{- define "footer" }}
+{{- partial "footer.html" . }}
+{{- end }}

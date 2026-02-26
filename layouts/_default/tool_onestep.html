@@ -1,0 +1,83 @@
+{{- define "main" }}
+
+<div class="tools-page" data-page-type="tool-onestep">
+  <header class="page-header">
+    <h1>
+      <span data-lang="en">OneStepUpdate</span>
+      <span data-lang="zh">OneStepUpdate</span>
+    </h1>
+    <p class="page-description">
+      <span data-lang="en">One-click push code/projects to GitHub.</span>
+      <span data-lang="zh">一键推送代码/项目至GitHub。</span>
+    </p>
+  </header>
+
+  <section class="onestep-inline-panel tool-standalone-panel">
+    <form class="cv-form">
+      <div class="cv-form-group">
+        <label>
+          <span data-lang="en">GitHub Repo</span>
+          <span data-lang="zh">GitHub 仓库</span>
+        </label>
+        <input type="text" value="amine123max/amine123max.github.io">
+      </div>
+
+      <div class="cv-form-group">
+        <label>
+          <span data-lang="en">Local Repo Path</span>
+          <span data-lang="zh">本地仓库路径</span>
+        </label>
+        <input type="text" value="C:\path\to\your\repo">
+      </div>
+
+      <div class="cv-form-group">
+        <label>
+          <span data-lang="en">Tag Name</span>
+          <span data-lang="zh">标签名称 (Tag)</span>
+        </label>
+        <input type="text" value="v1.0.0">
+      </div>
+
+      <div class="cv-form-group">
+        <label>
+          <span data-lang="en">Release Title</span>
+          <span data-lang="zh">Release 标题</span>
+        </label>
+        <input type="text" value="v1.0.0">
+      </div>
+
+      <div class="cv-form-group">
+        <label>
+          <span data-lang="en">Release Notes</span>
+          <span data-lang="zh">Release 描述</span>
+        </label>
+        <textarea rows="4"></textarea>
+      </div>
+
+      <div class="cv-form-notice">
+        <span data-lang="en">Editable preview. Click "Start Upload" to open the download page.</span>
+        <span data-lang="zh">可编辑预览。点击“开始上传”将直接跳转下载页面。</span>
+      </div>
+
+      <div class="onestep-form-actions">
+        {{ if .Params.downloadUrl }}
+        <a href="{{ .Params.downloadUrl }}" class="onestep-upload-btn" data-onestep-upload target="_blank" rel="noopener noreferrer">
+          <span data-lang="en">Start Upload</span>
+          <span data-lang="zh">开始上传</span>
+        </a>
+        {{ else }}
+        <span class="onestep-upload-btn is-disabled">
+          <span data-lang="en">Start Upload</span>
+          <span data-lang="zh">开始上传</span>
+        </span>
+        {{ end }}
+      </div>
+    </form>
+  </section>
+</div>
+
+{{- end }}
+
+{{- define "footer" }}
+{{- partial "footer.html" . }}
+{{- end }}

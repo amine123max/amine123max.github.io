@@ -5,33 +5,50 @@
         return localStorage.getItem('site-lang') || 'en';
     }
 
+    // 只管理站点语言节点，避免误伤代码高亮等 data-lang="python" 元素
+    function getLanguageNodes() {
+        return Array.from(document.querySelectorAll('[data-lang]')).filter(el => {
+            const value = (el.getAttribute('data-lang') || '').toLowerCase();
+            return value === 'en' || value === 'zh';
+        });
+    }
+
     // 设置语言
     function setLanguage(lang) {
         localStorage.setItem('site-lang', lang);
         document.documentElement.setAttribute('lang', lang);
-        
-        // 隐藏所有语言内容
-        document.querySelectorAll('[data-lang]').forEach(el => {
+
+        const languageNodes = getLanguageNodes();
+
+        // 隐藏站点中英文节点
+        languageNodes.forEach(el => {
             el.style.display = 'none';
         });
-        
-        // 显示选中语言的内容
-        document.querySelectorAll(`[data-lang="${lang}"]`).forEach(el => {
+
+        // 显示选中语言节点
+        languageNodes.forEach(el => {
+            const targetLang = (el.getAttribute('data-lang') || '').toLowerCase();
+            if (targetLang !== lang) {
+                return;
+            }
+
             // 获取元素的标签名
             const tagName = el.tagName.toLowerCase();
-            
+
             // 根据元素类型设置display
             if (tagName === 'span' || tagName === 'a') {
                 el.style.display = 'inline';
+            } else if (tagName === 'li') {
+                el.style.display = 'list-item';
             } else {
                 // div, ul, ol, p, section等都用block
                 el.style.display = 'block';
             }
         });
-        
+
         // 更新语言切换按钮文本
         updateLangButton(lang);
-        
+
         // 触发语言切换事件（用于打字机效果重置）
         const event = new CustomEvent('languageChanged', { detail: { lang: lang } });
         window.dispatchEvent(event);
