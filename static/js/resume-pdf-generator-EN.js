@@ -8,6 +8,24 @@ function getCurrentLanguage() {
   return localStorage.getItem('site-lang') || 'en';
 }
 
+function getExternalLinkIconSVG() {
+  return '<svg class="resume-link-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#0066cc;stroke:#0066cc;" aria-hidden="true" focusable="false">' +
+    '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>' +
+    '<polyline points="15 3 21 3 21 9"></polyline>' +
+    '<line x1="10" y1="14" x2="21" y2="3"></line>' +
+    '</svg>';
+}
+
+function getLocalizedNodeText(node, lang) {
+  if (!node) return '';
+  const localized = node.querySelector(`[data-lang="${lang}"]`);
+  if (localized && localized.textContent) {
+    const value = localized.textContent.trim();
+    if (value) return value;
+  }
+  return (node.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
 // Extract resume data from page DOM
 function extractResumeData() {
   const lang = getCurrentLanguage();
@@ -89,7 +107,9 @@ function extractResumeData() {
     const descEl = card.querySelector('.project-description span[data-lang="en"]');
     const name = nameEl?.textContent?.trim();
     const description = descEl?.textContent?.trim();
-    const tags = Array.from(card.querySelectorAll('.project-tag')).map(tag => tag.textContent.trim());
+    const tags = Array.from(card.querySelectorAll('.project-tag'))
+      .map(tag => getLocalizedNodeText(tag, 'en'))
+      .filter(Boolean);
     const url = card.closest('a')?.getAttribute('href') || '';
     
     if (name) {
@@ -141,9 +161,23 @@ function generateResumeHTML(data) {
         
         .resume-container a {
           color: #0066cc !important;
+          white-space: nowrap;
+        }
+
+        .resume-container a .resume-link-icon {
+          display: inline-block;
+          margin-left: 0.24em;
+          vertical-align: -0.12em;
+          flex: 0 0 auto;
+          color: #0066cc !important;
+          stroke: #0066cc !important;
+        }
+
+        .resume-container a .resume-link-icon * {
+          stroke: #0066cc !important;
         }
         
-        .resume-container .header,
+         .resume-container .resume-header,
         .resume-container .section h2 {
           border-color: #000 !important;
         }
@@ -155,13 +189,13 @@ function generateResumeHTML(data) {
         }
         
         /* Header */
-        .header {
+        .resume-header {
           margin-bottom: 16px;
           padding-bottom: 12px;
           border-bottom: 2px solid #000 !important;
         }
         
-        .header h1 {
+        .resume-header h1 {
           font-size: 28px;
           font-weight: 700;
           margin-bottom: 6px;
@@ -169,30 +203,30 @@ function generateResumeHTML(data) {
           text-align: left;
         }
         
-        .subtitle {
+        .resume-subtitle {
           font-size: 12px;
           color: #555 !important;
           margin-bottom: 0;
           text-align: left;
         }
         
-        .contact-info {
+        .resume-contact-info {
           margin-top: 10px;
           font-size: 10px;
         }
         
-        .contact-item {
+        .resume-contact-item {
           margin-bottom: 3px;
           color: #333 !important;
         }
         
-        .contact-item strong {
+        .resume-contact-item strong {
           color: #000 !important;
           font-weight: 600;
           margin-right: 5px;
         }
         
-        .contact-item a {
+        .resume-contact-item a {
           color: #0066cc !important;
           text-decoration: none;
         }
@@ -334,14 +368,14 @@ function generateResumeHTML(data) {
     <body>
       <div class="resume-container">
         <!-- Header -->
-        <div class="header">
+        <div class="resume-header">
           <h1>Amine</h1>
-          <p class="subtitle">Graduate Student | Intelligent Science and Technology</p>
-          <div class="contact-info">
-            <div class="contact-item"><strong>Email:</strong> 13409951849@163.com</div>
-            <div class="contact-item"><strong>Location:</strong> Anhui University</div>
-            <div class="contact-item"><strong>GitHub:</strong> <a href="https://github.com/amine123max">amine123max</a></div>
-            <div class="contact-item"><strong>Website:</strong> <a href="https://amine123max.github.io/">amine123max.github.io</a></div>
+          <p class="resume-subtitle">Graduate Student | Intelligent Science and Technology</p>
+          <div class="resume-contact-info" style="display:block !important; visibility:visible !important; opacity:1 !important; margin-top:10px; font-size:10px; line-height:1.6; color:#333 !important;">
+            <div class="resume-contact-item" style="display:block !important; visibility:visible !important; opacity:1 !important; margin-bottom:3px; color:#333 !important;"><strong style="color:#000 !important; font-weight:600; margin-right:5px;">Email:</strong><span style="color:#333 !important;">13409951849@163.com</span></div>
+            <div class="resume-contact-item" style="display:block !important; visibility:visible !important; opacity:1 !important; margin-bottom:3px; color:#333 !important;"><strong style="color:#000 !important; font-weight:600; margin-right:5px;">Location:</strong><span style="color:#333 !important;">Anhui University</span></div>
+            <div class="resume-contact-item" style="display:block !important; visibility:visible !important; opacity:1 !important; margin-bottom:3px; color:#333 !important;"><strong style="color:#000 !important; font-weight:600; margin-right:5px;">GitHub:</strong><a href="https://github.com/amine123max" style="color:#0066cc !important; text-decoration:none;">amine123max${getExternalLinkIconSVG()}</a></div>
+            <div class="resume-contact-item" style="display:block !important; visibility:visible !important; opacity:1 !important; margin-bottom:3px; color:#333 !important;"><strong style="color:#000 !important; font-weight:600; margin-right:5px;">Website:</strong><a href="https://amine123max.github.io/" style="color:#0066cc !important; text-decoration:none;">amine123max.github.io${getExternalLinkIconSVG()}</a></div>
           </div>
         </div>
         
@@ -377,7 +411,7 @@ function generateResumeHTML(data) {
           ${data.internshipExperience.map(exp => `
             <div class="exp-item">
               <div class="exp-header">
-                <span class="company-role"><strong>${exp.companyUrl ? `<a href="${exp.companyUrl}" style="color: #0066cc; text-decoration: none;">${exp.company}</a>` : exp.company}</strong></span>
+                <span class="company-role"><strong>${exp.companyUrl ? `<a href="${exp.companyUrl}" style="color: #0066cc; text-decoration: none;" target="_blank" rel="noopener noreferrer">${exp.company}${getExternalLinkIconSVG()}</a>` : exp.company}</strong></span>
                 <span class="period">${exp.period}</span>
               </div>
               <div class="position">${exp.role}${exp.location ? ' - ' + exp.location : ''}</div>
@@ -421,7 +455,7 @@ function generateResumeHTML(data) {
             <div class="exp-item">
               <div class="exp-header">
                 <span class="company-role">
-                  <strong>${project.url ? `<a href="${project.url}" style="color: #0066cc; text-decoration: none;" target="_blank">${project.name}</a>` : project.name}</strong>
+                  <strong>${project.url ? `<a href="${project.url}" style="color: #0066cc; text-decoration: none;" target="_blank" rel="noopener noreferrer">${project.name}${getExternalLinkIconSVG()}</a>` : project.name}</strong>
                 </span>
               </div>
               ${project.description ? `<div class="description" style="margin-bottom: 6px;">${project.description}</div>` : ''}
@@ -540,3 +574,4 @@ function initResumePDFGeneratorEN() {
 
 window.initResumePDFGeneratorEN = initResumePDFGeneratorEN;
 window.generatePDFEN = generatePDF;
+

@@ -56,7 +56,7 @@ async function handleRequest(request, env) {
     await sendEmailWithResend(env.RESEND_API_KEY, {
       from: `${env.SENDER_NAME} <${env.SENDER_EMAIL}>`,
       to: email,
-      subject: '【PersonalINFO】感谢您的关注！----- 个人简历推送',
+      subject: `[PersonalINFO] Thanks for your interest — Your download token: ${tokenDisplay}`,
       html: generateVisitorEmail(tokenDisplay)
     });
 
@@ -134,7 +134,7 @@ async function handleDownload(request, env) {
     await sendEmailWithResend(env.RESEND_API_KEY, {
       from: `PersonalINFO System <${env.SENDER_EMAIL}>`,
       to: env.ADMIN_EMAIL,
-      subject: `【DownloadAlert】新的简历下载通知！----- ${tokenData.email}`,
+      subject: `[DownloadAlert] New CV download notification — ${tokenData.email}`,
       html: generateAdminDownloadEmail(
         tokenData.email, 
         tokenData.reason,
@@ -164,7 +164,7 @@ function generateToken() {
 }
 
 function formatTimestamp(isoString) {
-  return new Date(isoString).toLocaleString('zh-CN', { 
+  return new Date(isoString).toLocaleString('en-US', { 
     timeZone: 'Asia/Shanghai',
     year: 'numeric',
     month: '2-digit',
@@ -173,6 +173,15 @@ function formatTimestamp(isoString) {
     minute: '2-digit',
     second: '2-digit'
   });
+}
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 async function sendEmailWithResend(apiKey, emailData) {
@@ -193,204 +202,134 @@ async function sendEmailWithResend(apiKey, emailData) {
   return response.json();
 }
 
-function generateVisitorEmail(token) {
+function renderSimpleEmailLayout(contentHtml, headerTitle = 'PersonalINFO', footerHtml = '', options = {}) {
+  const safeHeaderTitle = escapeHtml(headerTitle);
+  const finalFooterHtml = footerHtml || '<a href="https://github.com/amine123max" target="_blank" rel="noopener noreferrer" style="text-decoration:underline; color:#9ca3af !important;"><span style="color:#9ca3af !important;">GitHub</span></a>';
+  const dividerWidth = options.dividerWidth || '100%';
+  const dividerPaddingLeft = options.dividerPaddingLeft || '0';
+  const dividerCentered = options.dividerCentered ? 'margin:0 auto;' : 'margin:0;';
+
   return `
     <!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>CV Download Verification</title>
+      <title>PersonalINFO Mail</title>
     </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-      
-      <!-- English Section - Black Background -->
-      <div style="background-color: #1b1b1b; padding: 48px 40px;">
-        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #ffffff; text-align: left;">
-          PersonalINFO Download Verification
-        </h1>
-        <p style="margin: 0 0 32px; font-size: 14px; color: #a0a0a0; text-align: left;">
-          Your verification code is ready
-        </p>
-        
-        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #d4d4d4; text-align: left;">
-          Hello! Thank you for your interest in my PersonalINFO. Please use the verification code below to complete the download.
-        </p>
-        
-        <div style="margin: 0 0 32px; text-align: left;">
-          <div style="display: inline-block; background-color: #2d2d2d; padding: 20px 32px; border-radius: 4px;">
-            <div style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #ffffff; font-family: 'Courier New', monospace;">
-              ${token}
-            </div>
-          </div>
-        </div>
-        
-        <p style="margin: 0 0 16px; font-size: 13px; color: #808080; text-align: left;">
-          Valid for 5 minutes, single use only.
-        </p>
-        
-        <p style="margin: 0; font-size: 13px; color: #606060; text-align: left;">
-          If you didn't request this, please ignore this email.
-        </p>
-      </div>
-      
-      <!-- Chinese Section - White Background -->
-      <div style="background-color: #ffffff; padding: 48px 40px;">
-        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #1b1b1b; text-align: left;">
-          简历下载验证码
-        </h1>
-        <p style="margin: 0 0 32px; font-size: 14px; color: #666666; text-align: left;">
-          你的验证码已准备好
-        </p>
-        
-        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #333333; text-align: left;">
-          你好！感谢你对我的简历感兴趣。请使用下方的验证码完成下载。
-        </p>
-        
-        <div style="margin: 0 0 32px; text-align: left;">
-          <div style="display: inline-block; background-color: #f5f5f5; padding: 20px 32px; border-radius: 4px;">
-            <div style="font-size: 32px; font-weight: 700; letter-spacing: 8px; color: #1b1b1b; font-family: 'Courier New', monospace;">
-              ${token}
-            </div>
-          </div>
-        </div>
-        
-        <p style="margin: 0 0 16px; font-size: 13px; color: #808080; text-align: left;">
-          5分钟内有效，仅可使用一次。
-        </p>
-        
-        <p style="margin: 0; font-size: 13px; color: #999999; text-align: left;">
-          如果这不是你的操作，请忽略此邮件。
-        </p>
-      </div>
-      
-      <!-- Footer -->
-      <div style="background-color: #f8f8f8; padding: 24px 40px;">
-        <p style="margin: 0; font-size: 11px; color: #999999; text-align: left; line-height: 1.6;">
-          This is an automated email, please do not reply.<br>
-          此邮件由系统自动发送，请勿回复。
-        </p>
-      </div>
-      
+    <body style="margin:0; padding:0; background:#ffffff; color:#1f2937; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff;">
+        <tr>
+          <td align="center" style="padding:54px 20px 44px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+              <tr>
+                <td style="padding:0 0 28px; font-size:28px; line-height:1.15; font-weight:800; color:#111111; letter-spacing:-0.01em; font-family:Arial, sans-serif;">
+                  ${safeHeaderTitle}
+                </td>
+              </tr>
+              ${contentHtml}
+              <tr>
+                <td style="padding:28px 0 0 ${dividerPaddingLeft};">
+                  <div style="width:${dividerWidth}; height:1px; background:#e5e7eb; line-height:1px; font-size:1px; ${dividerCentered}">&nbsp;</div>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:16px 0 0; font-size:22px; line-height:1.2; font-weight:800; color:#111111; letter-spacing:-0.01em; font-family:Arial, sans-serif;">
+                  ${safeHeaderTitle}
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:10px 0 0; font-size:13px; line-height:1.6; color:#6b7280;">
+                  ${finalFooterHtml}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
 }
 
+function generateVisitorEmail(token) {
+  const safeToken = escapeHtml(token);
+  return renderSimpleEmailLayout(`
+    <tr>
+      <td style="padding:0 0 12px;">
+        <table role="presentation" align="center" width="320" cellpadding="0" cellspacing="0" border="0" style="width:320px; margin:0 auto;">
+          <tr>
+            <td style="font-size:16px; line-height:1.6; color:#1f2937; text-align:left;">
+              Enter this temporary token to continue:
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 0 18px;">
+        <table role="presentation" align="center" width="320" cellpadding="0" cellspacing="0" border="0" style="width:320px; margin:0 auto; background:#f3f4f6; border-radius:14px;">
+          <tr>
+            <td align="center" style="padding:18px 20px; font-size:34px; line-height:1; font-weight:500; letter-spacing:4px; color:#374151; font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; text-align:center !important;">
+              <div style="display:block; width:100%; text-align:center !important;">${safeToken}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 0 10px;">
+        <table role="presentation" align="center" width="320" cellpadding="0" cellspacing="0" border="0" style="width:320px; margin:0 auto;">
+          <tr>
+            <td style="font-size:14px; line-height:1.7; color:#4b5563; text-align:left;">
+              This token expires in 5 minutes and can be used once.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  `, 'Token', '', { dividerWidth: '320px', dividerCentered: true });
+}
+
 function generateAdminDownloadEmail(email, reason, requestTime, downloadTime) {
-  return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>CV Download Notification</title>
-    </head>
-    <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-      
-      <!-- English Section - Black Background -->
-      <div style="background-color: #1b1b1b; padding: 48px 40px;">
-        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #ffffff; text-align: left;">
-          PersonalINFO Download Notification
-        </h1>
-        <p style="margin: 0 0 32px; font-size: 14px; color: #a0a0a0; text-align: left;">
-          Your PersonalINFO was successfully downloaded
-        </p>
-        
-        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #d4d4d4; text-align: left;">
-          The user <strong style="color: #ffffff;">${email}</strong> has successfully downloaded your CV using the verification system.
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          Email
-        </p>
-        <p style="margin: 0 0 24px; font-size: 18px; font-weight: 600; color: #ffffff; text-align: left; font-family: 'Courier New', monospace;">
-          ${email}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          Reason
-        </p>
-        <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
-          ${reason}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          Requested
-        </p>
-        <p style="margin: 0 0 24px; font-size: 15px; color: #d4d4d4; text-align: left;">
-          ${requestTime}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          Downloaded
-        </p>
-        <p style="margin: 0 0 32px; font-size: 15px; color: #d4d4d4; text-align: left;">
-          ${downloadTime}
-        </p>
-        
-        <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
-          Verified and downloaded successfully
-        </p>
-      </div>
-      
-      <!-- Chinese Section - White Background -->
-      <div style="background-color: #ffffff; padding: 48px 40px;">
-        <h1 style="margin: 0 0 8px; font-size: 26px; font-weight: 600; color: #1b1b1b; text-align: left;">
-          简历下载通知
-        </h1>
-        <p style="margin: 0 0 32px; font-size: 14px; color: #666666; text-align: left;">
-          你的简历已成功下载
-        </p>
-        
-        <p style="margin: 0 0 32px; font-size: 15px; line-height: 1.6; color: #333333; text-align: left;">
-          用户 <strong style="color: #1b1b1b;">${email}</strong> 已通过验证系统成功下载了你的简历。
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          邮箱
-        </p>
-        <p style="margin: 0 0 24px; font-size: 18px; font-weight: 600; color: #1b1b1b; text-align: left; font-family: 'Courier New', monospace;">
-          ${email}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          下载原因
-        </p>
-        <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
-          ${reason}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          申请时间
-        </p>
-        <p style="margin: 0 0 24px; font-size: 15px; color: #333333; text-align: left;">
-          ${requestTime}
-        </p>
-        
-        <p style="margin: 0 0 8px; font-size: 13px; color: #808080; text-align: left;">
-          下载时间
-        </p>
-        <p style="margin: 0 0 32px; font-size: 15px; color: #333333; text-align: left;">
-          ${downloadTime}
-        </p>
-        
-        <p style="margin: 0; font-size: 13px; color: #10b981; text-align: left;">
-          验证成功，已完成下载
-        </p>
-      </div>
-      
-      <!-- Footer -->
-      <div style="background-color: #f8f8f8; padding: 24px 40px;">
-        <p style="margin: 0; font-size: 11px; color: #999999; text-align: left; line-height: 1.6;">
-          This is an automated email, please do not reply.<br>
-          此邮件由系统自动发送，请勿回复。
-        </p>
-      </div>
-      
-    </body>
-    </html>
-  `;
+  const safeEmail = escapeHtml(email);
+  const safeReason = escapeHtml(reason);
+  const safeRequestTime = escapeHtml(requestTime);
+  const safeDownloadTime = escapeHtml(downloadTime);
+
+  return renderSimpleEmailLayout(`
+    <tr>
+      <td style="padding:0 0 14px 84px; font-size:14px; line-height:1.7; color:#374151;">
+        User <a href="mailto:${safeEmail}" style="color:#2563eb; text-decoration:none;">${safeEmail}</a> completed the download via the verification flow.
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 0 18px 84px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#ffffff; border:1px solid #e5e7eb; border-radius:12px;">
+          <tr>
+            <td style="padding:14px 16px;">
+              <p style="margin:0 0 6px; font-size:12px; line-height:1.4; color:#6b7280; text-transform:uppercase; letter-spacing:0.06em;">Email</p>
+              <p style="margin:0 0 12px; font-size:14px; line-height:1.65; color:#111111; word-break:break-all;">${safeEmail}</p>
+
+              <p style="margin:0 0 6px; font-size:12px; line-height:1.4; color:#6b7280; text-transform:uppercase; letter-spacing:0.06em;">Reason</p>
+              <p style="margin:0 0 12px; font-size:14px; line-height:1.65; color:#111111; white-space:pre-wrap;">${safeReason}</p>
+
+              <p style="margin:0 0 6px; font-size:12px; line-height:1.4; color:#6b7280; text-transform:uppercase; letter-spacing:0.06em;">Requested</p>
+              <p style="margin:0 0 12px; font-size:14px; line-height:1.65; color:#111111;">${safeRequestTime}</p>
+
+              <p style="margin:0 0 6px; font-size:12px; line-height:1.4; color:#6b7280; text-transform:uppercase; letter-spacing:0.06em;">Downloaded</p>
+              <p style="margin:0; font-size:14px; line-height:1.65; color:#111111;">${safeDownloadTime}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:0 0 12px 84px; font-size:14px; line-height:1.7; color:#059669;">
+        Verification succeeded and download completed.
+      </td>
+    </tr>
+  `, 'Notification', '', { dividerWidth: '436px', dividerPaddingLeft: '84px' });
 }
 
 function jsonResponse(data, status = 200) {

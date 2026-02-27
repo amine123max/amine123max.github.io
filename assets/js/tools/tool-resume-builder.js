@@ -14,7 +14,7 @@
   var buttonInitialHTML = button ? button.innerHTML : "";
   var exportLoadingOverlay = null;
   var html2pdfLoader = null;
-  var storageKey = "tools-resume-builder-form-v4";
+  var storageKey = "tools-resume-builder-form-v5";
   var persistFormState = false;
   var translationCache = Object.create(null);
   var importDragCounter = 0;
@@ -22,6 +22,8 @@
   var supportedImportExtensions = [".txt", ".md", ".markdown", ".json"];
   var activeInputLang = "en";
   var supportedImportFields = [
+    "nameEn",
+    "nameZh",
     "name",
     "title",
     "email",
@@ -36,7 +38,9 @@
     "projects"
   ];
   var importLabelAliases = {
-    name: ["name", "full name", "english name", "chinese name", "姓名", "名字"],
+    nameEn: ["english name", "name en", "name (en)", "英文名", "英文姓名", "姓名英文"],
+    nameZh: ["chinese name", "name zh", "name (zh)", "中文名", "中文姓名", "姓名中文"],
+    name: ["name", "full name", "姓名", "名字"],
     title: ["title", "job title", "position", "job", "职位", "职位标题", "岗位", "职称"],
     email: ["email", "mail", "e-mail", "邮箱", "邮箱地址"],
     phone: ["phone", "mobile", "telephone", "tel", "电话", "手机号", "联系电话"],
@@ -80,7 +84,8 @@
   function getModeDefaults(lang) {
     return lang === "zh"
       ? {
-          name: "阿明",
+          nameEn: "Amine",
+          nameZh: "阿明",
           title: "研究生 | 智能科学与技术",
           email: "your-email@example.com",
           phone: "+86",
@@ -94,7 +99,8 @@
           projects: "项目名称\n描述目标、方法与结果..."
         }
       : {
-          name: "Amine",
+          nameEn: "Amine",
+          nameZh: "阿明",
           title: "Graduate Student | Intelligent Science and Technology",
           email: "your-email@example.com",
           phone: "+86",
@@ -112,7 +118,8 @@
   function getDefaultFormData(lang) {
     var defaults = getModeDefaults(lang);
     return {
-      name: defaults.name,
+      nameEn: "",
+      nameZh: "",
       title: defaults.title,
       email: defaults.email,
       phone: defaults.phone,
@@ -516,6 +523,15 @@
         return;
       }
 
+      if (fieldName === "name") {
+        var activeNameField = getField(activeInputLang === "zh" ? "nameZh" : "nameEn");
+        if (activeNameField) {
+          activeNameField.value = value;
+          updated += 1;
+        }
+        return;
+      }
+
       var field = getField(fieldName);
       if (!field) {
         return;
@@ -715,6 +731,90 @@
     applyLang(statusBox);
   }
 
+  function shakeValidationTarget(element) {
+    if (!element) {
+      return;
+    }
+    element.classList.remove("is-validation-shake");
+    // Force reflow so repeated validations can replay animation.
+    void element.offsetWidth;
+    element.classList.add("is-validation-shake");
+    window.setTimeout(function () {
+      element.classList.remove("is-validation-shake");
+    }, 520);
+  }
+
+  function clearNameValidationState() {
+    ["nameEn", "nameZh"].forEach(function (fieldName) {
+      var field = getField(fieldName);
+      if (!field) {
+        return;
+      }
+      field.removeAttribute("aria-invalid");
+      var group = field.closest(".cv-form-group");
+      if (group) {
+        group.classList.remove("is-error", "is-validation-shake");
+      }
+    });
+
+    if (panel) {
+      panel.classList.remove("is-validation-shake");
+    }
+  }
+
+  function validateBilingualNames(data) {
+    var nameEn = (data.nameEn || "").trim();
+    var nameZh = (data.nameZh || "").trim();
+    var missingEn = !nameEn;
+    var missingZh = !nameZh;
+
+    clearNameValidationState();
+
+    if (!missingEn && !missingZh) {
+      return true;
+    }
+
+    var nameEnField = getField("nameEn");
+    var nameZhField = getField("nameZh");
+    var nameEnGroup = nameEnField ? nameEnField.closest(".cv-form-group") : null;
+    var nameZhGroup = nameZhField ? nameZhField.closest(".cv-form-group") : null;
+
+    if (missingEn && nameEnField) {
+      nameEnField.setAttribute("aria-invalid", "true");
+      if (nameEnGroup) {
+        nameEnGroup.classList.add("is-error");
+      }
+    }
+
+    if (missingZh && nameZhField) {
+      nameZhField.setAttribute("aria-invalid", "true");
+      if (nameZhGroup) {
+        nameZhGroup.classList.add("is-error");
+      }
+    }
+
+    setStatus(
+      "Please manually enter both English and Chinese names before export.",
+      "请先手动完整填写英文姓名和中文姓名，再执行导出。"
+    );
+
+    if (missingEn && nameEnField) {
+      nameEnField.focus();
+    } else if (missingZh && nameZhField) {
+      nameZhField.focus();
+    }
+
+    shakeValidationTarget(panel);
+    if (missingEn) {
+      shakeValidationTarget(nameEnGroup);
+    }
+    if (missingZh) {
+      shakeValidationTarget(nameZhGroup);
+    }
+
+    return false;
+  }
+
   function ensureExportLoadingOverlay() {
     if (exportLoadingOverlay) {
       return exportLoadingOverlay;
@@ -739,8 +839,8 @@
       '<span class="resume-export-bar"></span>' +
       "</div>" +
       '<p class="resume-export-loading-text">' +
-      '<span data-lang="en" data-export-loading-en>Generating PDF...</span>' +
-      '<span data-lang="zh" data-export-loading-zh>正在生成 PDF...</span>' +
+      '<span data-lang="en" data-export-loading-en>Loading...</span>' +
+      '<span data-lang="zh" data-export-loading-zh>Loading...</span>' +
       "</p>" +
       "</div>";
 
@@ -754,12 +854,13 @@
     var overlay = ensureExportLoadingOverlay();
     var en = overlay.querySelector("[data-export-loading-en]");
     var zh = overlay.querySelector("[data-export-loading-zh]");
+    var loadingText = "Loading...";
 
-    if (en && messageEn) {
-      en.textContent = messageEn;
+    if (en) {
+      en.textContent = loadingText;
     }
-    if (zh && messageZh) {
-      zh.textContent = messageZh;
+    if (zh) {
+      zh.textContent = loadingText;
     }
 
     applyLang(overlay);
@@ -837,6 +938,14 @@
     return escapeHtml(value || "").replace(/\n/g, "<br>");
   }
 
+  function getToolLinkIconSvg() {
+    return '<svg class="tool-rb-link-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#0066cc;stroke:#0066cc;" aria-hidden="true" focusable="false">' +
+      '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>' +
+      '<polyline points="15 3 21 3 21 9"></polyline>' +
+      '<line x1="10" y1="14" x2="21" y2="3"></line>' +
+      '</svg>';
+  }
+
   function toLinkOrText(value) {
     var text = (value || "").trim();
     if (!text) {
@@ -853,8 +962,28 @@
     }
 
     return (
-      '<a href="' + escapeHtml(href) + '" target="_blank" rel="noopener noreferrer">' +
+      '<a class="tool-rb-link" href="' + escapeHtml(href) + '" target="_blank" rel="noopener noreferrer">' +
       escapeHtml(text) +
+      getToolLinkIconSvg() +
+      "</a>"
+    );
+  }
+
+  function toEmailLinkOrText(value) {
+    var text = (value || "").trim();
+    if (!text) {
+      return "";
+    }
+
+    var email = text.replace(/^mailto:/i, "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return escapeHtml(text);
+    }
+
+    return (
+      '<a class="tool-rb-link" href="mailto:' + escapeHtml(email) + '">' +
+      escapeHtml(email) +
+      getToolLinkIconSvg() +
       "</a>"
     );
   }
@@ -948,7 +1077,8 @@
     }
 
     return {
-      name: getValue("name"),
+      nameEn: getValue("nameEn"),
+      nameZh: getValue("nameZh"),
       title: getValue("title"),
       email: getValue("email"),
       phone: getValue("phone"),
@@ -967,6 +1097,8 @@
     var sourceLang = inputLang === "zh" ? "zh" : "en";
     var warnings = [];
     var result = {
+      nameEn: (data.nameEn || "").trim(),
+      nameZh: (data.nameZh || "").trim(),
       email: data.email,
       phone: data.phone,
       github: data.github
@@ -997,7 +1129,6 @@
       }
     }
 
-    await mapField(data.name, "nameEn", "nameZh", true);
     await mapField(data.title, "titleEn", "titleZh", true);
     await mapField(data.about, "aboutEn", "aboutZh", true);
     await mapField(data.campusExperience, "campusExperienceEn", "campusExperienceZh", true);
@@ -1053,78 +1184,301 @@
           projects: "Projects"
         };
 
+    var defaults = getModeDefaults(isZh ? "zh" : "en");
+
+    function pickValue(value, fallback) {
+      var text = (value || "").trim();
+      if (text) {
+        return { text: text, placeholder: false };
+      }
+      return { text: (fallback || "").trim(), placeholder: true };
+    }
+
+    function isPeriodLike(value) {
+      var text = (value || "").trim();
+      if (!text) {
+        return false;
+      }
+
+      if (/^(time|period|year|date|present|current|now|today|时间|时期|日期|至今|现在)$/i.test(text)) {
+        return true;
+      }
+
+      var hasYear = /\b(?:19|20)\d{2}\b/.test(text) || /\d{4}\s*年/.test(text);
+      var hasMonth = /\d{1,2}\s*月/.test(text) || /\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)\b/i.test(text);
+      var hasRange = /(?:-|–|—|~|to|至|至今|present|current|now)/i.test(text);
+      var hasPeriodWord = /(?:period|year|time|semester|term|duration|学年|时间|年月|至今|present|current)/i.test(text);
+
+      return (hasYear && (hasMonth || hasRange || hasPeriodWord)) || hasPeriodWord;
+    }
+
+    function looksBulletLine(value) {
+      var text = (value || "").trim();
+      return /^([-*+•]|[0-9]+[.)、]|[一二三四五六七八九十]+[、.])/.test(text);
+    }
+
+    function parseHeaderLine(line) {
+      var raw = (line || "").trim();
+
+      function parseByParts(parts, joiner) {
+        if (!parts.length) {
+          return null;
+        }
+
+        if (parts.length === 1) {
+          return { title: parts[0], subtitle: "", period: "" };
+        }
+
+        if (parts.length === 2) {
+          if (isPeriodLike(parts[1])) {
+            return { title: parts[0], subtitle: "", period: parts[1] };
+          }
+          return { title: parts[0], subtitle: parts[1], period: "" };
+        }
+
+        var last = parts[parts.length - 1];
+        if (isPeriodLike(last)) {
+          return {
+            title: parts[0],
+            subtitle: parts.slice(1, parts.length - 1).join(joiner),
+            period: last
+          };
+        }
+
+        return {
+          title: parts[0],
+          subtitle: parts.slice(1).join(joiner),
+          period: ""
+        };
+      }
+
+      if (!raw) {
+        return { title: "", subtitle: "", period: "" };
+      }
+
+      if (/[\/／|]/.test(raw)) {
+        var slashParts = raw.split(/[\/／|]/).map(function (part) {
+          return part.trim();
+        }).filter(Boolean);
+        var slashParsed = parseByParts(slashParts, " / ");
+        if (slashParsed) {
+          return slashParsed;
+        }
+      }
+
+      if (/\s[-–—]\s/.test(raw)) {
+        var dashParts = raw.split(/\s*[-–—]\s*/).map(function (part) {
+          return part.trim();
+        }).filter(Boolean);
+        var dashParsed = parseByParts(dashParts, " - ");
+        if (dashParsed) {
+          return dashParsed;
+        }
+      }
+
+      return { title: raw, subtitle: "", period: "" };
+    }
+
+    function parseStructuredEntries(text) {
+      var raw = (text || "").replace(/\r/g, "").trim();
+      if (!raw) {
+        return [];
+      }
+
+      var blocks = raw.split(/\n\s*\n+/).map(function (block) {
+        return block.trim();
+      }).filter(Boolean);
+
+      return blocks.map(function (block) {
+        var lines = block.split("\n").map(function (line) {
+          return line.trim();
+        }).filter(Boolean);
+
+        if (!lines.length) {
+          return null;
+        }
+
+        var header = parseHeaderLine(lines.shift());
+        var title = header.title;
+        var subtitle = header.subtitle;
+        var period = header.period;
+
+        if (lines.length) {
+          var first = lines[0];
+          if (!period && isPeriodLike(first)) {
+            period = first;
+            lines.shift();
+          } else if (!subtitle && !looksBulletLine(first)) {
+            subtitle = first;
+            lines.shift();
+          }
+        }
+
+        var description = lines.join("\n");
+        return {
+          title: title,
+          subtitle: subtitle,
+          period: period,
+          description: description
+        };
+      }).filter(function (entry) {
+        return entry && (entry.title || entry.subtitle || entry.period || entry.description);
+      });
+    }
+
+    var fallbackName = isZh ? (defaults.nameZh || defaults.nameEn) : (defaults.nameEn || defaults.nameZh);
+    var nameValue = pickValue(name, fallbackName);
+    var titleValue = pickValue(title, defaults.title);
+    var emailValue = pickValue(data.email, defaults.email);
+    var phoneValue = pickValue(data.phone, defaults.phone);
+    var locationValue = pickValue(location, defaults.location);
+    var githubValue = pickValue(data.github, defaults.github);
+    var aboutValue = pickValue(about, defaults.about);
+    var campusValue = pickValue(campusExperience, defaults.campusExperience);
+    var internshipValue = pickValue(internshipExperience, defaults.internshipExperience);
+    var educationValue = pickValue(education, defaults.education);
+    var projectsValue = pickValue(projects, defaults.projects);
+    var skillsValue = pickValue(skillsSource, defaults.skills);
+    var emailLinkValue = toEmailLinkOrText(emailValue.text);
+    var githubLinkValue = toLinkOrText(githubValue.text);
+
+    var skillsFromValue = parseSkills(skillsValue.text);
+    var skillsBlock = skillsFromValue.length
+      ? "<div class='tool-rb-skills'>" +
+        skillsFromValue.map(function (item) {
+          return "<span class='tool-rb-skill'>" + escapeHtml(item) + "</span>";
+        }).join("") +
+        "</div>"
+      : "<div class='tool-rb-description tool-rb-muted'>" + toParagraph(skillsValue.text) + "</div>";
+
+    function renderSection(label, valueObj, bodyClass) {
+      return "<section class='tool-rb-section'>" +
+        "<h2 class='tool-rb-section-title'>" + label + "</h2>" +
+        "<div class='" + bodyClass + (valueObj.placeholder ? " tool-rb-muted" : "") + "'>" +
+        toParagraph(valueObj.text) +
+        "</div>" +
+        "</section>";
+    }
+
+    function renderStructuredSection(label, valueObj) {
+      var entries = parseStructuredEntries(valueObj.text);
+      if (!entries.length) {
+        return renderSection(label, valueObj, "tool-rb-description");
+      }
+
+      return "<section class='tool-rb-section'>" +
+        "<h2 class='tool-rb-section-title'>" + label + "</h2>" +
+        "<div class='tool-rb-entry-list'>" +
+        entries.map(function (entry) {
+          var mutedClass = valueObj.placeholder ? " tool-rb-muted" : "";
+          return "<div class='tool-rb-entry'>" +
+            "<div class='tool-rb-entry-head'>" +
+            "<span class='tool-rb-entry-title" + mutedClass + "'>" + escapeHtml(entry.title) + "</span>" +
+            (entry.period ? "<span class='tool-rb-entry-period" + mutedClass + "'>" + escapeHtml(entry.period) + "</span>" : "") +
+            "</div>" +
+            (entry.subtitle ? "<div class='tool-rb-entry-subtitle" + mutedClass + "'>" + toParagraph(entry.subtitle) + "</div>" : "") +
+            (entry.description ? "<div class='tool-rb-entry-desc" + mutedClass + "'>" + toParagraph(entry.description) + "</div>" : "") +
+            "</div>";
+        }).join("") +
+        "</div>" +
+        "</section>";
+    }
+
     return (
-      '<!DOCTYPE html><html><head><meta charset="UTF-8"><style>' +
-      "body{margin:0;padding:0;background:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#000;}" +
-      ".rb-wrap{width:180mm;margin:0 auto;padding:0;}" +
-      ".rb-header{border-bottom:2px solid #000;padding-bottom:12px;margin-bottom:14px;}" +
-      ".rb-name{font-size:28px;font-weight:700;margin:0 0 6px 0;}" +
-      ".rb-sub{font-size:13px;color:#000;margin:0;}" +
-      ".rb-contact{margin-top:10px;font-size:10px;line-height:1.7;color:#000;}" +
-      ".rb-section{margin-bottom:14px;page-break-inside:avoid;}" +
-      ".rb-section h2{margin:0 0 8px 0;font-size:15px;border-bottom:2px solid #000;padding-bottom:4px;}" +
-      ".rb-text{font-size:11px;line-height:1.65;color:#000;}" +
-      ".rb-contact a,.rb-text a{color:#1f5fbf;text-decoration:none;}" +
-      ".rb-contact a:hover,.rb-text a:hover{text-decoration:underline;}" +
-      ".rb-skills{display:flex;flex-wrap:wrap;gap:8px;}" +
-      ".rb-skill{background:#000;color:#fff;border:1px solid #000;border-radius:4px;padding:4px 10px;font-size:10px;}" +
-      "</style></head><body><div class='rb-wrap'>" +
-      "<div class='rb-header'>" +
-      "<h1 class='rb-name'>" + escapeHtml(name) + "</h1>" +
-      "<p class='rb-sub'>" + escapeHtml(title) + "</p>" +
-      "<div class='rb-contact'>" +
-      "<div>" + labels.email + ": " + escapeHtml(data.email) + "</div>" +
-      "<div>" + labels.phone + ": " + escapeHtml(data.phone) + "</div>" +
-      "<div>" + labels.location + ": " + escapeHtml(location) + "</div>" +
-      "<div>" + labels.github + ": " + toLinkOrText(data.github) + "</div>" +
-      "</div></div>" +
-      "<div class='rb-section'><h2>" + labels.about + "</h2><div class='rb-text'>" + toParagraph(about) + "</div></div>" +
-      "<div class='rb-section'><h2>" + labels.campusExperience + "</h2><div class='rb-text'>" + toParagraph(campusExperience) + "</div></div>" +
-      "<div class='rb-section'><h2>" + labels.internshipExperience + "</h2><div class='rb-text'>" + toParagraph(internshipExperience) + "</div></div>" +
-      "<div class='rb-section'><h2>" + labels.education + "</h2><div class='rb-text'>" + toParagraph(education) + "</div></div>" +
-      (skills.length
-        ? "<div class='rb-section'><h2>" + labels.skills + "</h2><div class='rb-skills'>" +
-          skills.map(function (item) {
-            return "<span class='rb-skill'>" + escapeHtml(item) + "</span>";
-          }).join("") +
-          "</div></div>"
-        : "") +
-      "<div class='rb-section'><h2>" + labels.projects + "</h2><div class='rb-text'>" + toParagraph(projects) + "</div></div>" +
-      "</div></body></html>"
+      "<style>" +
+      ".tool-rb-doc,.tool-rb-doc *{box-sizing:border-box;}" +
+      ".tool-rb-doc{width:180mm;margin:0 auto;padding:0;background:#fff !important;color:#000 !important;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Roboto','PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC',sans-serif;font-size:10pt;line-height:1.5;}" +
+      ".tool-rb-doc *{position:static !important;color:inherit !important;background:transparent !important;}" +
+      ".tool-rb-doc a{color:#0066cc !important;text-decoration:none;}" +
+      ".tool-rb-doc a:hover{text-decoration:underline;}" +
+      ".tool-rb-link{color:#0066cc !important;text-decoration:none !important;}" +
+      ".tool-rb-link:hover{text-decoration:underline !important;}" +
+      ".tool-rb-link-icon{display:inline-block;width:1em;height:1em;margin-left:0.24em;vertical-align:-0.12em;flex:0 0 auto;color:#0066cc !important;stroke:#0066cc !important;}" +
+      ".tool-rb-link-icon *{stroke:#0066cc !important;}" +
+      ".tool-rb-head{margin:0 0 12px 0;padding:0 0 6px 0;border-bottom:2px solid #000 !important;}" +
+      ".tool-rb-name{margin:0 0 6px 0;font-size:28px;font-weight:700;color:#000 !important;line-height:1.2;}" +
+      ".tool-rb-subtitle{margin:0;font-size:12px;color:#555 !important;line-height:1.45;}" +
+      ".tool-rb-contact{margin-top:6px;font-size:10px;line-height:1.5;}" +
+      ".tool-rb-contact-item{margin:0 0 2px 0;color:#333 !important;}" +
+      ".tool-rb-contact-item strong{color:#000 !important;font-weight:600;margin-right:5px;}" +
+      ".tool-rb-section{margin:0 0 16px 0;page-break-inside:avoid;break-inside:avoid;}" +
+      ".tool-rb-section-title{display:block !important;width:100% !important;margin:0 0 10px 0 !important;padding:0 0 4px 0 !important;border:0 !important;border-bottom:2px solid #333 !important;font-size:16px !important;font-weight:700 !important;color:#000 !important;line-height:1.3;}" +
+      ".tool-rb-about-text{margin:0;font-size:11px !important;line-height:1.6 !important;color:#333 !important;}" +
+      ".tool-rb-description{margin:0;font-size:10px !important;line-height:1.7 !important;color:#555 !important;}" +
+      ".tool-rb-entry-list{display:block;}" +
+      ".tool-rb-entry{margin:0 0 12px 0;}" +
+      ".tool-rb-entry:last-child{margin-bottom:0;}" +
+      ".tool-rb-entry-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 4px 0;}" +
+      ".tool-rb-entry-title{font-size:12px;font-weight:700;color:#000;line-height:1.4;}" +
+      ".tool-rb-entry-period{font-size:10px;color:#666;white-space:nowrap;font-style:italic;line-height:1.4;}" +
+      ".tool-rb-entry-subtitle{font-size:11px;color:#444;line-height:1.5;margin:0 0 6px 0;}" +
+      ".tool-rb-entry-desc{font-size:10px;color:#555;line-height:1.7;white-space:pre-line;}" +
+      ".tool-rb-skills{display:flex;flex-wrap:wrap;gap:8px;}" +
+      ".tool-rb-skill{display:inline-block;background:#000 !important;color:#fff !important;border:2px solid #000 !important;border-radius:4px;padding:5px 12px;font-size:10px !important;font-weight:500;line-height:1.2;}" +
+      ".tool-rb-muted{color:#9aa0a6 !important;}" +
+      ".tool-rb-lang-zh .tool-rb-name,.tool-rb-lang-zh .tool-rb-section-title{font-weight:700 !important;}" +
+      "</style>" +
+      "<article class='tool-rb-doc tool-rb-lang-" + (isZh ? "zh" : "en") + "'>" +
+      "<header class='tool-rb-head'>" +
+      "<h1 class='tool-rb-name" + (nameValue.placeholder ? " tool-rb-muted" : "") + "'>" + escapeHtml(nameValue.text) + "</h1>" +
+      "<p class='tool-rb-subtitle" + (titleValue.placeholder ? " tool-rb-muted" : "") + "'>" + escapeHtml(titleValue.text) + "</p>" +
+      "<div class='tool-rb-contact'>" +
+      "<div class='tool-rb-contact-item'><strong>" + labels.email + ":</strong>" +
+      (emailLinkValue || ("<span class='" + (emailValue.placeholder ? "tool-rb-muted" : "") + "'>" + escapeHtml(emailValue.text) + "</span>")) +
+      "</div>" +
+      "<div class='tool-rb-contact-item'><strong>" + labels.phone + ":</strong><span class='" + (phoneValue.placeholder ? "tool-rb-muted" : "") + "'>" + escapeHtml(phoneValue.text) + "</span></div>" +
+      "<div class='tool-rb-contact-item'><strong>" + labels.location + ":</strong><span class='" + (locationValue.placeholder ? "tool-rb-muted" : "") + "'>" + escapeHtml(locationValue.text) + "</span></div>" +
+      "<div class='tool-rb-contact-item'><strong>" + labels.github + ":</strong>" +
+      (githubLinkValue || ("<span class='" + (githubValue.placeholder ? "tool-rb-muted" : "") + "'>" + escapeHtml(githubValue.text) + "</span>")) +
+      "</div>" +
+      "</div>" +
+      "</header>" +
+      renderSection(labels.about, aboutValue, "tool-rb-about-text") +
+      renderStructuredSection(labels.campusExperience, campusValue) +
+      renderStructuredSection(labels.internshipExperience, internshipValue) +
+      renderStructuredSection(labels.education, educationValue) +
+      "<section class='tool-rb-section'><h2 class='tool-rb-section-title'>" + labels.skills + "</h2>" + skillsBlock + "</section>" +
+      renderSection(labels.projects, projectsValue, "tool-rb-description") +
+      "</article>"
     );
   }
 
   async function exportSingle(html, filename) {
     var temp = document.createElement("div");
+    temp.className = "tool-rb-export-host";
     temp.style.position = "absolute";
     temp.style.left = "-9999px";
     temp.innerHTML = html;
     document.body.appendChild(temp);
 
     try {
-      var element = temp.querySelector(".rb-wrap");
+      var element = temp.querySelector(".tool-rb-doc");
       await window.html2pdf()
         .set({
-          margin: [10, 12, 10, 12],
+          margin: [10, 15, 10, 15],
           filename: filename,
-          image: { type: "jpeg", quality: 0.9 },
+          image: { type: "jpeg", quality: 1.0 },
           html2canvas: {
-            scale: 4,
+            scale: 5,
+            dpi: 300,
             backgroundColor: "#ffffff",
-            useCORS: true,
-            allowTaint: false,
-            letterRendering: false,
-            imageTimeout: 15000,
-            logging: false
+            useCORS: false,
+            allowTaint: true,
+            letterRendering: true,
+            imageTimeout: 0,
+            logging: false,
+            removeContainer: true
           },
           jsPDF: {
             unit: "mm",
             format: "a4",
             orientation: "portrait",
-            compress: true,
-            precision: 10
+            compress: false,
+            precision: 16,
+            putOnlyUsedFonts: true,
+            floatPrecision: 16
           },
-          pagebreak: { mode: "avoid-all" }
+          pagebreak: { mode: ["css", "legacy"] }
         })
         .from(element)
         .save();
@@ -1150,6 +1504,10 @@
         "No input detected. Exporting with default template values.",
         "未检测到输入，正在使用默认模板字段导出。"
       );
+    }
+
+    if (!validateBilingualNames(data)) {
+      return;
     }
 
     setExportButtonLoading(true);
@@ -1240,6 +1598,18 @@
     Array.prototype.forEach.call(form.elements, function (el) {
       if (el.name) {
         el.addEventListener("input", saveForm);
+        if (el.name === "nameEn" || el.name === "nameZh") {
+          el.addEventListener("input", function () {
+            el.removeAttribute("aria-invalid");
+            var group = el.closest(".cv-form-group");
+            if (group) {
+              group.classList.remove("is-error", "is-validation-shake");
+            }
+            if (panel) {
+              panel.classList.remove("is-validation-shake");
+            }
+          });
+        }
       }
     });
   }

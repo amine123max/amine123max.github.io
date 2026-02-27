@@ -1,0 +1,65 @@
+/* ==================== Sidebar Stats Rolling Digits ==================== */
+
+.metric-value.metric-roll {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  white-space: nowrap;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.metric-roll-char {
+  display: inline-flex;
+  align-items: flex-end;
+  line-height: 1.05em;
+}
+
+.metric-roll-digit {
+  position: relative;
+  display: inline-block;
+  width: 0.9ch;
+  min-width: 0.9ch;
+  height: 1.05em;
+  overflow: hidden;
+  line-height: 1.05em;
+}
+
+.metric-roll-track {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(0);
+  will-change: transform;
+}
+
+.metric-roll-track.is-animating {
+  transition: transform 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.metric-roll-face {
+  display: block;
+  height: 1.05em;
+  line-height: 1.05em;
+  text-align: center;
+}
+
+.metric-value.metric-roll.metric-roll-len-5 {
+  font-size: 1.48rem;
+}
+
+.metric-value.metric-roll.metric-roll-len-6 {
+  font-size: 1.36rem;
+}
+
+.metric-value.metric-roll.metric-roll-len-7,
+.metric-value.metric-roll.metric-roll-len-8 {
+  font-size: 1.22rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metric-roll-track.is-animating {
+    transition: none !important;
+  }
+}
