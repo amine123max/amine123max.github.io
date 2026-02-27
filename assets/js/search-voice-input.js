@@ -1,0 +1,108 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.querySelector('.search-input-wrapper.search-input-wrapper-minimal');
+  const searchInput = document.getElementById('searchModalInput');
+  if (!wrapper || !searchInput) return;
+
+  if (wrapper.querySelector('.search-voice-btn')) return;
+
+  const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const voiceBtn = document.createElement('button');
+  voiceBtn.type = 'button';
+  voiceBtn.className = 'search-voice-btn';
+  voiceBtn.id = 'searchVoiceBtn';
+  voiceBtn.setAttribute('aria-pressed', 'false');
+  voiceBtn.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="9" y="2" width="6" height="12" rx="3"></rect>
+      <path d="M5 10a7 7 0 0 0 14 0"></path>
+      <path d="M12 19v3"></path>
+      <path d="M8 22h8"></path>
+    </svg>
+  `;
+  wrapper.appendChild(voiceBtn);
+
+  function getCurrentLang() {
+    return localStorage.getItem('site-lang') || 'en';
+  }
+
+  function getText(en, zh) {
+    return getCurrentLang() === 'zh' ? zh : en;
+  }
+
+  function updateVoiceButtonText() {
+    if (voiceBtn.disabled) {
+      voiceBtn.title = getText('Voice input is not supported by this browser', '当前浏览器不支持语音输入');
+      voiceBtn.setAttribute('aria-label', getText('Voice input unavailable', '语音输入不可用'));
+      return;
+    }
+    voiceBtn.title = getText('Voice input', '语音输入');
+    voiceBtn.setAttribute('aria-label', getText('Voice input', '语音输入'));
+  }
+
+  if (!Recognition) {
+    voiceBtn.disabled = true;
+    updateVoiceButtonText();
+    window.addEventListener('languageChanged', updateVoiceButtonText);
+    return;
+  }
+
+  const recognition = new Recognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  let isListening = false;
+
+  function setListeningState(listening) {
+    isListening = listening;
+    voiceBtn.classList.toggle('is-listening', listening);
+    voiceBtn.setAttribute('aria-pressed', listening ? 'true' : 'false');
+    updateVoiceButtonText();
+  }
+
+  function getRecognitionLang() {
+    return getCurrentLang() === 'zh' ? 'zh-CN' : 'en-US';
+  }
+
+  function updateInputValue(value) {
+    searchInput.value = value;
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  voiceBtn.addEventListener('click', function() {
+    if (isListening) {
+      recognition.stop();
+      return;
+    }
+    recognition.lang = getRecognitionLang();
+    try {
+      recognition.start();
+    } catch (_) {
+      setListeningState(false);
+    }
+  });
+
+  recognition.addEventListener('start', function() {
+    setListeningState(true);
+  });
+
+  recognition.addEventListener('result', function(event) {
+    let transcript = '';
+    for (let i = event.resultIndex; i < event.results.length; i += 1) {
+      transcript += event.results[i][0].transcript;
+    }
+    updateInputValue(transcript.trim());
+  });
+
+  recognition.addEventListener('error', function() {
+    setListeningState(false);
+  });
+
+  recognition.addEventListener('end', function() {
+    setListeningState(false);
+    searchInput.focus();
+  });
+
+  updateVoiceButtonText();
+  window.addEventListener('languageChanged', updateVoiceButtonText);
+});
