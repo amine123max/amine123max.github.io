@@ -38,6 +38,13 @@
 
 {{- /* 横线动画已移除 */ -}}
 
+{{- /* 统计栏数字翻页动画 */ -}}
+{{ $statsRoll := resources.Get "js/stats-roll.js" }}
+{{ if $statsRoll }}
+  {{ $statsRoll := $statsRoll | minify | fingerprint }}
+  <script src="{{ $statsRoll.RelPermalink }}" integrity="{{ $statsRoll.Data.Integrity }}"></script>
+{{ end }}
+
 {{- /* 本地模拟访问量统计 - 所有环境 */ -}}
 {{ $localVisits := resources.Get "js/local-visits.js" }}
 {{ if $localVisits }}
@@ -87,10 +94,10 @@
         script.type = 'text/javascript';
         
         if (lang === 'zh') {
-          script.src = '/js/resume-pdf-generator-CN.js';
+          script.src = '/js/resume-pdf-generator-CN.js?v=' + Date.now();
           console.log('✓ Loading Chinese PDF generator script');
         } else {
-          script.src = '/js/resume-pdf-generator-EN.js';
+          script.src = '/js/resume-pdf-generator-EN.js?v=' + Date.now();
           console.log('✓ Loading English PDF generator script');
         }
         
@@ -141,3 +148,4 @@
 {{ end }}
 
 {{- /* Footer custom content area end */ -}}
+

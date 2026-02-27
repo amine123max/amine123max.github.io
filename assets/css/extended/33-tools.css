@@ -268,6 +268,87 @@ body.dark .course-card:hover {
   background: var(--code-bg);
 }
 
+.resume-inline-panel .cv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.resume-inline-panel .cv-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-inline-panel .cv-form-group label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.resume-inline-panel .cv-form-group input,
+.resume-inline-panel .cv-form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: var(--content);
+  background: var(--entry);
+  font-family: inherit;
+}
+
+.resume-inline-panel .cv-form-group textarea {
+  resize: vertical;
+  min-height: 92px;
+}
+
+.resume-inline-panel .cv-form-group.is-error label {
+  color: #c62828;
+}
+
+.resume-inline-panel .cv-form-group.is-error input,
+.resume-inline-panel .cv-form-group.is-error textarea {
+  border-color: #c62828;
+  box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.16);
+}
+
+.resume-inline-panel.is-validation-shake,
+.resume-inline-panel .cv-form-group.is-validation-shake {
+  animation: resume-validation-shake 0.5s;
+}
+
+@keyframes resume-validation-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(10px);
+  }
+}
+
+body.dark .resume-inline-panel .cv-form-group.is-error label {
+  color: #ff8c8c;
+}
+
+body.dark .resume-inline-panel .cv-form-group.is-error input,
+body.dark .resume-inline-panel .cv-form-group.is-error textarea {
+  border-color: #ff8c8c;
+  box-shadow: 0 0 0 2px rgba(255, 140, 140, 0.16);
+}
+
 .resume-inline-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
