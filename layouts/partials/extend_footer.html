@@ -8,6 +8,13 @@
   <script src="{{ $searchJS.RelPermalink }}" integrity="{{ $searchJS.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* 加载搜索语音输入脚本 */ -}}
+{{ $searchVoice := resources.Get "js/search-voice-input.js" }}
+{{ if $searchVoice }}
+  {{ $searchVoice := $searchVoice | minify | fingerprint }}
+  <script src="{{ $searchVoice.RelPermalink }}" integrity="{{ $searchVoice.Data.Integrity }}"></script>
+{{ end }}
+
 {{- /* 加载语言切换脚本 */ -}}
 {{ $langSwitch := resources.Get "js/lang-switch.js" }}
 {{ if $langSwitch }}
