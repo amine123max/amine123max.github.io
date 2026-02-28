@@ -1,4 +1,4 @@
-{{- /* Footer custom content area start */ -}}
+﻿{{- /* Footer custom content area start */ -}}
 {{- /*     Insert any custom code (web-analytics, resources, etc.) - it will appear in the <footer></footer> section of every page. */ -}}
 
 {{- /* 加载搜索按钮脚本 */ -}}
@@ -15,11 +15,27 @@
   <script src="{{ $searchVoice.RelPermalink }}" integrity="{{ $searchVoice.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 加载搜索唤醒词脚本 */ -}}
+{{- /* 加载导航互斥管理器 */ -}}
+{{ $navMutex := resources.Get "js/nav-mutex.js" }}
+{{ if $navMutex }}
+  {{ $navMutex := $navMutex | minify | fingerprint }}
+  <script src="{{ $navMutex.RelPermalink }}" integrity="{{ $navMutex.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* 加载搜索唤醒词脚�?*/ -}}
 {{ $searchWake := resources.Get "js/search-wake-word.js" }}
 {{ if $searchWake }}
   {{ $searchWake := $searchWake | minify | fingerprint }}
   <script src="{{ $searchWake.RelPermalink }}" integrity="{{ $searchWake.Data.Integrity }}"></script>
+
+
+{{- /* 加载语音设置脚本 */ -}}
+{{ $voiceSettings := resources.Get "js/voice-settings.js" }}
+{{ if $voiceSettings }}
+  {{ $voiceSettings := $voiceSettings | minify | fingerprint }}
+  <script src="{{ $voiceSettings.RelPermalink }}" integrity="{{ $voiceSettings.Data.Integrity }}"></script>
+{{ end }}
+
 {{ end }}
 
 {{- /* 加载搜索唤醒动画脚本（独立） */ -}}
@@ -36,7 +52,7 @@
   <script src="{{ $langSwitch.RelPermalink }}" integrity="{{ $langSwitch.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 加载移动端菜单脚本 */ -}}
+{{- /* 加载移动端菜单脚�?*/ -}}
 {{ $mobileMenu := resources.Get "js/mobile-menu.js" }}
 {{ if $mobileMenu }}
   {{ $mobileMenu := $mobileMenu | minify | fingerprint }}
@@ -50,23 +66,23 @@
   <script src="{{ $navShared.RelPermalink }}" integrity="{{ $navShared.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 统一滚动条管理脚本 */ -}}
+{{- /* 统一滚动条管理脚�?*/ -}}
 {{ $scrollbarManager := resources.Get "js/scrollbar-manager.js" }}
 {{ if $scrollbarManager }}
   {{ $scrollbarManager := $scrollbarManager | minify | fingerprint }}
   <script src="{{ $scrollbarManager.RelPermalink }}" integrity="{{ $scrollbarManager.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 横线动画已移除 */ -}}
+{{- /* 横线动画已移�?*/ -}}
 
-{{- /* 统计栏数字翻页动画 */ -}}
+{{- /* 统计栏数字翻页动�?*/ -}}
 {{ $statsRoll := resources.Get "js/stats-roll.js" }}
 {{ if $statsRoll }}
   {{ $statsRoll := $statsRoll | minify | fingerprint }}
   <script src="{{ $statsRoll.RelPermalink }}" integrity="{{ $statsRoll.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 本地模拟访问量统计 - 所有环境 */ -}}
+{{- /* 本地模拟访问量统�?- 所有环�?*/ -}}
 {{ $localVisits := resources.Get "js/local-visits.js" }}
 {{ if $localVisits }}
   {{ $localVisits := $localVisits | minify | fingerprint }}
@@ -96,7 +112,7 @@
   <!-- html2pdf.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   
-  <!-- Resume PDF Generator - 动态加载 -->
+  <!-- Resume PDF Generator - 动态加�?-->
   <script>
     (function() {
       let currentGenerator = null;
@@ -116,10 +132,10 @@
         
         if (lang === 'zh') {
           script.src = '/js/resume-pdf-generator-CN.js?v=' + Date.now();
-          console.log('✓ Loading Chinese PDF generator script');
+          console.log('�?Loading Chinese PDF generator script');
         } else {
           script.src = '/js/resume-pdf-generator-EN.js?v=' + Date.now();
-          console.log('✓ Loading English PDF generator script');
+          console.log('�?Loading English PDF generator script');
         }
         
         script.onload = function() {
@@ -145,7 +161,7 @@
         currentGenerator = script;
       }
       
-      // 初始化
+      // 初始�?
       function init() {
         const currentLang = localStorage.getItem('site-lang') || 'en';
         console.log('localStorage site-lang:', currentLang);
@@ -169,4 +185,9 @@
 {{ end }}
 
 {{- /* Footer custom content area end */ -}}
+
+
+
+
+
 

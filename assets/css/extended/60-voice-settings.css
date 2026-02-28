@@ -1,0 +1,374 @@
+/* 设置按钮样式 */
+#settingsBtn,
+#mobile-settings-toggle {
+  color: var(--primary);
+  transition: opacity 0.3s ease;
+  position: relative;
+}
+
+#settingsBtn:hover,
+#mobile-settings-toggle:hover {
+  opacity: 0.7;
+}
+
+#settingsBtn svg,
+#mobile-settings-toggle svg {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  transition: transform 0.3s ease;
+}
+
+/* 设置打开时齿轮旋转 */
+#settingsBtn.is-open svg,
+#mobile-settings-toggle.is-open svg {
+  transform: rotate(90deg);
+}
+
+/* 搜索按钮悬浮样式 */
+.search-toggle,
+.mobile-search-toggle {
+  transition: opacity 0.3s ease;
+}
+
+.search-toggle:hover,
+.mobile-search-toggle:hover {
+  opacity: 0.7;
+}
+
+/* 导航按钮悬浮样式 */
+#mobile-nav-toggle,
+#mobile-menu-toggle {
+  transition: opacity 0.3s ease;
+}
+
+#mobile-nav-toggle:hover,
+#mobile-menu-toggle:hover {
+  opacity: 0.7;
+}
+
+/* 主题切换按钮悬浮样式 */
+#theme-toggle {
+  transition: opacity 0.3s ease;
+}
+
+#theme-toggle:hover {
+  opacity: 0.7;
+}
+
+/* 语言切换按钮悬浮样式 */
+#translations-list button {
+  transition: opacity 0.3s ease;
+}
+
+#translations-list button:hover {
+  opacity: 0.7;
+}
+
+/* 设置背景虚化层 */
+.settings-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1211;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.settings-backdrop.active {
+  display: block;
+  opacity: 1;
+}
+
+/* 设置下拉菜单 */
+.settings-dropdown {
+  display: none;
+  position: fixed;
+  z-index: 1212;
+  top: 56px;
+  right: 10px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  width: min(82vw, 230px);
+  max-height: none;
+  overflow: visible;
+  border: 1px solid #e0e0e0;
+  padding: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.98);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s step-end;
+}
+
+.settings-dropdown.active {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0s;
+}
+
+body.dark .settings-dropdown {
+  background: #1a1a1a;
+  border-color: #333333;
+}
+
+body:not(.dark) .settings-dropdown {
+  background: #ffffff;
+  border-color: #e0e0e0;
+}
+
+/* 移除滚动条样式 */
+.settings-dropdown::-webkit-scrollbar {
+  display: none;
+}
+
+.settings-dropdown {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.settings-header {
+  padding: 9px 10px;
+  border-bottom: 1px solid #e0e0e0;
+  margin: -6px -6px 0 -6px;
+}
+
+body.dark .settings-header {
+  border-bottom-color: #333333;
+}
+
+.settings-title {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #000000;
+}
+
+body.dark .settings-title {
+  color: #ffffff;
+}
+
+.settings-close {
+  display: none;
+}
+
+.settings-body {
+  padding: 8px 0;
+}
+
+.settings-group {
+  margin-bottom: 10px;
+}
+
+.settings-group:last-child {
+  margin-bottom: 0;
+}
+
+.settings-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #000000;
+  font-size: 0.75rem;
+}
+
+body.dark .settings-group label {
+  color: #ffffff;
+}
+
+.settings-group input[type="number"] {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+  -moz-appearance: textfield;
+}
+
+body.dark .settings-group input[type="number"] {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.settings-group input[type="number"]::-webkit-outer-spin-button,
+.settings-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.settings-group input[type="number"]:focus {
+  border-color: #000000;
+}
+
+body.dark .settings-group input[type="number"]:focus {
+  border-color: #ffffff;
+}
+
+.settings-group input[type="text"],
+.settings-group .settings-select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+body.dark .settings-group input[type="text"],
+body.dark .settings-group .settings-select {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.settings-group input[type="text"]:focus,
+.settings-group .settings-select:focus {
+  border-color: #000000;
+}
+
+body.dark .settings-group input[type="text"]:focus,
+body.dark .settings-group .settings-select:focus {
+  border-color: #ffffff;
+}
+
+.settings-group .settings-select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23000' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 9px center;
+  padding-right: 28px;
+}
+
+body.dark .settings-group .settings-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23fff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+}
+
+.settings-footer {
+  padding: 6px 0 0 0;
+  margin-top: 6px;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+body.dark .settings-footer {
+  border-top-color: #333333;
+}
+
+.settings-btn {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #000000;
+}
+
+body.dark .settings-btn {
+  background: #2a2a2a;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.settings-btn:hover {
+  background: #f5f5f5;
+}
+
+body.dark .settings-btn:hover {
+  background: #3a3a3a;
+}
+
+.settings-btn:active {
+  transform: scale(0.97);
+}
+
+.settings-btn-test {
+  margin-right: auto;
+}
+
+.settings-btn-save {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
+body.dark .settings-btn-save {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+.settings-btn-save:hover {
+  background: #333333;
+}
+
+body.dark .settings-btn-save:hover {
+  background: #e0e0e0;
+}
+
+/* 移动端适配 */
+@media (max-width: 650px) {
+  .settings-dropdown {
+    width: min(80vw, 220px);
+    right: 10px;
+    top: 56px;
+  }
+  
+  .settings-header {
+    padding: 8px 10px;
+  }
+  
+  .settings-title {
+    font-size: 0.85rem;
+  }
+  
+  .settings-body {
+    padding: 8px 0;
+  }
+  
+  .settings-group {
+    margin-bottom: 10px;
+  }
+  
+  .settings-group label {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+  
+  .settings-group input[type="number"],
+  .settings-group input[type="text"],
+  .settings-group .settings-select {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+  
+  .settings-footer {
+    padding: 6px 0 0 0;
+    gap: 5px;
+  }
+  
+  .settings-btn {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+}
