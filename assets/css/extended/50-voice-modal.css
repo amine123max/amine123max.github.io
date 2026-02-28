@@ -1,0 +1,236 @@
+/* 全局语音唤醒弹窗样式 */
+.search-wake-global {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.search-wake-global.is-active {
+  display: flex;
+  pointer-events: auto;
+}
+
+/* 背景虚化层 - 类似简历下载弹窗 */
+.search-wake-global-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: wakeOverlayFadeIn 0.3s ease;
+}
+
+@keyframes wakeOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 弹窗内容容器 */
+.search-wake-global-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: wakeContentZoomIn 0.4s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+@keyframes wakeContentZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 麦克风图标容器 */
+.search-wake-global-mic {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 麦克风图标 */
+.search-wake-global-mic svg {
+  width: 72px;
+  height: 72px;
+  stroke: #ffffff;
+  stroke-width: 1.8;
+  fill: none;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.4));
+  position: relative;
+  z-index: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  /* 高质量渲染设置 */
+  shape-rendering: geometricPrecision;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* 确保清晰度 */
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 波纹效果 - 第一层 */
+.search-wake-global-mic::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2.5px solid rgba(66, 133, 244, 0.8);
+  transform: translate(-50%, -50%);
+  animation: wakeMicRipple1 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+/* 波纹效果 - 第二层 */
+.search-wake-global-mic::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2.5px solid rgba(66, 133, 244, 0.6);
+  transform: translate(-50%, -50%);
+  animation: wakeMicRipple2 2.4s ease-out infinite;
+  animation-delay: 0.6s;
+  pointer-events: none;
+}
+
+/* 波纹效果 - 第三层 */
+.search-wake-global-mic .wake-ripple-3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2.5px solid rgba(66, 133, 244, 0.4);
+  transform: translate(-50%, -50%);
+  animation: wakeMicRipple3 2.4s ease-out infinite;
+  animation-delay: 1.2s;
+  pointer-events: none;
+}
+
+/* 波纹动画 - 第一层 */
+@keyframes wakeMicRipple1 {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 0.9;
+  }
+  100% {
+    width: 240%;
+    height: 240%;
+    opacity: 0;
+  }
+}
+
+/* 波纹动画 - 第二层 */
+@keyframes wakeMicRipple2 {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+  }
+  100% {
+    width: 240%;
+    height: 240%;
+    opacity: 0;
+  }
+}
+
+/* 波纹动画 - 第三层 */
+@keyframes wakeMicRipple3 {
+  0% {
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+  }
+  100% {
+    width: 240%;
+    height: 240%;
+    opacity: 0;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 520px) {
+  .search-wake-global-mic {
+    width: 100px;
+    height: 100px;
+  }
+
+  .search-wake-global-mic svg {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* 当搜索框语音按钮被唤醒时的动画效果 */
+.search-voice-btn.is-wake-pop {
+  animation: searchWakeVoicePop 0.62s cubic-bezier(0.18, 0.9, 0.2, 1);
+}
+
+.search-voice-btn.is-wake-pop::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  border: 2px solid rgba(122, 169, 255, 0.68);
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  pointer-events: none;
+  animation: searchWakeVoiceRing 0.62s ease-out;
+}
+
+@keyframes searchWakeVoicePop {
+  0% {
+    transform: translateY(-50%) scale(0.75);
+    background: rgba(66, 133, 244, 0.12);
+  }
+  55% {
+    transform: translateY(-50%) scale(1.2);
+    background: rgba(66, 133, 244, 0.28);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    background: transparent;
+  }
+}
+
+@keyframes searchWakeVoiceRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.78;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+}

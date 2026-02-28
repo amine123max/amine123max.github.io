@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </button>
           <div class="search-engine-menu" id="searchEngineMenu" role="listbox"></div>
         </div>
-        <input type="text" class="search-input" id="searchModalInput" placeholder="Type to search..." autofocus>
+        <input type="text" class="search-input" id="searchModalInput" placeholder="Type to search...">
       </div>
       <div class="search-suggest-list" id="searchSuggestList"></div>
     </div>
@@ -137,11 +137,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function openSearch() {
+  function openSearch(source) {
+    if (searchOverlay.classList.contains('active')) return;
     searchOverlay.style.alignItems = 'center';
     searchOverlay.style.justifyContent = 'center';
     searchOverlay.style.padding = '0';
+    document.body.classList.add('search-modal-open');
     searchOverlay.classList.add('active');
+    document.dispatchEvent(new CustomEvent('search:opened', {
+      detail: { source: source || 'unknown' }
+    }));
     setTimeout(() => searchInput.focus(), 100);
   }
 
@@ -149,15 +154,25 @@ document.addEventListener('DOMContentLoaded', function() {
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
-      openSearch();
+      openSearch('search-button');
     });
   });
 
+  document.addEventListener('search:open-request', function(e) {
+    const source = e && e.detail && e.detail.source ? e.detail.source : 'external';
+    openSearch(source);
+  });
+
   function closeSearch() {
+    if (!searchOverlay.classList.contains('active')) return;
     searchOverlay.classList.remove('active');
+    document.body.classList.remove('search-modal-open');
+    clearTimeout(searchDebounce);
+    searchInput.blur();
     searchInput.value = '';
     suggestList.innerHTML = '';
     closeEngineMenu();
+    document.dispatchEvent(new CustomEvent('search:closed'));
   }
 
   async function loadSearchIndex() {
@@ -247,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   async function runPopupSearch() {
+    if (!searchOverlay.classList.contains('active')) return [];
     const query = searchInput.value.trim();
     if (!query) {
       suggestList.innerHTML = '';
@@ -311,6 +327,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   searchInput.addEventListener('input', function() {
+    if (!searchOverlay.classList.contains('active')) return;
     clearTimeout(searchDebounce);
     searchDebounce = setTimeout(() => {
       runPopupSearch();
@@ -325,10 +342,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const detail = e && e.detail ? e.detail : null;
     const query = String((detail && detail.query) || searchInput.value || '').trim();
     if (!query) return;
+    closeSearch();
     window.location.assign(buildExternalSearchUrl(query));
   });
 
   searchInput.addEventListener('keydown', async function(e) {
+    if (!searchOverlay.classList.contains('active')) return;
     if (e.key === 'Enter') {
       e.preventDefault();
       if (Date.now() < suppressEnterUntil) return;
@@ -336,8 +355,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!matched.length) return;
       const first = matched[0];
       if (first && first.permalink) {
+        closeSearch();
         window.location.assign(first.permalink);
       }
+    }
+  });
+
+  suggestList.addEventListener('click', function(e) {
+    if (e.target.closest('a')) {
+      closeSearch();
     }
   });
 
@@ -347,7 +373,7 @@ document.addEventListener('DOMContentLoaded', function() {
   window.addEventListener('languageChanged', function() {
     updateEngineTriggerText();
     renderEngineMenu();
-    if (searchInput.value.trim()) {
+    if (searchOverlay.classList.contains('active') && searchInput.value.trim()) {
       runPopupSearch();
     }
   });

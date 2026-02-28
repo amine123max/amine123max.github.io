@@ -15,6 +15,20 @@
   <script src="{{ $searchVoice.RelPermalink }}" integrity="{{ $searchVoice.Data.Integrity }}"></script>
 {{ end }}
 
+{{- /* 加载搜索唤醒词脚本 */ -}}
+{{ $searchWake := resources.Get "js/search-wake-word.js" }}
+{{ if $searchWake }}
+  {{ $searchWake := $searchWake | minify | fingerprint }}
+  <script src="{{ $searchWake.RelPermalink }}" integrity="{{ $searchWake.Data.Integrity }}"></script>
+{{ end }}
+
+{{- /* 加载搜索唤醒动画脚本（独立） */ -}}
+{{ $searchWakeAnim := resources.Get "js/search-wake-animation.js" }}
+{{ if $searchWakeAnim }}
+  {{ $searchWakeAnim := $searchWakeAnim | minify | fingerprint }}
+  <script src="{{ $searchWakeAnim.RelPermalink }}" integrity="{{ $searchWakeAnim.Data.Integrity }}"></script>
+{{ end }}
+
 {{- /* 加载语言切换脚本 */ -}}
 {{ $langSwitch := resources.Get "js/lang-switch.js" }}
 {{ if $langSwitch }}
