@@ -242,6 +242,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.remove('mobile-sidebar-open');
     if (menuToggle) menuToggle.classList.remove('active');
     if (navToggle) navToggle.classList.remove('active');
+    
+    // 释放互斥锁
+    setTimeout(function() {
+      if (window.navMutex) {
+        window.navMutex.close('mobile-menu');
+      }
+    }, 50);
   }
 
   function closeNavMenu() {
@@ -249,12 +256,31 @@ document.addEventListener('DOMContentLoaded', function() {
     sessionStorage.removeItem(KEEP_MOBILE_NAV_OPEN_KEY);
     document.body.classList.remove('mobile-nav-open');
     if (navToggle) navToggle.classList.remove('active');
+    
+    // 释放互斥锁
+    setTimeout(function() {
+      if (window.navMutex) {
+        window.navMutex.close('mobile-nav');
+      }
+    }, 50);
   }
 
   function toggleMenu() {
     if (!menuToggle) return;
 
     if (isNarrowScreen()) {
+      const isCurrentlyOpen = document.body.classList.contains('mobile-sidebar-open');
+      
+      if (!isCurrentlyOpen) {
+        if (window.navMutex && !window.navMutex.tryOpen('mobile-menu')) {
+          return;
+        }
+      } else {
+        if (window.navMutex) {
+          window.navMutex.close('mobile-menu');
+        }
+      }
+      
       closeNavMenu();
       const isOpen = document.body.classList.toggle('mobile-sidebar-open');
       menuToggle.classList.toggle('active', isOpen);
@@ -283,6 +309,18 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    const isCurrentlyOpen = document.body.classList.contains('mobile-nav-open');
+    
+    if (!isCurrentlyOpen) {
+      if (window.navMutex && !window.navMutex.tryOpen('mobile-nav')) {
+        return;
+      }
+    } else {
+      if (window.navMutex) {
+        window.navMutex.close('mobile-nav');
+      }
+    }
+
     const isOpen = document.body.classList.toggle('mobile-nav-open');
     navToggle.classList.toggle('active', isOpen);
     if (isOpen) {
@@ -301,6 +339,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (menuToggle) menuToggle.classList.remove('active');
     updateOverlayAndScrollLock();
     relocateTopSwitches();
+    
+    // 释放所有互斥锁
+    setTimeout(function() {
+      if (window.navMutex) {
+        window.navMutex.closeAll();
+      }
+    }, 100);
   }
 
   if (menuToggle) {

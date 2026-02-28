@@ -139,6 +139,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function openSearch(source) {
     if (searchOverlay.classList.contains('active')) return;
+    
+    // 检查互斥锁
+    if (window.navMutex && !window.navMutex.tryOpen('search')) {
+      return; // 其他功能正在运行，拒绝打开
+    }
+    
     searchOverlay.style.alignItems = 'center';
     searchOverlay.style.justifyContent = 'center';
     searchOverlay.style.padding = '0';
@@ -173,6 +179,13 @@ document.addEventListener('DOMContentLoaded', function() {
     suggestList.innerHTML = '';
     closeEngineMenu();
     document.dispatchEvent(new CustomEvent('search:closed'));
+    
+    // 释放互斥锁（延迟以确保动画完成）
+    setTimeout(function() {
+      if (window.navMutex) {
+        window.navMutex.close('search');
+      }
+    }, 100);
   }
 
   async function loadSearchIndex() {

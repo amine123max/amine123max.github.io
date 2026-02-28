@@ -1,6 +1,7 @@
 .mobile-menu-toggle,
 .mobile-nav-toggle,
-.mobile-search-toggle {
+.mobile-search-toggle,
+.mobile-settings-toggle {
   display: none !important;
   align-items: center;
   justify-content: center;
@@ -14,17 +15,35 @@
   border-radius: 0 !important;
   box-shadow: none !important;
   color: var(--primary);
+  transition: opacity 0.3s ease;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-nav-toggle:hover,
+.mobile-search-toggle:hover,
+.mobile-settings-toggle:hover {
+  opacity: 0.7;
 }
 
 .mobile-nav-toggle {
   flex-direction: column;
 }
 
-.mobile-search-toggle svg {
+.mobile-search-toggle svg,
+.mobile-settings-toggle svg {
   width: 22px;
   height: 22px;
+}
+
+.mobile-search-toggle svg {
   stroke: var(--primary);
   fill: none;
+  stroke-width: 2;
+}
+
+.mobile-settings-toggle svg {
+  fill: none;
+  stroke: var(--primary);
   stroke-width: 2;
 }
 
@@ -63,12 +82,17 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1150;
+  opacity: 0;
+  transition: opacity 0.22s ease;
 }
 
 .mobile-menu-overlay.active {
   display: block;
+  opacity: 1;
 }
 
 .mobile-global-sidebar {
@@ -194,12 +218,21 @@ body.mobile-nav-open .mobile-nav-panel {
     z-index: 1213 !important;
   }
 
+  body:not(.home) .mobile-settings-toggle,
+  body.home .mobile-settings-toggle {
+    display: inline-flex !important;
+    position: fixed !important;
+    top: 14px !important;
+    right: 82px !important;
+    z-index: 1214 !important;
+  }
+
   body:not(.home) .mobile-search-toggle,
   body.home .mobile-search-toggle {
     display: inline-flex !important;
     position: fixed !important;
     top: 14px !important;
-    right: 48px !important;
+    right: 46px !important;
     z-index: 1213 !important;
   }
 
@@ -396,6 +429,10 @@ body.mobile-nav-open .mobile-nav-panel {
   }
 
   body.mobile-sidebar-open .mobile-search-toggle {
+    display: none !important;
+  }
+
+  body.mobile-sidebar-open .mobile-settings-toggle {
     display: none !important;
   }
 
