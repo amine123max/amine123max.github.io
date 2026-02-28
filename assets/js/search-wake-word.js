@@ -76,27 +76,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function requestOpenSearch() {
-    document.dispatchEvent(new CustomEvent('search:open-request', {
-      detail: { source: 'wake-word' }
-    }));
-  }
-
-  function requestStartVoiceInput() {
-    document.dispatchEvent(new CustomEvent('search:start-voice-input-request', {
-      detail: { source: 'wake-word' }
-    }));
-  }
-
   function wakeOnlyOpenSearch() {
     stopWakeListening();
     document.dispatchEvent(new CustomEvent('search:wake-word-detected'));
     pendingVoiceStart = true;
-    requestOpenSearch();
-    setTimeout(function() {
-      if (!pendingVoiceStart) return;
-      requestStartVoiceInput();
-    }, 220);
   }
 
   function handleWakeResult(event) {
@@ -141,17 +124,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener('search:opened', function() {
     stopWakeListening();
-    if (!pendingVoiceStart) return;
-    setTimeout(function() {
-      if (!pendingVoiceStart) return;
-      requestStartVoiceInput();
-    }, 120);
   });
 
   document.addEventListener('search:closed', function() {
     pendingVoiceStart = false;
     wakeCooldownUntil = Date.now() + WAKE_COOLDOWN_MS;
     scheduleWakeRestart(350);
+  });
+
+  document.addEventListener('search:wake-voice-complete', function() {
+    pendingVoiceStart = false;
   });
 
   document.addEventListener('search:voice-input-started', function() {
