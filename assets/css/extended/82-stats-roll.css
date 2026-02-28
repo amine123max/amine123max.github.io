@@ -8,23 +8,23 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .metric-roll-char {
   display: inline-flex;
   align-items: flex-end;
-  line-height: 1.05em;
+  line-height: 1.18em;
 }
 
 .metric-roll-digit {
   position: relative;
   display: inline-block;
-  width: 0.9ch;
-  min-width: 0.9ch;
-  height: 1.05em;
+  width: 0.98ch;
+  min-width: 0.98ch;
+  height: 1.18em;
   overflow: hidden;
-  line-height: 1.05em;
+  line-height: 1.18em;
 }
 
 .metric-roll-track {
@@ -35,13 +35,16 @@
 }
 
 .metric-roll-track.is-animating {
-  transition: transform 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition-property: transform;
+  transition-duration: var(--metric-roll-duration, 720ms);
+  transition-timing-function: var(--metric-roll-ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+  transition-delay: var(--metric-roll-delay, 0ms);
 }
 
 .metric-roll-face {
   display: block;
-  height: 1.05em;
-  line-height: 1.05em;
+  height: 1.18em;
+  line-height: 1.18em;
   text-align: center;
 }
 

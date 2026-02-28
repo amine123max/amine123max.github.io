@@ -155,13 +155,13 @@ body.dark .profile-welcome {
 .stats-metric-item {
   text-align: center;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .metric-value {
   display: block;
-  font-size: 1.66rem;
-  line-height: 1.05;
+  font-size: 1.54rem;
+  line-height: 1.12;
   font-weight: 600;
   color: var(--primary);
   letter-spacing: 0;
@@ -293,7 +293,8 @@ body.dark .metric-label {
   }
 
   .metric-value {
-    font-size: 1.48rem;
+    font-size: 1.38rem;
+    line-height: 1.1;
   }
 }
 

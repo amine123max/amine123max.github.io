@@ -262,6 +262,9 @@ document.addEventListener('DOMContentLoaded', function() {
       if (navToggle) navToggle.classList.remove('active');
       updateOverlayAndScrollLock();
       relocateTopSwitches();
+      if (isOpen) {
+        window.dispatchEvent(new CustomEvent('mobile:sidebar-opened'));
+      }
       return;
     }
 
