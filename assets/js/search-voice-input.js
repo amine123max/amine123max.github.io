@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
   const wrapper = document.querySelector('.search-input-wrapper.search-input-wrapper-minimal');
   const searchInput = document.getElementById('searchModalInput');
-  if (!wrapper || !searchInput) return;
+  const searchOverlay = document.querySelector('.search-overlay');
+  if (!wrapper || !searchInput || !searchOverlay) return;
 
   if (wrapper.querySelector('.search-voice-btn')) return;
 
@@ -54,12 +55,17 @@ document.addEventListener('DOMContentLoaded', function() {
   let isListening = false;
   let hasVoiceResult = false;
   let latestVoiceQuery = '';
+  let voiceStartSource = 'button';
 
   function setListeningState(listening) {
     isListening = listening;
     voiceBtn.classList.toggle('is-listening', listening);
     voiceBtn.setAttribute('aria-pressed', listening ? 'true' : 'false');
     updateVoiceButtonText();
+    document.dispatchEvent(new CustomEvent(
+      listening ? 'search:voice-input-started' : 'search:voice-input-stopped',
+      { detail: { source: voiceStartSource } }
+    ));
   }
 
   function getRecognitionLang() {
@@ -67,24 +73,58 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateInputValue(value) {
+    if (!searchOverlay.classList.contains('active')) return;
     searchInput.value = value;
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
     searchInput.dispatchEvent(new CustomEvent('search:voice-input', { bubbles: true }));
   }
 
+  function sanitizeVoiceQuery(value) {
+    const raw = String(value || '');
+    if (!raw) return '';
+    return raw
+      .replace(/小迪小迪|小弟小弟|晓迪晓迪/g, ' ')
+      .replace(/xiao\s*di\s*xiao\s*di/gi, ' ')
+      .replace(/[，,。.!！？?、]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function stopListening() {
+    hasVoiceResult = false;
+    latestVoiceQuery = '';
+    if (!isListening) return;
+    try {
+      recognition.stop();
+    } catch (_) {
+      setListeningState(false);
+    }
+  }
+
+  function startListening(source) {
+    if (voiceBtn.disabled) return false;
+    if (!searchOverlay.classList.contains('active')) return false;
+    if (isListening) return true;
+    hasVoiceResult = false;
+    latestVoiceQuery = '';
+    voiceStartSource = source || 'button';
+    recognition.lang = getRecognitionLang();
+    try {
+      recognition.start();
+      return true;
+    } catch (_) {
+      setListeningState(false);
+      return false;
+    }
+  }
+
   voiceBtn.addEventListener('click', function() {
+    if (!searchOverlay.classList.contains('active')) return;
     if (isListening) {
       recognition.stop();
       return;
     }
-    hasVoiceResult = false;
-    latestVoiceQuery = '';
-    recognition.lang = getRecognitionLang();
-    try {
-      recognition.start();
-    } catch (_) {
-      setListeningState(false);
-    }
+    startListening('button');
   });
 
   recognition.addEventListener('start', function() {
@@ -92,11 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   recognition.addEventListener('result', function(event) {
+    if (!searchOverlay.classList.contains('active')) return;
     let transcript = '';
     for (let i = event.resultIndex; i < event.results.length; i += 1) {
       transcript += event.results[i][0].transcript;
     }
-    const nextQuery = transcript.trim();
+    const nextQuery = sanitizeVoiceQuery(transcript);
     updateInputValue(nextQuery);
     if (nextQuery) {
       hasVoiceResult = true;
@@ -110,7 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   recognition.addEventListener('end', function() {
     setListeningState(false);
-    const query = (latestVoiceQuery || searchInput.value || '').trim();
+    if (!searchOverlay.classList.contains('active')) return;
+    const query = sanitizeVoiceQuery(latestVoiceQuery || searchInput.value || '');
     if (!hasVoiceResult || !query) return;
     searchInput.dispatchEvent(new CustomEvent('search:voice-submit', {
       bubbles: true,
@@ -120,4 +162,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateVoiceButtonText();
   window.addEventListener('languageChanged', updateVoiceButtonText);
+  document.addEventListener('search:closed', stopListening);
+  document.addEventListener('search:start-voice-input-request', function(e) {
+    if (!searchOverlay.classList.contains('active')) return;
+    const source = e && e.detail && e.detail.source ? e.detail.source : 'wake-word';
+    if (source !== 'wake-word') return;
+    startListening('wake-word');
+  });
 });
