@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!visitNodes.length) return;
 
   const STORAGE_KEY = 'visits_state';
+  const K_THRESHOLD = 1000;
+  const ROLL_UPDATE_DELAY_MS = 48;
 
   function toYmdLocal(date) {
     const y = date.getFullYear();
@@ -34,8 +36,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function formatVisits(n) {
     if (!Number.isFinite(n)) return '10';
-    if (n >= 1000) return `${(n / 1000).toFixed(1)}K`;
+    if (n >= K_THRESHOLD) return `${(n / 1000).toFixed(1)}K`;
     return String(Math.floor(n));
+  }
+
+  function getBaseVisits(node) {
+    const raw = Number(node.getAttribute('data-base-visits'));
+    if (!Number.isFinite(raw)) return 0;
+    return Math.max(0, Math.floor(raw));
+  }
+
+  function getRollStartDisplay(targetCount, node) {
+    const baseCount = getBaseVisits(node);
+    if (targetCount >= K_THRESHOLD) {
+      const kStart = baseCount >= K_THRESHOLD ? baseCount : 0;
+      return `${(kStart / 1000).toFixed(1)}K`;
+    }
+    return String(Math.min(baseCount, targetCount));
   }
 
   const base = 10;
@@ -71,6 +88,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const display = formatVisits(state.count);
   visitNodes.forEach((node) => {
-    node.textContent = display;
+    const startDisplay = getRollStartDisplay(state.count, node);
+    node.dataset.rollValue = startDisplay;
+    node.textContent = startDisplay;
   });
+
+  // Delay target write so stats-roll MutationObserver can capture and animate it.
+  window.setTimeout(() => {
+    visitNodes.forEach((node) => {
+      node.textContent = display;
+    });
+  }, ROLL_UPDATE_DELAY_MS);
 });

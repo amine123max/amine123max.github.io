@@ -399,12 +399,19 @@ body:not(.dark) .interests-list li::before {
   right: auto;
   top: 50%;
   transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   color: rgba(255, 255, 255, 0.75);
 }
 
 .search-input-wrapper.search-input-wrapper-minimal .search-input-icon svg {
   width: 19px;
   height: 19px;
+  display: block;
 }
 
 .search-input-wrapper.search-input-wrapper-minimal .search-engine-selector {
@@ -412,6 +419,10 @@ body:not(.dark) .interests-list li::before {
   left: 44px;
   top: 50%;
   transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
   z-index: 2;
 }
 
@@ -442,6 +453,7 @@ body:not(.dark) .interests-list li::before {
 .search-input-wrapper.search-input-wrapper-minimal .search-engine-caret {
   width: 14px;
   height: 14px;
+  display: block;
   transition: transform 0.14s ease;
 }
 
@@ -502,6 +514,7 @@ body:not(.dark) .interests-list li::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  line-height: 0;
   cursor: pointer;
   transition: color 0.16s ease, background-color 0.16s ease;
 }
@@ -509,6 +522,7 @@ body:not(.dark) .interests-list li::before {
 .search-input-wrapper.search-input-wrapper-minimal .search-voice-btn svg {
   width: 21px;
   height: 21px;
+  display: block;
   pointer-events: none;
 }
 

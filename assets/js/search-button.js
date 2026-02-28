@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const engineMenu = searchOverlay.querySelector('#searchEngineMenu');
   const searchIndexCache = new Map();
   let searchDebounce = null;
+  let suppressEnterUntil = 0;
   let selectedEngineId = loadEnginePreference();
 
   function getEngineById(id) {
@@ -218,9 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function buildExternalSearchUrl(query) {
     const engine = getEngineById(selectedEngineId);
-    const host = window.location.hostname || '';
-    const isLocalHost = host === 'localhost' || host === '127.0.0.1' || host === '::1';
-    const terms = isLocalHost ? query : `site:${host} ${query}`;
+    const terms = query;
 
     if (engine.id === 'bing') {
       return `https://www.bing.com/search?q=${encodeURIComponent(terms)}`;
@@ -318,13 +317,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 120);
   });
 
+  searchInput.addEventListener('search:voice-input', function() {
+    suppressEnterUntil = Date.now() + 1800;
+  });
+
+  searchInput.addEventListener('search:voice-submit', function(e) {
+    const detail = e && e.detail ? e.detail : null;
+    const query = String((detail && detail.query) || searchInput.value || '').trim();
+    if (!query) return;
+    window.location.assign(buildExternalSearchUrl(query));
+  });
+
   searchInput.addEventListener('keydown', async function(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
-      await runPopupSearch();
-      const first = suggestList.querySelector('.search-suggest-item');
-      if (first) {
-        window.location.assign(first.href);
+      if (Date.now() < suppressEnterUntil) return;
+      const matched = await runPopupSearch();
+      if (!matched.length) return;
+      const first = matched[0];
+      if (first && first.permalink) {
+        window.location.assign(first.permalink);
       }
     }
   });

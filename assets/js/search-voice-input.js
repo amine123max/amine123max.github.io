@@ -52,6 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
   recognition.maxAlternatives = 1;
 
   let isListening = false;
+  let hasVoiceResult = false;
+  let latestVoiceQuery = '';
 
   function setListeningState(listening) {
     isListening = listening;
@@ -67,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateInputValue(value) {
     searchInput.value = value;
     searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    searchInput.dispatchEvent(new CustomEvent('search:voice-input', { bubbles: true }));
   }
 
   voiceBtn.addEventListener('click', function() {
@@ -74,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
       recognition.stop();
       return;
     }
+    hasVoiceResult = false;
+    latestVoiceQuery = '';
     recognition.lang = getRecognitionLang();
     try {
       recognition.start();
@@ -91,7 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let i = event.resultIndex; i < event.results.length; i += 1) {
       transcript += event.results[i][0].transcript;
     }
-    updateInputValue(transcript.trim());
+    const nextQuery = transcript.trim();
+    updateInputValue(nextQuery);
+    if (nextQuery) {
+      hasVoiceResult = true;
+      latestVoiceQuery = nextQuery;
+    }
   });
 
   recognition.addEventListener('error', function() {
@@ -100,7 +110,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   recognition.addEventListener('end', function() {
     setListeningState(false);
-    searchInput.focus();
+    const query = (latestVoiceQuery || searchInput.value || '').trim();
+    if (!hasVoiceResult || !query) return;
+    searchInput.dispatchEvent(new CustomEvent('search:voice-submit', {
+      bubbles: true,
+      detail: { query }
+    }));
   });
 
   updateVoiceButtonText();
