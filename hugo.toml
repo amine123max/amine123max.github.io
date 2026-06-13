@@ -293,7 +293,7 @@ pagerSize = 5
     tags = ["私密"]
   
   # 技术栈
-  skills = ["Python", "C++", "Git", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
+  skills = ["Python", "C++", "Git", "React", "Vite", "TypeScript", "FastAPI", "PostgreSQL", "Docker", "Nginx", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
   
   # 学术论文
   [[params.papers]]
@@ -365,6 +365,17 @@ pagerSize = 5
     descriptionZh = "参与'基于安全强化学习的超车变道机制研究'创新项目研究。\n• 文献调研：进行大量文献检索及对比分析，研究安全强化学习算法现状。\n• 算法实现：开发安全机制，引入惩罚函数与安全距离感知模块，识别并修正不安全动作。\n• 仿真测试：搭建超车变道控制仿真环境，进行算法验证与性能测试。\n• 文档撰写：参与论文编写、期刊等文献的大量撰集及阅读，参与中期及结项答辩。\n项目评审获得优秀成绩，积累了安全AI系统研发经验。"
   
   # 实习经历
+  [[params.internshipExperience]]
+    company = "Nexora Connect Pty Ltd"
+    companyZh = "Nexora Connect Pty Ltd"
+    role = "Full-Stack Engineer Intern"
+    roleZh = "全栈工程师实习生"
+    period = "Mar 2026 - Jun 2026"
+    location = "Remote"
+    locationZh = "远程"
+    description = "Worked as a full-stack engineer intern on an enterprise multi-terminal ERP platform, covering frontend interfaces, backend APIs, database workflows, integration, and deployment support.\n• Frontend: Built TypeScript/React/Vite pages, reusable components, routing, forms, tables, and API-driven interaction flows.\n• Backend: Developed FastAPI REST APIs, SQLAlchemy models, Alembic migrations, authentication/session logic, and permission-aware services.\n• Engineering: Handled PostgreSQL data workflows, frontend-backend contract debugging, Docker Compose/Nginx setup, Git collaboration, and Pytest regression checks.\nTech stack: React, Vite, TypeScript, Tailwind CSS, Material UI, FastAPI, SQLAlchemy, Alembic, PostgreSQL, Docker, Nginx, Pytest."
+    descriptionZh = "在企业级ERP多端平台中担任全栈工程师实习生，工作覆盖前端界面、后端接口、数据库流程、系统联调与部署测试支持。\n• 前端：基于TypeScript/React/Vite开发页面、可复用组件、路由、表单、表格与API驱动交互流程。\n• 后端：基于FastAPI开发REST API、SQLAlchemy模型、Alembic迁移、鉴权/会话逻辑与权限相关服务。\n• 工程：参与PostgreSQL数据流程、前后端接口契约调试、Docker Compose/Nginx环境配置、Git协作与Pytest回归验证。\n技术栈：React、Vite、TypeScript、Tailwind CSS、Material UI、FastAPI、SQLAlchemy、Alembic、PostgreSQL、Docker、Nginx、Pytest。"
+
   [[params.internshipExperience]]
     company = "Wuhan Weishixun Information Technology Co., Ltd."
     companyZh = "武汉威士讯信息技术有限公司"

@@ -72,6 +72,13 @@ function extractResumeData() {
   // Hard-coded internship experience data
   data.internshipExperience = [
     {
+      company: 'Nexora Connect Pty Ltd',
+      role: 'Full-Stack Engineer Intern',
+      period: 'Mar 2026 - Jun 2026',
+      location: 'Remote',
+      description: 'Worked as a full-stack engineer intern on an enterprise multi-terminal ERP platform, covering frontend interfaces, backend APIs, database workflows, integration, and deployment support.\n• Frontend: Built TypeScript/React/Vite pages, reusable components, routing, forms, tables, and API-driven interaction flows.\n• Backend: Developed FastAPI REST APIs, SQLAlchemy models, Alembic migrations, authentication/session logic, and permission-aware services.\n• Engineering: Handled PostgreSQL data workflows, frontend-backend contract debugging, Docker Compose/Nginx setup, Git collaboration, and Pytest regression checks.\nTech stack: React, Vite, TypeScript, Tailwind CSS, Material UI, FastAPI, SQLAlchemy, Alembic, PostgreSQL, Docker, Nginx, Pytest.'
+    },
+    {
       company: 'Wuhan Weishixun Information Technology Co., Ltd.',
       companyUrl: 'https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A8%81%E5%A3%AB%E8%AE%AF%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/13129367',
       role: 'Software & Hardware Engineer Intern',
@@ -90,6 +97,22 @@ function extractResumeData() {
   document.querySelectorAll('.interests-list[data-lang="en"] li').forEach(li => {
     data.interests.push(li.textContent.trim());
   });
+
+  // Add featured OceanSim project from homepage card
+  const featuredOceanSim = document.querySelector('.featured-oceansim-link');
+  if (featuredOceanSim) {
+    const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="en"]')?.textContent?.trim();
+    const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="en"]')?.textContent?.trim();
+    const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+    if (name) {
+      data.projects.push({
+        name,
+        description,
+        tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+        url
+      });
+    }
+  }
 
   // Extract projects from page DOM
   document.querySelectorAll('.project-card').forEach(card => {
@@ -225,8 +248,11 @@ function generateResumeHTML(data) {
           margin-bottom: 16px;
           margin-left: 0 !important;
           padding-left: 0 !important;
-          page-break-inside: avoid;
-          break-inside: avoid;
+        }
+
+        .projects-section {
+          page-break-before: always;
+          break-before: page;
         }
         
         .section h2 {
@@ -438,7 +464,7 @@ function generateResumeHTML(data) {
         
         <!-- Projects -->
         ${data.projects && data.projects.length > 0 ? `
-        <div class="section">
+        <div class="section projects-section">
           <h2>Projects</h2>
           ${data.projects.map(project => `
             <div class="exp-item">
@@ -496,7 +522,7 @@ async function generatePDF() {
         });
       }));
       
-      // Configure PDF options - single page, highest quality
+      // Configure PDF options
       const element = tempDiv.querySelector('.resume-container');
       
       const opt = {
@@ -522,13 +548,15 @@ async function generatePDF() {
           precision: 16
         },
         pagebreak: { 
-          mode: 'avoid-all'
+          mode: ['css', 'legacy'],
+          before: '.projects-section',
+          avoid: ['.exp-item', '.edu-item']
         }
       };
       
       console.log('Starting PDF generation...');
       
-      // Generate PDF - single page output
+      // Generate PDF
       await html2pdf().set(opt).from(element).save();
       
       console.log('PDF generated successfully');

@@ -82,6 +82,13 @@ function extractResumeData() {
   // 实习经历数据
   data.internshipExperience = [
     {
+      company: 'Nexora Connect Pty Ltd',
+      role: '全栈工程师实习生',
+      period: '2026年3月 - 2026年6月',
+      location: '远程',
+      description: '在企业级ERP多端平台中担任全栈工程师实习生，工作覆盖前端界面、后端接口、数据库流程、系统联调与部署测试支持。\n• 前端：基于TypeScript/React/Vite开发页面、可复用组件、路由、表单、表格与API驱动交互流程。\n• 后端：基于FastAPI开发REST API、SQLAlchemy模型、Alembic迁移、鉴权/会话逻辑与权限相关服务。\n• 工程：参与PostgreSQL数据流程、前后端接口契约调试、Docker Compose/Nginx环境配置、Git协作与Pytest回归验证。\n技术栈：React、Vite、TypeScript、Tailwind CSS、Material UI、FastAPI、SQLAlchemy、Alembic、PostgreSQL、Docker、Nginx、Pytest。'
+    },
+    {
       company: '武汉威士讯信息技术有限公司',
       companyUrl: 'https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A8%81%E5%A3%AB%E8%AE%AF%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/13129367',
       role: '软硬件工程师实习生',
@@ -100,6 +107,22 @@ function extractResumeData() {
   document.querySelectorAll('.interests-list[data-lang="en"] li').forEach(li => {
     data.interests.push(li.textContent.trim());
   });
+
+  // 添加首页重点 OceanSim 项目
+  const featuredOceanSim = document.querySelector('.featured-oceansim-link');
+  if (featuredOceanSim) {
+    const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="zh"]')?.textContent?.trim();
+    const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="zh"]')?.textContent?.trim();
+    const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+    if (name) {
+      data.projects.push({
+        name,
+        description,
+        tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+        url
+      });
+    }
+  }
 
   // 从页面提取项目（中文版本）
   document.querySelectorAll('.project-card').forEach(card => {
@@ -241,8 +264,11 @@ function generateResumeHTML(data) {
           margin-bottom: 16px;
           margin-left: 0 !important;
           padding-left: 0 !important;
-          page-break-inside: avoid;
-          break-inside: avoid;
+        }
+
+        .projects-section {
+          page-break-before: always;
+          break-before: page;
         }
         
         .section h2 {
@@ -454,7 +480,7 @@ function generateResumeHTML(data) {
         
         <!-- Projects -->
         ${data.projects && data.projects.length > 0 ? `
-        <div class="section">
+        <div class="section projects-section">
           <h2>项目经历</h2>
           ${data.projects.map(project => `
             <div class="exp-item">
@@ -512,7 +538,7 @@ async function generatePDF() {
         });
       }));
       
-      // Configure PDF options - single page, highest quality
+      // Configure PDF options
       const element = tempDiv.querySelector('.resume-container');
       
       const opt = {
@@ -543,13 +569,15 @@ async function generatePDF() {
           floatPrecision: 16
         },
         pagebreak: { 
-          mode: 'avoid-all'
+          mode: ['css', 'legacy'],
+          before: '.projects-section',
+          avoid: ['.exp-item', '.edu-item']
         }
       };
       
       console.log('Starting PDF generation...');
       
-      // Generate PDF - single page output
+      // Generate PDF
       await html2pdf().set(opt).from(element).save();
       
       console.log('PDF generated successfully');

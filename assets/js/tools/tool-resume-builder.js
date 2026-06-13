@@ -1401,12 +1401,13 @@
       ".tool-rb-contact{margin-top:6px;font-size:10px;line-height:1.5;}" +
       ".tool-rb-contact-item{margin:0 0 2px 0;color:#333 !important;}" +
       ".tool-rb-contact-item strong{color:#000 !important;font-weight:600;margin-right:5px;}" +
-      ".tool-rb-section{margin:0 0 16px 0;page-break-inside:avoid;break-inside:avoid;}" +
+      ".tool-rb-section{margin:0 0 16px 0;}" +
+      ".tool-rb-projects-section{page-break-before:always;break-before:page;}" +
       ".tool-rb-section-title{display:block !important;width:100% !important;margin:0 0 10px 0 !important;padding:0 0 4px 0 !important;border:0 !important;border-bottom:2px solid #333 !important;font-size:16px !important;font-weight:700 !important;color:#000 !important;line-height:1.3;}" +
       ".tool-rb-about-text{margin:0;font-size:11px !important;line-height:1.6 !important;color:#333 !important;}" +
       ".tool-rb-description{margin:0;font-size:10px !important;line-height:1.7 !important;color:#555 !important;}" +
       ".tool-rb-entry-list{display:block;}" +
-      ".tool-rb-entry{margin:0 0 12px 0;}" +
+      ".tool-rb-entry{margin:0 0 12px 0;page-break-inside:avoid;break-inside:avoid;}" +
       ".tool-rb-entry:last-child{margin-bottom:0;}" +
       ".tool-rb-entry-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin:0 0 4px 0;}" +
       ".tool-rb-entry-title{font-size:12px;font-weight:700;color:#000;line-height:1.4;}" +
@@ -1438,7 +1439,7 @@
       renderStructuredSection(labels.internshipExperience, internshipValue) +
       renderStructuredSection(labels.education, educationValue) +
       "<section class='tool-rb-section'><h2 class='tool-rb-section-title'>" + labels.skills + "</h2>" + skillsBlock + "</section>" +
-      renderSection(labels.projects, projectsValue, "tool-rb-description") +
+      "<section class='tool-rb-section tool-rb-projects-section'><h2 class='tool-rb-section-title'>" + labels.projects + "</h2><div class='tool-rb-description" + (projectsValue.placeholder ? " tool-rb-muted" : "") + "'>" + toParagraph(projectsValue.text) + "</div></section>" +
       "</article>"
     );
   }
@@ -1478,7 +1479,11 @@
             putOnlyUsedFonts: true,
             floatPrecision: 16
           },
-          pagebreak: { mode: ["css", "legacy"] }
+          pagebreak: {
+            mode: ["css", "legacy"],
+            before: ".tool-rb-projects-section",
+            avoid: [".tool-rb-entry"]
+          }
         })
         .from(element)
         .save();

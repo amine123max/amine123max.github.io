@@ -34,7 +34,7 @@ experience:
       负责使用SolidWorks进行3D建模，装刀分析以及材料优化工作。
       根据项目目标要求进行模型完善，并参与最终答辩与评审工作。
       获得省级三等奖。
-      
+
   - company: "National College Student Innovation and Entrepreneurship Training Program"
     companyZh: "全国大学生创新创业训练"
     role: "Research Team Member"
@@ -55,6 +55,27 @@ experience:
       参与项目文档撰写，中期评审获得优秀成绩。
       
   # Internship Experience  
+  - company: "Nexora Connect Pty Ltd"
+    companyZh: "Nexora Connect Pty Ltd"
+    role: "Full-Stack Engineer Intern"
+    roleZh: "全栈工程师实习生"
+    period: "Mar 2026 - Jun 2026"
+    location: "Remote"
+    locationZh: "远程"
+    type: "internship"
+    description: |
+      Worked as a full-stack engineer intern on an enterprise multi-terminal ERP platform, covering frontend interfaces, backend APIs, database workflows, integration, and deployment support.
+      Frontend: Built TypeScript/React/Vite pages, reusable components, routing, forms, tables, and API-driven interaction flows.
+      Backend: Developed FastAPI REST APIs, SQLAlchemy models, Alembic migrations, authentication/session logic, and permission-aware services.
+      Engineering: Handled PostgreSQL data workflows, frontend-backend contract debugging, Docker Compose/Nginx setup, Git collaboration, and Pytest regression checks.
+      Tech stack: React, Vite, TypeScript, Tailwind CSS, Material UI, FastAPI, SQLAlchemy, Alembic, PostgreSQL, Docker, Nginx, Pytest.
+    descriptionZh: |
+      在企业级ERP多端平台中担任全栈工程师实习生，工作覆盖前端界面、后端接口、数据库流程、系统联调与部署测试支持。
+      前端：基于TypeScript/React/Vite开发页面、可复用组件、路由、表单、表格与API驱动交互流程。
+      后端：基于FastAPI开发REST API、SQLAlchemy模型、Alembic迁移、鉴权/会话逻辑与权限相关服务。
+      工程：参与PostgreSQL数据流程、前后端接口契约调试、Docker Compose/Nginx环境配置、Git协作与Pytest回归验证。
+      技术栈：React、Vite、TypeScript、Tailwind CSS、Material UI、FastAPI、SQLAlchemy、Alembic、PostgreSQL、Docker、Nginx、Pytest。
+
   - company: "Wuhan Weishixun Information Technology Co., Ltd."
     companyZh: "武汉威士讯信息技术有限公司"
     companyUrl: "https://baike.baidu.com/item/%E6%AD%A6%E6%B1%89%E5%A8%81%E5%A3%AB%E8%AE%AF%E4%BF%A1%E6%81%AF%E6%8A%80%E6%9C%AF%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/13129367"
@@ -85,7 +106,7 @@ education:
     degree: "M.S. in Intelligent Science and Technology"
     degreeZh: "智能科学与技术硕士"
     period: "Sep 2023 - Present"
-    
+
   - institution: "Hubei University"
     institutionZh: "湖北大学"
     degree: "B.Eng. in Communication Engineering"
@@ -96,6 +117,13 @@ skills:
   - "Python"
   - "C++"
   - "Git"
+  - "React"
+  - "Vite"
+  - "TypeScript"
+  - "FastAPI"
+  - "PostgreSQL"
+  - "Docker"
+  - "Nginx"
   - "LLM"
   - "Prompt Engineering"
   - "RAG"
@@ -110,6 +138,13 @@ skills:
   - "Embedded Systems"
 
 projects:
+  - name: "OceanSim Documentation"
+    nameZh: "OceanSim 开发文档"
+    description: "Public documentation site for the OceanSim underwater robotics simulator, covering Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
+    descriptionZh: "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
+    url: "https://amine123max.github.io/OceanSim_Web/"
+    tags: ["Godot", "AUV", "Python SDK", "Documentation"]
+
   - name: "Fuzzy MPC for Autonomous Driving"
     nameZh: "融合模糊意图预测的自动驾驶MPC"
     description: "Model Predictive Control integrated with fuzzy intention prediction for autonomous driving, complete with simulation"
