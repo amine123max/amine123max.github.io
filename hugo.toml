@@ -27,31 +27,36 @@ mainsections = [ "posts", "papermod" ]
       name = "BIO"
       url = "/"
       weight = 1
+
+    [[languages.en.menu.main]]
+      name = "OCEANSIM"
+      url = "https://amine123max.github.io/OceanSim_Web/"
+      weight = 2
     
     [[languages.en.menu.main]]
       name = "PAPERS"
       url = "/papers/"
-      weight = 2
+      weight = 3
     
     [[languages.en.menu.main]]
       name = "BLOG"
       url = "/posts/"
-      weight = 3
+      weight = 4
     
     [[languages.en.menu.main]]
       name = "EXPERIENCE"
       url = "/experience/"
-      weight = 4
+      weight = 5
     
     [[languages.en.menu.main]]
       name = "PROJECTS"
       url = "/projects/"
-      weight = 5
+      weight = 6
     
     [[languages.en.menu.main]]
       name = "TOOLS"
       url = "/tools/"
-      weight = 6
+      weight = 7
   
   [languages.zh]
     languageCode = 'zh-cn'
@@ -63,31 +68,36 @@ mainsections = [ "posts", "papermod" ]
       name = "简介"
       url = "/zh/"
       weight = 1
+
+    [[languages.zh.menu.main]]
+      name = "OCEANSIM"
+      url = "https://amine123max.github.io/OceanSim_Web/"
+      weight = 2
     
     [[languages.zh.menu.main]]
       name = "论文"
       url = "/zh/papers/"
-      weight = 2
+      weight = 3
     
     [[languages.zh.menu.main]]
       name = "博客"
       url = "/zh/posts/"
-      weight = 3
+      weight = 4
     
     [[languages.zh.menu.main]]
       name = "经历"
       url = "/zh/experience/"
-      weight = 4
+      weight = 5
     
     [[languages.zh.menu.main]]
       name = "项目"
       url = "/zh/projects/"
-      weight = 5
+      weight = 6
     
     [[languages.zh.menu.main]]
       name = "工具"
       url = "/zh/tools/"
-      weight = 6
+      weight = 7
 
 [minify]
 disableXML = true
@@ -107,6 +117,11 @@ pagerSize = 5
   organizationZh = "安徽大学"
   bio = "Graduate student in Intelligent Science and Technology at Anhui University (211 Project). Research interests include path planning, robotics, and obstacle avoidance algorithms."
   bioZh = "安徽大学（211工程）智能科学与技术专业研究生。研究方向包括路径规划、机器人技术和避障算法。"
+  featuredOceanSimUrl = "https://amine123max.github.io/OceanSim_Web/"
+  featuredOceanSimTitle = "OceanSim Documentation"
+  featuredOceanSimTitleZh = "OceanSim 开发文档"
+  featuredOceanSimDescription = "Research-oriented underwater robotics simulator documentation for Godot runtime, AUV control, TCP protocol, Python SDK, sensors, mapping, datasets, and agent workflows."
+  featuredOceanSimDescriptionZh = "面向水下机器人仿真的 OceanSim 文档站，覆盖 Godot 运行时、AUV 控制、TCP 协议、Python SDK、传感器、建图、数据集与智能体工作流。"
   
   # 导航栏左上角标题
   [params.label]
@@ -148,7 +163,7 @@ pagerSize = 5
     url = "tel:13409951849"
 
   # 侧边栏状态信息（邮箱和 GitHub 下方）
-  sidebarStats = { visits = "10,268", completedProjects = "39", totalProjects = "52", pendingProjects = "13" }
+  sidebarStats = { visits = "10,268", completedProjects = "43", totalProjects = "56", pendingProjects = "13" }
 
   # 侧边栏最近更新
   sidebarRecent = [
@@ -169,6 +184,38 @@ pagerSize = 5
   interestsZh = ["路径规划", "机器人技术", "避障算法", "智能系统"]
   
   # 项目展示
+  [[params.projects]]
+    name = "OceanSim Documentation"
+    nameZh = "OceanSim 开发文档"
+    description = "Public documentation site for the OceanSim underwater robotics simulator, Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
+    descriptionZh = "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
+    url = "https://amine123max.github.io/OceanSim_Web/"
+    tags = ["Godot", "AUV", "Python SDK", "Documentation"]
+
+  [[params.projects]]
+    name = "Journal Manuscript"
+    nameZh = "期刊论文写作 Skill"
+    description = "AI skill package for journal manuscript drafting, template-preserving revision, venue migration, and minimal publisher-family downloads."
+    descriptionZh = "用于期刊论文起草、模板保持修订、投稿期刊迁移和出版商家族模板打包下载的 AI Skill。"
+    url = "https://github.com/amine123max/JournalManuscript"
+    tags = ["Codex Skill", "LaTeX", "Research Writing"]
+
+  [[params.projects]]
+    name = "Paper Citation Format"
+    nameZh = "论文引用格式 Skill"
+    description = "Codex skill for literature search, claim-to-source citation mapping, bibliography cleanup, and journal-aware reference formatting."
+    descriptionZh = "用于文献检索、论点到来源映射、参考文献清洗和期刊格式化引用的 Codex Skill。"
+    url = "https://github.com/amine123max/PaperCitationFormat"
+    tags = ["Codex Skill", "Citation", "Research"]
+
+  [[params.projects]]
+    name = "Task Plan Manager"
+    nameZh = "任务计划管理 Skill"
+    description = "Planning-focused Codex skill with VS Code, JetBrains, and CLI adapters for long-running multi-step AI tasks."
+    descriptionZh = "面向长任务和多步骤 AI 工作流的 Codex 计划管理 Skill，包含 VS Code、JetBrains 和 CLI 适配。"
+    url = "https://github.com/amine123max/Task-plan-manager"
+    tags = ["Codex Skill", "Planning", "Developer Tools"]
+
   [[params.projects]]
     name = "Fuzzy MPC for Autonomous Driving"
     nameZh = "融合模糊意图预测的自动驾驶MPC"
