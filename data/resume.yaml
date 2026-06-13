@@ -138,10 +138,31 @@ skills:
 projects:
   - name: "OceanSim"
     nameZh: "OceanSim"
-    description: "Public documentation site for the OceanSim underwater robotics simulator, covering Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
+    description: "Public documentation site for the OceanSim underwater robotics simulator, Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
     descriptionZh: "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
     url: "https://amine123max.github.io/OceanSim_Web/"
     tags: ["Godot", "AUV", "Python SDK", "Documentation"]
+
+  - name: "Journal Manuscript"
+    nameZh: "期刊论文写作 Skill"
+    description: "AI skill package for journal manuscript drafting, template-preserving revision, venue migration, and minimal publisher-family downloads."
+    descriptionZh: "用于期刊论文起草、模板保持修订、投稿期刊迁移和出版商家族模板打包下载的 AI Skill。"
+    url: "https://github.com/amine123max/JournalManuscript"
+    tags: ["Codex Skill", "LaTeX", "Research Writing"]
+
+  - name: "Paper Citation Format"
+    nameZh: "论文引用格式 Skill"
+    description: "Codex skill for literature search, claim-to-source citation mapping, bibliography cleanup, and journal-aware reference formatting."
+    descriptionZh: "用于文献检索、论点到来源映射、参考文献清洗和期刊格式化引用的 Codex Skill。"
+    url: "https://github.com/amine123max/PaperCitationFormat"
+    tags: ["Codex Skill", "Citation", "Research"]
+
+  - name: "Task Plan Manager"
+    nameZh: "任务计划管理 Skill"
+    description: "Planning-focused Codex skill with VS Code, JetBrains, and CLI adapters for long-running multi-step AI tasks."
+    descriptionZh: "面向长任务和多步骤 AI 工作流的 Codex 计划管理 Skill，包含 VS Code、JetBrains 和 CLI 适配。"
+    url: "https://github.com/amine123max/Task-plan-manager"
+    tags: ["Codex Skill", "Planning", "Developer Tools"]
 
   - name: "Fuzzy MPC for Autonomous Driving"
     nameZh: "融合模糊意图预测的自动驾驶MPC"
@@ -163,3 +184,48 @@ projects:
     descriptionZh: "基于生成对抗网络(GAN)的地表温度预测模型"
     url: "https://github.com/amine123max/GAN_LST"
     tags: ["Python", "GAN", "Deep Learning"]
+
+  - name: "OneStepUpdate"
+    nameZh: "一键更新工具"
+    description: "Desktop application for pushing code to GitHub and creating releases with one click"
+    descriptionZh: "一键推送本地代码到GitHub并创建发布的桌面应用程序"
+    url: "https://github.com/amine123max/OneStepUpdate"
+    tags: ["Python", "DevOps", "Automation"]
+
+  - name: "Random Forest Regression"
+    nameZh: "随机森林残差校正回归"
+    description: "Regression model with Random Forest residual correction on multiple datasets"
+    descriptionZh: "使用随机森林残差校正的回归模型，包含四种回归任务"
+    url: "https://github.com/amine123max/RegressionWithRandomForestResidualCorrection"
+    tags: ["Python", "Machine Learning", "Regression"]
+
+  - name: "Formula Export Tool"
+    nameZh: "公式导出工具"
+    description: "Program for extracting links and mathematical formulas from PDF documents"
+    descriptionZh: "从PDF文档中导出链接和数学公式的实用工具"
+    url: "https://github.com/amine123max/FormulaExport"
+    tags: ["Python", "PDF", "Tool"]
+
+  - name: "OceanSimulator V1"
+    nameZh: "OceanSimulator V1"
+    description: "In Development"
+    descriptionZh: "开发中"
+    tags: ["私密"]
+
+  - name: "Large Language Model OceanSim Platform"
+    nameZh: "大语言模型 OceanSim 平台"
+    description: "In Development"
+    descriptionZh: "开发中"
+    tags: ["私密"]
+
+  - name: "AChat Multi-Agent Interface"
+    nameZh: "AChat 多智能体交互界面"
+    description: "In Development"
+    descriptionZh: "开发中"
+    tags: ["私密"]
+
+  - name: "OceanSimulator V2"
+    nameZh: "OceanSimulator V2"
+    description: "In Development"
+    descriptionZh: "开发中"
+    tags: ["私密"]

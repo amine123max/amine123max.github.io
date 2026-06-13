@@ -16,6 +16,53 @@ function getExternalLinkIconSVG() {
     '</svg>';
 }
 
+function getLocalizedNodeText(node, lang) {
+  if (!node) return '';
+  const localized = node.querySelector(`[data-lang="${lang}"]`);
+  if (localized && localized.textContent) {
+    const value = localized.textContent.trim();
+    if (value) return value;
+  }
+  return (node.textContent || '').replace(/\s+/g, ' ').trim();
+}
+
+function getEmbeddedResumeProjects(lang) {
+  const source = document.getElementById('resume-projects-data');
+  if (!source) return [];
+
+  try {
+    let projects = JSON.parse(source.textContent || '[]');
+    if (typeof projects === 'string') {
+      projects = JSON.parse(projects);
+    }
+    if (!Array.isArray(projects)) return [];
+
+    return projects.map(project => {
+      const isZh = lang === 'zh';
+      const name = (isZh ? (project.nameZh || project.name) : project.name || '').trim();
+      const description = (isZh ? (project.descriptionZh || project.description) : project.description || '').trim();
+      const tags = Array.isArray(project.tags)
+        ? project.tags.map(tag => {
+            const value = String(tag || '').trim();
+            if (!value) return '';
+            if (value === '私密' || /^private$/i.test(value)) return isZh ? '私密' : 'Private';
+            return value;
+          }).filter(Boolean)
+        : [];
+
+      return {
+        name,
+        description,
+        tags,
+        url: project.url || ''
+      };
+    }).filter(project => project.name);
+  } catch (error) {
+    console.warn('Failed to parse embedded resume projects.', error);
+    return [];
+  }
+}
+
 // Extract resume data from page DOM
 function extractResumeData() {
   const lang = getCurrentLanguage();
@@ -97,35 +144,46 @@ function extractResumeData() {
     data.interests.push(li.textContent.trim());
   });
 
-  // Add featured OceanSim project from homepage card
-  const featuredOceanSim = document.querySelector('.featured-oceansim-link');
-  if (featuredOceanSim) {
-    const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="en"]')?.textContent?.trim();
-    const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="en"]')?.textContent?.trim();
-    const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
-    if (name) {
-      data.projects.push({
-        name,
-        description,
-        tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
-        url
-      });
-    }
-  }
+  data.projects = getEmbeddedResumeProjects(lang);
 
-  // Extract projects from page DOM
-  document.querySelectorAll('.project-card').forEach(card => {
-    const nameEl = card.querySelector('.project-title span[data-lang="en"]');
-    const descEl = card.querySelector('.project-description span[data-lang="en"]');
-    const name = nameEl?.textContent?.trim();
-    const description = descEl?.textContent?.trim();
-    const tags = Array.from(card.querySelectorAll('.project-tag')).map(tag => tag.textContent.trim());
-    const url = card.closest('a')?.getAttribute('href') || '';
-    
-    if (name) {
-      data.projects.push({ name, description, tags, url });
+  if (!data.projects.length) {
+    // Add featured OceanSim project from homepage card
+    const featuredOceanSim = document.querySelector('.featured-oceansim-link');
+    if (featuredOceanSim) {
+      const name = featuredOceanSim.querySelector(`.featured-oceansim-title span[data-lang="${lang}"]`)?.textContent?.trim();
+      const description = featuredOceanSim.querySelector(`.featured-oceansim-description span[data-lang="${lang}"]`)?.textContent?.trim();
+      const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+      if (name) {
+        data.projects.push({
+          name,
+          description,
+          tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+          url
+        });
+      }
     }
-  });
+
+    // Extract projects from page DOM
+    document.querySelectorAll('.project-card').forEach(card => {
+      const nameEl = card.querySelector(`.project-title span[data-lang="${lang}"]`);
+      const descEl = card.querySelector(`.project-description span[data-lang="${lang}"]`);
+      const name = nameEl?.textContent?.trim();
+      const description = descEl?.textContent?.trim();
+      const tags = Array.from(card.querySelectorAll('.project-tag'))
+        .map(tag => {
+          const value = getLocalizedNodeText(tag, lang);
+          if (!value) return '';
+          if (value === '私密' || /^private$/i.test(value)) return isZh ? '私密' : 'Private';
+          return value;
+        })
+        .filter(Boolean);
+      const url = card.closest('a')?.getAttribute('href') || '';
+
+      if (name) {
+        data.projects.push({ name, description, tags, url });
+      }
+    });
+  }
 
   return data;
 }

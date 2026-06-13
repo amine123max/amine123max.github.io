@@ -26,6 +26,43 @@ function getLocalizedNodeText(node, lang) {
   return (node.textContent || '').replace(/\s+/g, ' ').trim();
 }
 
+function getEmbeddedResumeProjects(lang) {
+  const source = document.getElementById('resume-projects-data');
+  if (!source) return [];
+
+  try {
+    let projects = JSON.parse(source.textContent || '[]');
+    if (typeof projects === 'string') {
+      projects = JSON.parse(projects);
+    }
+    if (!Array.isArray(projects)) return [];
+
+    return projects.map(project => {
+      const isZh = lang === 'zh';
+      const name = (isZh ? (project.nameZh || project.name) : project.name || '').trim();
+      const description = (isZh ? (project.descriptionZh || project.description) : project.description || '').trim();
+      const tags = Array.isArray(project.tags)
+        ? project.tags.map(tag => {
+            const value = String(tag || '').trim();
+            if (!value) return '';
+            if (value === '私密' || /^private$/i.test(value)) return isZh ? '私密' : 'Private';
+            return value;
+          }).filter(Boolean)
+        : [];
+
+      return {
+        name,
+        description,
+        tags,
+        url: project.url || ''
+      };
+    }).filter(project => project.name);
+  } catch (error) {
+    console.warn('Failed to parse embedded resume projects.', error);
+    return [];
+  }
+}
+
 // Extract resume data from page DOM
 function extractResumeData() {
   const lang = getCurrentLanguage();
@@ -107,42 +144,46 @@ function extractResumeData() {
     data.interests.push(li.textContent.trim());
   });
 
-  // 添加首页重点 OceanSim 项目
-  const featuredOceanSim = document.querySelector('.featured-oceansim-link');
-  if (featuredOceanSim) {
-    const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="zh"]')?.textContent?.trim();
-    const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="zh"]')?.textContent?.trim();
-    const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
-    if (name) {
-      data.projects.push({
-        name,
-        description,
-        tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
-        url
-      });
-    }
-  }
+  data.projects = getEmbeddedResumeProjects('zh');
 
-  // 从页面提取项目（中文版本）
-  document.querySelectorAll('.project-card').forEach(card => {
-    const nameEl = card.querySelector('.project-title span[data-lang="zh"]');
-    const descEl = card.querySelector('.project-description span[data-lang="zh"]');
-    const name = nameEl?.textContent?.trim();
-    const description = descEl?.textContent?.trim();
-    const tags = Array.from(card.querySelectorAll('.project-tag'))
-      .map(tag => {
-        const value = getLocalizedNodeText(tag, 'zh');
-        if (!value) return '';
-        if (value === '私密' || /^private$/i.test(value)) return 'Private';
-        return value;
-      })
-      .filter(Boolean);
-    const url = card.closest('a')?.getAttribute('href') || '';
-    
-    if (name) {
-      data.projects.push({ name, description, tags, url });
+  if (!data.projects.length) {
+    // 添加首页重点 OceanSim 项目
+    const featuredOceanSim = document.querySelector('.featured-oceansim-link');
+    if (featuredOceanSim) {
+      const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="zh"]')?.textContent?.trim();
+      const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="zh"]')?.textContent?.trim();
+      const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+      if (name) {
+        data.projects.push({
+          name,
+          description,
+          tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+          url
+        });
+      }
     }
-  });
+
+    // 从页面提取项目（中文版本）
+    document.querySelectorAll('.project-card').forEach(card => {
+      const nameEl = card.querySelector('.project-title span[data-lang="zh"]');
+      const descEl = card.querySelector('.project-description span[data-lang="zh"]');
+      const name = nameEl?.textContent?.trim();
+      const description = descEl?.textContent?.trim();
+      const tags = Array.from(card.querySelectorAll('.project-tag'))
+        .map(tag => {
+          const value = getLocalizedNodeText(tag, 'zh');
+          if (!value) return '';
+          if (value === '私密' || /^private$/i.test(value)) return '私密';
+          return value;
+        })
+        .filter(Boolean);
+      const url = card.closest('a')?.getAttribute('href') || '';
+
+      if (name) {
+        data.projects.push({ name, description, tags, url });
+      }
+    });
+  }
 
   return data;
 }

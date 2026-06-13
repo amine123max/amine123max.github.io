@@ -164,6 +164,18 @@
     <!-- Projects Section -->
     {{ if .Site.Params.projects }}
     <section class="projects-section">
+      {{- $resumeProjects := slice -}}
+      {{- range .Site.Params.projects -}}
+        {{- $resumeProjects = $resumeProjects | append (dict
+          "name" .name
+          "nameZh" (.nameZh | default .name)
+          "description" .description
+          "descriptionZh" (.descriptionZh | default .description)
+          "url" (.url | default "")
+          "tags" (.tags | default (slice))
+        ) -}}
+      {{- end -}}
+      <script type="application/json" id="resume-projects-data">{{ $resumeProjects | jsonify | safeJS }}</script>
       <div class="section-header">
         <h3 class="subsection-title">
           <span data-lang="en">Projects</span>
