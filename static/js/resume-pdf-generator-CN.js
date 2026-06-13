@@ -85,7 +85,6 @@ function extractResumeData() {
       company: 'Nexora Connect Pty Ltd',
       role: '全栈工程师实习生',
       period: '2026年3月 - 2026年6月',
-      location: '远程',
       description: '在企业级ERP多端平台中担任全栈工程师实习生，工作覆盖前端界面、后端接口、数据库流程、系统联调与部署测试支持。\n• 前端：基于TypeScript/React/Vite开发页面、可复用组件、路由、表单、表格与API驱动交互流程。\n• 后端：基于FastAPI开发REST API、SQLAlchemy模型、Alembic迁移、鉴权/会话逻辑与权限相关服务。\n• 工程：参与PostgreSQL数据流程、前后端接口契约调试、Docker Compose/Nginx环境配置、Git协作与Pytest回归验证。\n技术栈：React、Vite、TypeScript、Tailwind CSS、Material UI、FastAPI、SQLAlchemy、Alembic、PostgreSQL、Docker、Nginx、Pytest。'
     },
     {

@@ -60,8 +60,6 @@ experience:
     role: "Full-Stack Engineer Intern"
     roleZh: "全栈工程师实习生"
     period: "Mar 2026 - Jun 2026"
-    location: "Remote"
-    locationZh: "远程"
     type: "internship"
     description: |
       Worked as a full-stack engineer intern on an enterprise multi-terminal ERP platform, covering frontend interfaces, backend APIs, database workflows, integration, and deployment support.
@@ -138,8 +136,8 @@ skills:
   - "Embedded Systems"
 
 projects:
-  - name: "OceanSim Documentation"
-    nameZh: "OceanSim 开发文档"
+  - name: "OceanSim"
+    nameZh: "OceanSim"
     description: "Public documentation site for the OceanSim underwater robotics simulator, covering Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
     descriptionZh: "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
     url: "https://amine123max.github.io/OceanSim_Web/"

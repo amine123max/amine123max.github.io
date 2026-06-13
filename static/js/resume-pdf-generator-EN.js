@@ -85,7 +85,6 @@ function extractResumeData() {
       company: 'Nexora Connect Pty Ltd',
       role: 'Full-Stack Engineer Intern',
       period: 'Mar 2026 - Jun 2026',
-      location: 'Remote',
       description: 'Worked as a full-stack engineer intern on an enterprise multi-terminal ERP platform, covering frontend interfaces, backend APIs, database workflows, integration, and deployment support.\n• Frontend: Built TypeScript/React/Vite pages, reusable components, routing, forms, tables, and API-driven interaction flows.\n• Backend: Developed FastAPI REST APIs, SQLAlchemy models, Alembic migrations, authentication/session logic, and permission-aware services.\n• Engineering: Handled PostgreSQL data workflows, frontend-backend contract debugging, Docker Compose/Nginx setup, Git collaboration, and Pytest regression checks.\nTech stack: React, Vite, TypeScript, Tailwind CSS, Material UI, FastAPI, SQLAlchemy, Alembic, PostgreSQL, Docker, Nginx, Pytest.'
     },
     {
