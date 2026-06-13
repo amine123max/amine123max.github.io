@@ -96,36 +96,6 @@
   </div>
   
   <div class="content-section">
-    {{- with .Site.Params.featuredOceanSimUrl }}
-    <section class="featured-oceansim-section" aria-labelledby="featured-oceansim-title">
-      <a class="featured-oceansim-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">
-        <div class="featured-oceansim-copy">
-          <span class="featured-oceansim-kicker">
-            <span data-lang="en">Featured Project</span>
-            <span data-lang="zh">重点项目</span>
-          </span>
-          <h2 id="featured-oceansim-title" class="featured-oceansim-title">
-            <span data-lang="en">{{ $.Site.Params.featuredOceanSimTitle | default "OceanSim Documentation" }}</span>
-            <span data-lang="zh">{{ $.Site.Params.featuredOceanSimTitleZh | default "OceanSim 开发文档" }}</span>
-          </h2>
-          <p class="featured-oceansim-description">
-            <span data-lang="en">{{ $.Site.Params.featuredOceanSimDescription }}</span>
-            <span data-lang="zh">{{ $.Site.Params.featuredOceanSimDescriptionZh | default $.Site.Params.featuredOceanSimDescription }}</span>
-          </p>
-        </div>
-        <span class="featured-oceansim-action" aria-hidden="true">
-          <span data-lang="en">Open Docs</span>
-          <span data-lang="zh">打开文档</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-        </span>
-      </a>
-    </section>
-    {{- end }}
-
     <!-- About Me 部分 -->
     <section class="about-section">
       <h2 class="section-title">
@@ -204,8 +174,38 @@
           <span data-lang="zh">查看全部 →</span>
         </a>
       </div>
+      {{- with .Site.Params.featuredOceanSimUrl }}
+      <section class="featured-oceansim-section" aria-labelledby="featured-oceansim-title">
+        <a class="featured-oceansim-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">
+          <div class="featured-oceansim-copy">
+            <span class="featured-oceansim-kicker">
+              <span data-lang="en">Featured Project</span>
+              <span data-lang="zh">重点项目</span>
+            </span>
+            <h2 id="featured-oceansim-title" class="featured-oceansim-title">
+              <span data-lang="en">{{ $.Site.Params.featuredOceanSimTitle | default "OceanSim Documentation" }}</span>
+              <span data-lang="zh">{{ $.Site.Params.featuredOceanSimTitleZh | default "OceanSim 开发文档" }}</span>
+            </h2>
+            <p class="featured-oceansim-description">
+              <span data-lang="en">{{ $.Site.Params.featuredOceanSimDescription }}</span>
+              <span data-lang="zh">{{ $.Site.Params.featuredOceanSimDescriptionZh | default $.Site.Params.featuredOceanSimDescription }}</span>
+            </p>
+          </div>
+          <span class="featured-oceansim-action" aria-hidden="true">
+            <span data-lang="en">Open Docs</span>
+            <span data-lang="zh">打开文档</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </span>
+        </a>
+      </section>
+      {{- end }}
       <div class="projects-grid">
         {{ range .Site.Params.projects }}
+        {{ if ne .url $.Site.Params.featuredOceanSimUrl }}
         {{ if .url }}
         <a href="{{ .url }}" class="project-card-link" target="_blank" rel="noopener noreferrer">
         {{ else }}
@@ -253,6 +253,7 @@
         </a>
         {{ else }}
         </div>
+        {{ end }}
         {{ end }}
         {{ end }}
       </div>
