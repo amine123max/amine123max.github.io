@@ -264,34 +264,6 @@ pagerSize = 5
     url = "https://github.com/amine123max/FormulaExport"
     tags = ["Python", "PDF", "Tool"]
 
-  [[params.projects]]
-    name = "OceanSimulator V1"
-    nameZh = "OceanSimulator V1"
-    description = "In Development"
-    descriptionZh = "开发中"
-    tags = ["私密"]
-
-  [[params.projects]]
-    name = "Large Language Model OceanSim Platform"
-    nameZh = "大语言模型 OceanSim 平台"
-    description = "In Development"
-    descriptionZh = "开发中"
-    tags = ["私密"]
-
-  [[params.projects]]
-    name = "AChat Multi-Agent Interface"
-    nameZh = "AChat 多智能体交互界面"
-    description = "In Development"
-    descriptionZh = "开发中"
-    tags = ["私密"]
-
-  [[params.projects]]
-    name = "OceanSimulator V2"
-    nameZh = "OceanSimulator V2"
-    description = "In Development"
-    descriptionZh = "开发中"
-    tags = ["私密"]
-  
   # 技术栈
   skills = ["Python", "C++", "Git", "React", "Vite", "TypeScript", "FastAPI", "PostgreSQL", "Docker", "Nginx", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
   

@@ -205,27 +205,3 @@ projects:
     descriptionZh: "从PDF文档中导出链接和数学公式的实用工具"
     url: "https://github.com/amine123max/FormulaExport"
     tags: ["Python", "PDF", "Tool"]
-
-  - name: "OceanSimulator V1"
-    nameZh: "OceanSimulator V1"
-    description: "In Development"
-    descriptionZh: "开发中"
-    tags: ["私密"]
-
-  - name: "Large Language Model OceanSim Platform"
-    nameZh: "大语言模型 OceanSim 平台"
-    description: "In Development"
-    descriptionZh: "开发中"
-    tags: ["私密"]
-
-  - name: "AChat Multi-Agent Interface"
-    nameZh: "AChat 多智能体交互界面"
-    description: "In Development"
-    descriptionZh: "开发中"
-    tags: ["私密"]
-
-  - name: "OceanSimulator V2"
-    nameZh: "OceanSimulator V2"
-    description: "In Development"
-    descriptionZh: "开发中"
-    tags: ["私密"]

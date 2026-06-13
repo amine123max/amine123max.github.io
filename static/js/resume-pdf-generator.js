@@ -334,8 +334,6 @@ function generateResumeHTML(data) {
         /* Experience items */
         .exp-item {
           margin-bottom: 12px;
-          page-break-inside: avoid;
-          break-inside: avoid;
         }
         
         .exp-header {
@@ -374,8 +372,6 @@ function generateResumeHTML(data) {
         /* Education items */
         .edu-item {
           margin-bottom: 10px;
-          page-break-inside: avoid;
-          break-inside: avoid;
         }
         
         .edu-header {
@@ -606,8 +602,7 @@ async function generatePDF() {
         },
         pagebreak: { 
           mode: ['css', 'legacy'],
-          before: '.projects-section',
-          avoid: ['.exp-item', '.edu-item']
+          before: '.projects-section'
         }
       };
       
