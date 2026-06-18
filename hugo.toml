@@ -122,6 +122,26 @@ pagerSize = 5
   featuredOceanSimTitleZh = "OceanSim"
   featuredOceanSimDescription = "Research-oriented underwater robotics simulator documentation for Godot runtime, AUV control, TCP protocol, Python SDK, sensors, mapping, datasets, and agent workflows."
   featuredOceanSimDescriptionZh = "面向水下机器人仿真的 OceanSim 文档站，覆盖 Godot 运行时、AUV 控制、TCP 协议、Python SDK、传感器、建图、数据集与智能体工作流。"
+
+  [[params.featuredProjects]]
+    name = "OceanSim"
+    nameZh = "OceanSim"
+    description = "Research-oriented underwater robotics simulator documentation for Godot runtime, AUV control, TCP protocol, Python SDK, sensors, mapping, datasets, and agent workflows."
+    descriptionZh = "面向水下机器人仿真的 OceanSim 文档站，覆盖 Godot 运行时、AUV 控制、TCP 协议、Python SDK、传感器、建图、数据集与智能体工作流。"
+    url = "https://amine123max.github.io/OceanSim_Web/"
+    action = "Open Docs"
+    actionZh = "打开文档"
+    tags = ["Godot", "AUV", "Python SDK", "Documentation"]
+
+  [[params.featuredProjects]]
+    name = "CheatGPT"
+    nameZh = "CheatGPT"
+    description = "Locally deployable API proxy and AI chat system built with Go and Vue 3, supporting multi-model switching, continuous conversations, SSE proxying, credit recharge, token import, and admin/user management."
+    descriptionZh = "基于 Go 与 Vue 3 的本地可部署 API 反代与 AI 聊天系统，支持多模型切换、连续对话、SSE 转发、积分充值、Token 导入与用户/管理员管理。"
+    url = "https://github.com/amine123max/CheatGPT"
+    action = "Open Repo"
+    actionZh = "打开仓库"
+    tags = ["Go", "Vue 3", "AI Chat", "API Proxy"]
   
   # 导航栏左上角标题
   [params.label]
@@ -190,7 +210,17 @@ pagerSize = 5
     description = "Public documentation site for the OceanSim underwater robotics simulator, Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
     descriptionZh = "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
     url = "https://amine123max.github.io/OceanSim_Web/"
+    featured = true
     tags = ["Godot", "AUV", "Python SDK", "Documentation"]
+
+  [[params.projects]]
+    name = "CheatGPT"
+    nameZh = "CheatGPT"
+    description = "Locally deployable API proxy and AI chat system built with Go and Vue 3, supporting multi-model switching, continuous conversations, SSE proxying, credit recharge, token import, and admin/user management."
+    descriptionZh = "基于 Go 与 Vue 3 的本地可部署 API 反代与 AI 聊天系统，支持多模型切换、连续对话、SSE 转发、积分充值、Token 导入与用户/管理员管理。"
+    url = "https://github.com/amine123max/CheatGPT"
+    featured = true
+    tags = ["Go", "Vue 3", "AI Chat", "API Proxy"]
 
   [[params.projects]]
     name = "Journal Manuscript"
@@ -265,7 +295,7 @@ pagerSize = 5
     tags = ["Python", "PDF", "Tool"]
 
   # 技术栈
-  skills = ["Python", "C++", "Git", "React", "Vite", "TypeScript", "FastAPI", "PostgreSQL", "Docker", "Nginx", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
+  skills = ["Python", "C++", "Go", "Git", "React", "Vite", "TypeScript", "FastAPI", "PostgreSQL", "Docker", "Nginx", "LLM", "Prompt Engineering", "RAG", "Simulation Engine Development", "ROS", "Vue.js", "Full-Stack Development", "PCB Design", "Hardware Design", "Embedded Systems", "Transformers", "LangChain"]
   
   # 学术论文
   [[params.papers]]

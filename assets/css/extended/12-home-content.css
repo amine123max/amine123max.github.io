@@ -63,11 +63,17 @@ body.home .home-meta a:hover {
   margin-bottom: 20px;
 }
 
-.featured-oceansim-section {
+.featured-projects-stack {
+  display: grid;
+  gap: 14px;
   margin-bottom: 24px;
 }
 
-.featured-oceansim-link {
+.featured-project-section {
+  margin: 0;
+}
+
+.featured-project-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -83,17 +89,17 @@ body.home .home-meta a:hover {
   transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
 }
 
-.featured-oceansim-link:hover {
+.featured-project-link:hover {
   transform: translateY(-3px);
   border-color: var(--primary);
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.14);
 }
 
-.featured-oceansim-copy {
+.featured-project-copy {
   min-width: 0;
 }
 
-.featured-oceansim-kicker {
+.featured-project-kicker {
   display: block;
   margin-bottom: 6px;
   color: #0f766e;
@@ -103,7 +109,7 @@ body.home .home-meta a:hover {
   text-transform: uppercase;
 }
 
-.featured-oceansim-title {
+.featured-project-title {
   margin: 0 0 7px;
   color: var(--primary);
   font-size: 1.34rem;
@@ -111,7 +117,7 @@ body.home .home-meta a:hover {
   font-weight: 800;
 }
 
-.featured-oceansim-description {
+.featured-project-description {
   margin: 0;
   color: var(--content);
   font-size: 0.94rem;
@@ -119,7 +125,7 @@ body.home .home-meta a:hover {
   overflow-wrap: anywhere;
 }
 
-.featured-oceansim-action {
+.featured-project-action {
   flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
@@ -135,17 +141,17 @@ body.home .home-meta a:hover {
   white-space: nowrap;
 }
 
-.featured-oceansim-action svg {
+.featured-project-action svg {
   width: 18px;
   height: 18px;
   stroke: currentColor;
 }
 
-body.dark .featured-oceansim-link {
+body.dark .featured-project-link {
   border-left-color: #22d3ee;
 }
 
-body.dark .featured-oceansim-kicker {
+body.dark .featured-project-kicker {
   color: #67e8f9;
 }
 
@@ -482,14 +488,14 @@ body.dark .skill-tag {
 
 /* ==================== 响应式设计 ==================== */
 @media (max-width: 768px) {
-  .featured-oceansim-link {
+  .featured-project-link {
     align-items: flex-start;
     flex-direction: column;
     gap: 14px;
     padding: 16px 18px;
   }
 
-  .featured-oceansim-action {
+  .featured-project-action {
     width: 100%;
   }
 

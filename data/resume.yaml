@@ -114,6 +114,7 @@ education:
 skills:
   - "Python"
   - "C++"
+  - "Go"
   - "Git"
   - "React"
   - "Vite"
@@ -141,7 +142,16 @@ projects:
     description: "Public documentation site for the OceanSim underwater robotics simulator, Python SDK, TCP protocol, sensors, mapping, datasets, and agent runtime."
     descriptionZh: "OceanSim 水下机器人仿真平台公开文档站，覆盖 Python SDK、TCP 协议、传感器、建图、数据集与智能体运行时。"
     url: "https://amine123max.github.io/OceanSim_Web/"
+    featured: true
     tags: ["Godot", "AUV", "Python SDK", "Documentation"]
+
+  - name: "CheatGPT"
+    nameZh: "CheatGPT"
+    description: "Locally deployable API proxy and AI chat system built with Go and Vue 3, supporting multi-model switching, continuous conversations, SSE proxying, credit recharge, token import, and admin/user management."
+    descriptionZh: "基于 Go 与 Vue 3 的本地可部署 API 反代与 AI 聊天系统，支持多模型切换、连续对话、SSE 转发、积分充值、Token 导入与用户/管理员管理。"
+    url: "https://github.com/amine123max/CheatGPT"
+    featured: true
+    tags: ["Go", "Vue 3", "AI Chat", "API Proxy"]
 
   - name: "Journal Manuscript"
     nameZh: "期刊论文写作 Skill"

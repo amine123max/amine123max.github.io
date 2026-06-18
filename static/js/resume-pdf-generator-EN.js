@@ -147,21 +147,20 @@ function extractResumeData() {
   data.projects = getEmbeddedResumeProjects('en');
 
   if (!data.projects.length) {
-    // Add featured OceanSim project from homepage card
-    const featuredOceanSim = document.querySelector('.featured-oceansim-link');
-    if (featuredOceanSim) {
-      const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="en"]')?.textContent?.trim();
-      const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="en"]')?.textContent?.trim();
-      const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+    // Add featured projects from homepage cards
+    document.querySelectorAll('.featured-project-link').forEach(featuredProject => {
+      const name = featuredProject.querySelector('.featured-project-title span[data-lang="en"]')?.textContent?.trim();
+      const description = featuredProject.querySelector('.featured-project-description span[data-lang="en"]')?.textContent?.trim();
+      const url = featuredProject.getAttribute('href') || '';
       if (name) {
         data.projects.push({
           name,
           description,
-          tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+          tags: [],
           url
         });
       }
-    }
+    });
 
     // Extract projects from page DOM
     document.querySelectorAll('.project-card').forEach(card => {

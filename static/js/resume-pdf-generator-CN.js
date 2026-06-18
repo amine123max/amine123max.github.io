@@ -147,21 +147,20 @@ function extractResumeData() {
   data.projects = getEmbeddedResumeProjects('zh');
 
   if (!data.projects.length) {
-    // 添加首页重点 OceanSim 项目
-    const featuredOceanSim = document.querySelector('.featured-oceansim-link');
-    if (featuredOceanSim) {
-      const name = featuredOceanSim.querySelector('.featured-oceansim-title span[data-lang="zh"]')?.textContent?.trim();
-      const description = featuredOceanSim.querySelector('.featured-oceansim-description span[data-lang="zh"]')?.textContent?.trim();
-      const url = featuredOceanSim.getAttribute('href') || 'https://amine123max.github.io/OceanSim_Web/';
+    // 添加首页重点项目
+    document.querySelectorAll('.featured-project-link').forEach(featuredProject => {
+      const name = featuredProject.querySelector('.featured-project-title span[data-lang="zh"]')?.textContent?.trim();
+      const description = featuredProject.querySelector('.featured-project-description span[data-lang="zh"]')?.textContent?.trim();
+      const url = featuredProject.getAttribute('href') || '';
       if (name) {
         data.projects.push({
           name,
           description,
-          tags: ['Godot', 'AUV', 'Python SDK', 'Documentation'],
+          tags: [],
           url
         });
       }
-    }
+    });
 
     // 从页面提取项目（中文版本）
     document.querySelectorAll('.project-card').forEach(card => {
