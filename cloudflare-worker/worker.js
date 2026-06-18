@@ -1,34 +1,64 @@
+import { LogLevel, WorkerMailer } from 'worker-mailer';
+
+const SERVICE_NAME = 'CV_Download';
+const TOKEN_TTL_SECONDS = 300;
+const REQUEST_COOLDOWN_SECONDS = 60;
+const STATS_KEYS = {
+  verificationSent: 'stats:verification_sent',
+  downloads: 'stats:downloads'
+};
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    
+
     if (request.method === 'OPTIONS') {
       return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
+        headers: corsHeaders()
       });
+    }
+
+    if ((url.pathname === '/' || url.pathname === '/api/stats') && request.method === 'GET') {
+      return handleStats(env);
     }
 
     if (url.pathname === '/api/request' && request.method === 'POST') {
       return handleRequest(request, env);
-    } else if (url.pathname === '/api/verify' && request.method === 'POST') {
-      return handleVerify(request, env);
-    } else if (url.pathname === '/api/download' && request.method === 'POST') {
-      return handleDownload(request, env);
-    } else {
-      return jsonResponse({ error: 'Not Found' }, 404);
     }
+
+    if (url.pathname === '/api/verify' && request.method === 'POST') {
+      return handleVerify(request, env);
+    }
+
+    if (url.pathname === '/api/download' && request.method === 'POST') {
+      return handleDownload(request, env, ctx);
+    }
+
+    return jsonResponse({ error: 'Not Found' }, 404);
   }
 };
 
+async function handleStats(env) {
+  const [verificationSent, downloads] = await Promise.all([
+    readCounter(env, STATS_KEYS.verificationSent),
+    readCounter(env, STATS_KEYS.downloads)
+  ]);
+
+  return jsonResponse({
+    service: SERVICE_NAME,
+    verificationSent,
+    downloads
+  });
+}
+
 async function handleRequest(request, env) {
   try {
-    const { email, reason } = await request.json();
+    validateEmailConfig(env);
 
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    const { email, reason } = await request.json();
+    const normalizedEmail = normalizeEmail(email);
+
+    if (!normalizedEmail) {
       return jsonResponse({ success: false, message: '邮箱格式不正确' }, 400);
     }
 
@@ -36,135 +66,306 @@ async function handleRequest(request, env) {
       return jsonResponse({ success: false, message: '请填写下载原因（至少5个字符）' }, 400);
     }
 
+    const cooldownKey = `rate:${normalizedEmail}`;
+    const recentRequest = await env.CV_TOKENS.get(cooldownKey);
+    if (recentRequest) {
+      return jsonResponse({
+        success: false,
+        message: '请求过于频繁，请稍后再试'
+      }, 429);
+    }
+
     const token = generateToken();
     const timestamp = new Date().toISOString();
-    
     const tokenData = {
-      email,
-      reason,
+      email: normalizedEmail,
+      reason: reason.trim(),
       timestamp,
       downloaded: false,
       downloadTime: null
     };
-    
+
     await env.CV_TOKENS.put(token, JSON.stringify(tokenData), {
-      expirationTtl: 300
+      expirationTtl: TOKEN_TTL_SECONDS
     });
 
-    const tokenDisplay = token;
+    try {
+      await sendEmail(env, {
+        to: normalizedEmail,
+        subject: `[PersonalINFO] Your CV download token: ${token}`,
+        html: generateVisitorEmail(token),
+        text: `Your CV download token is ${token}. It expires in 5 minutes and can be used once.`
+      });
+    } catch (error) {
+      await env.CV_TOKENS.delete(token);
+      throw error;
+    }
 
-    await sendEmailWithResend(env.RESEND_API_KEY, {
-      from: `${env.SENDER_NAME} <${env.SENDER_EMAIL}>`,
-      to: email,
-      subject: `[PersonalINFO] Thanks for your interest — Your download token: ${tokenDisplay}`,
-      html: generateVisitorEmail(tokenDisplay)
+    await Promise.all([
+      env.CV_TOKENS.put(cooldownKey, timestamp, { expirationTtl: REQUEST_COOLDOWN_SECONDS }),
+      incrementCounter(env, STATS_KEYS.verificationSent)
+    ]);
+
+    return jsonResponse({
+      success: true,
+      message: '申请已提交！验证码已发送至您的邮箱，请查收（5分钟内有效，仅可下载一次）'
     });
-
-    return jsonResponse({ 
-      success: true, 
-      message: '申请已提交！下载链接已发送至您的邮箱，请查收（5分钟内有效，仅可下载一次）'
-    });
-
   } catch (error) {
     console.error('处理申请失败:', error);
-    return jsonResponse({ 
-      success: false, 
-      message: '发送失败，请稍后重试' 
-    }, 500);
+    return jsonResponse({
+      success: false,
+      message: getEmailErrorMessage(error, '发送失败，请稍后重试')
+    }, getEmailErrorStatus(error));
   }
 }
 
 async function handleVerify(request, env) {
   try {
     const { token } = await request.json();
+    const normalizedToken = normalizeToken(token);
 
-    if (!token) {
+    if (!normalizedToken) {
       return jsonResponse({ success: false, message: '缺少令牌' }, 400);
     }
 
-    const data = await env.CV_TOKENS.get(token);
-    
+    const data = await env.CV_TOKENS.get(normalizedToken);
+
     if (!data) {
-      return jsonResponse({ 
-        success: false, 
-        message: '令牌无效或已过期（有效期5分钟）' 
+      return jsonResponse({
+        success: false,
+        message: '令牌无效或已过期（有效期5分钟）'
       }, 401);
     }
 
     const tokenData = JSON.parse(data);
 
-    return jsonResponse({ 
-      success: true, 
+    return jsonResponse({
+      success: true,
       email: tokenData.email,
       downloaded: tokenData.downloaded
     });
-
   } catch (error) {
     console.error('验证失败:', error);
     return jsonResponse({ success: false, message: '验证失败' }, 500);
   }
 }
 
-async function handleDownload(request, env) {
+async function handleDownload(request, env, ctx) {
   try {
-    const { token } = await request.json();
+    validateEmailConfig(env);
 
-    if (!token) {
+    const { token } = await request.json();
+    const normalizedToken = normalizeToken(token);
+
+    if (!normalizedToken) {
       return jsonResponse({ success: false, message: '缺少令牌' }, 400);
     }
 
-    const data = await env.CV_TOKENS.get(token);
-    
+    const data = await env.CV_TOKENS.get(normalizedToken);
+
     if (!data) {
       return jsonResponse({ success: false, message: '令牌无效或已过期' }, 401);
     }
 
     const tokenData = JSON.parse(data);
-    
+
     if (tokenData.downloaded) {
       return jsonResponse({ success: false, message: '此令牌已使用过' }, 401);
     }
-    
+
     tokenData.downloaded = true;
     tokenData.downloadTime = new Date().toISOString();
-    
-    await env.CV_TOKENS.delete(token);
 
-    const cnTime = formatTimestamp(tokenData.downloadTime);
-    await sendEmailWithResend(env.RESEND_API_KEY, {
-      from: `PersonalINFO System <${env.SENDER_EMAIL}>`,
+    await Promise.all([
+      env.CV_TOKENS.delete(normalizedToken),
+      incrementCounter(env, STATS_KEYS.downloads)
+    ]);
+
+    const notifyAdmin = sendEmail(env, {
       to: env.ADMIN_EMAIL,
-      subject: `[DownloadAlert] New CV download notification — ${tokenData.email}`,
+      subject: `[DownloadAlert] New CV download notification - ${tokenData.email}`,
       html: generateAdminDownloadEmail(
-        tokenData.email, 
+        tokenData.email,
         tokenData.reason,
         formatTimestamp(tokenData.timestamp),
-        cnTime
-      )
+        formatTimestamp(tokenData.downloadTime)
+      ),
+      text: [
+        'A CV download was completed.',
+        `Email: ${tokenData.email}`,
+        `Reason: ${tokenData.reason}`,
+        `Requested: ${formatTimestamp(tokenData.timestamp)}`,
+        `Downloaded: ${formatTimestamp(tokenData.downloadTime)}`
+      ].join('\n')
+    }).catch(error => {
+      console.error('管理员通知发送失败:', error);
     });
 
-    return jsonResponse({ 
+    if (ctx && typeof ctx.waitUntil === 'function') {
+      ctx.waitUntil(notifyAdmin);
+    } else {
+      await notifyAdmin;
+    }
+
+    return jsonResponse({
       success: true,
       message: 'Download confirmed'
     });
-
   } catch (error) {
     console.error('下载处理失败:', error);
-    return jsonResponse({ success: false, message: '下载失败' }, 500);
+    return jsonResponse({
+      success: false,
+      message: getEmailErrorMessage(error, '下载失败')
+    }, getEmailErrorStatus(error));
   }
+}
+
+function validateEmailConfig(env) {
+  if (!env.CV_TOKENS) {
+    throw createConfigError('KV 存储尚未配置');
+  }
+
+  if (!getSmtpPassword(env)) {
+    throw createConfigError('SMTP 授权码尚未配置');
+  }
+
+  if (!normalizeEmail(getSmtpFromEmail(env))) {
+    throw createConfigError('发件邮箱尚未配置');
+  }
+
+  if (!normalizeEmail(env.ADMIN_EMAIL)) {
+    throw createConfigError('管理员邮箱尚未配置');
+  }
+}
+
+function createConfigError(message) {
+  const error = new Error(message);
+  error.code = 'CONFIG_ERROR';
+  return error;
+}
+
+async function sendEmail(env, { to, subject, html, text }) {
+  const fromEmail = getSmtpFromEmail(env);
+  return WorkerMailer.send(getSmtpOptions(env), {
+    from: {
+      name: getStringValue(env.SENDER_NAME) || SERVICE_NAME,
+      email: fromEmail
+    },
+    to: { email: normalizeEmail(to) },
+    reply: normalizeEmail(env.ADMIN_EMAIL) || undefined,
+    subject,
+    text,
+    html
+  });
+}
+
+function getSmtpOptions(env) {
+  return {
+    host: getStringValue(env.SMTP_HOST) || getStringValue(env.QQ_SMTP_HOST) || 'smtp.qq.com',
+    port: getIntValue(env.SMTP_PORT ?? env.QQ_SMTP_PORT, 465),
+    secure: getBooleanValue(env.SMTP_SECURE ?? env.QQ_SMTP_SECURE, true),
+    startTls: getBooleanValue(env.SMTP_STARTTLS ?? env.QQ_SMTP_STARTTLS, false),
+    credentials: {
+      username: getSmtpUsername(env),
+      password: getSmtpPassword(env)
+    },
+    authType: ['login', 'plain'],
+    logLevel: LogLevel.ERROR
+  };
+}
+
+function getSmtpUsername(env) {
+  return getStringValue(env.SMTP_USERNAME)
+    || getStringValue(env.QQ_SMTP_USERNAME)
+    || normalizeEmail(env.SENDER_EMAIL);
+}
+
+function getSmtpPassword(env) {
+  return getStringValue(env.SMTP_PASSWORD)
+    || getStringValue(env.SMTP_AUTH_CODE)
+    || getStringValue(env.QQ_SMTP_AUTH_CODE)
+    || getStringValue(env.QQ_SMTP_FORWARD_AUTH_CODE);
+}
+
+function getSmtpFromEmail(env) {
+  return normalizeEmail(
+    getStringValue(env.SMTP_FROM_ADDRESS)
+      || getStringValue(env.QQ_SMTP_FROM_ADDRESS)
+      || getStringValue(env.SENDER_EMAIL)
+      || getStringValue(env.SMTP_USERNAME)
+      || getStringValue(env.QQ_SMTP_USERNAME)
+  );
+}
+
+function getStringValue(value) {
+  if (typeof value !== 'string') return '';
+  return value.trim();
+}
+
+function getIntValue(value, fallback) {
+  const parsed = Number.parseInt(String(value ?? ''), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function getBooleanValue(value, fallback) {
+  if (value === undefined || value === null || value === '') return fallback;
+  if (typeof value === 'boolean') return value;
+  const normalized = String(value).trim().toLowerCase();
+  if (['true', '1', 'yes', 'on'].includes(normalized)) return true;
+  if (['false', '0', 'no', 'off'].includes(normalized)) return false;
+  return fallback;
+}
+
+async function readCounter(env, key) {
+  const value = await env.CV_TOKENS.get(key);
+  const parsed = Number.parseInt(value || '0', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+async function incrementCounter(env, key) {
+  const value = await readCounter(env, key);
+  const nextValue = value + 1;
+  await env.CV_TOKENS.put(key, String(nextValue));
+  return nextValue;
 }
 
 function generateToken() {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let token = '';
-  for (let i = 0; i < 6; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  const bytes = new Uint8Array(6);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, value => chars[value % chars.length]).join('');
+}
+
+function normalizeToken(value) {
+  const token = String(value || '').trim().toUpperCase();
+  return /^[A-Z0-9]{6}$/.test(token) ? token : '';
+}
+
+function normalizeEmail(value) {
+  const email = String(value || '').trim().toLowerCase();
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+}
+
+function getEmailErrorStatus(error) {
+  if (error?.code === 'E_RATE_LIMIT_EXCEEDED') return 429;
+  if (error?.code === 'CONFIG_ERROR') return 503;
+  return 500;
+}
+
+function getEmailErrorMessage(error, fallback) {
+  switch (error?.code) {
+    case 'CONFIG_ERROR':
+      return error.message || 'SMTP 邮件服务尚未配置';
+    default:
+      if (/auth|login|credential|password/i.test(error?.message || '')) {
+        return 'SMTP 登录失败，请检查邮箱授权码';
+      }
+      return fallback;
   }
-  return token;
 }
 
 function formatTimestamp(isoString) {
-  return new Date(isoString).toLocaleString('en-US', { 
+  return new Date(isoString).toLocaleString('en-US', {
     timeZone: 'Asia/Shanghai',
     year: 'numeric',
     month: '2-digit',
@@ -182,24 +383,6 @@ function escapeHtml(value) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
-}
-
-async function sendEmailWithResend(apiKey, emailData) {
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(emailData),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Resend API Error: ${error}`);
-  }
-
-  return response.json();
 }
 
 function renderSimpleEmailLayout(contentHtml, headerTitle = 'PersonalINFO', footerHtml = '', options = {}) {
@@ -336,8 +519,16 @@ function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
     headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
+      ...corsHeaders(),
+      'Content-Type': 'application/json'
+    }
   });
+}
+
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
 }

@@ -1,5 +1,5 @@
 (function() {
-  const API_URL = 'https://cv-download-worker.13409951849.workers.dev';
+  const API_URL = 'https://cv-download.13409951849.workers.dev';
   
   let currentEmail = '';
   
@@ -144,6 +144,8 @@
                 </button>
               </div>
             </form>
+
+            <div id="cv-message-2" class="cv-message" style="display: none;"></div>
           </div>
         </div>
       </div>
@@ -187,9 +189,12 @@
   }
   
   function showStep(step) {
-    document.getElementById('step-1').style.display = step === 1 ? 'block' : 'none';
-    document.getElementById('step-2').style.display = step === 2 ? 'block' : 'none';
-    document.getElementById('step-3').style.display = step === 3 ? 'block' : 'none';
+    ['step-1', 'step-2', 'step-3'].forEach(stepId => {
+      const stepElement = document.getElementById(stepId);
+      if (stepElement) {
+        stepElement.style.display = stepId === `step-${step}` ? 'block' : 'none';
+      }
+    });
     
     if (step === 2) {
       setTimeout(() => {
@@ -200,10 +205,30 @@
     
 
   }
+
+  function showMessage(step, message, type = 'error') {
+    const messageEl = document.getElementById(`cv-message-${step}`);
+    if (!messageEl) return;
+
+    messageEl.textContent = message;
+    messageEl.className = `cv-message cv-message-${type}`;
+    messageEl.style.display = 'block';
+  }
+
+  function clearMessages() {
+    document.querySelectorAll('.cv-message').forEach(messageEl => {
+      messageEl.textContent = '';
+      messageEl.style.display = 'none';
+      messageEl.className = 'cv-message';
+    });
+  }
   
   function resetModal() {
-    document.getElementById('cv-request-form').reset();
-    document.getElementById('cv-verify-form').reset();
+    const requestForm = document.getElementById('cv-request-form');
+    const verifyForm = document.getElementById('cv-verify-form');
+    if (requestForm) requestForm.reset();
+    if (verifyForm) verifyForm.reset();
+    clearMessages();
     
     const boxes = document.querySelectorAll('.cv-token-box');
     boxes.forEach(box => {
@@ -268,6 +293,7 @@
   
   function setButtonLoading(btnId, loading) {
     const btn = document.getElementById(btnId);
+    if (!btn) return;
     
     if (loading) {
       btn.disabled = true;
@@ -280,6 +306,7 @@
   
   function startCountdown(btnId, seconds) {
     const btn = document.getElementById(btnId);
+    if (!btn) return;
     let remaining = seconds;
     
     if (countdownInterval) {
@@ -326,10 +353,14 @@
     const reason = document.getElementById('cv-reason').value.trim();
     
     if (!email || !reason || reason.length < 5) {
+      showMessage(1, getCurrentLanguage() === 'zh'
+        ? '请填写有效邮箱和至少 5 个字符的下载原因。'
+        : 'Please enter a valid email and a reason of at least 5 characters.');
       shakeModal();
       return;
     }
     
+    clearMessages();
     setButtonLoading('cv-request-btn', true);
     
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -354,11 +385,17 @@
         }, 100);
       } else {
         console.log('Request failed:', data.message);
+        showMessage(1, data.message || (getCurrentLanguage() === 'zh'
+          ? '发送验证码失败，请稍后重试。'
+          : 'Failed to send the code. Please try again later.'));
         setButtonLoading('cv-request-btn', false);
         shakeModal();
       }
     } catch (error) {
       console.error('请求失败:', error);
+      showMessage(1, getCurrentLanguage() === 'zh'
+        ? '请求失败，请检查网络或稍后重试。'
+        : 'Request failed. Please check your connection or try again later.');
       setButtonLoading('cv-request-btn', false);
       shakeModal();
     }
@@ -441,15 +478,22 @@
     const token = getTokenValue();
     
     if (!token || token.length < 6) {
+      showMessage(2, getCurrentLanguage() === 'zh'
+        ? '请输入 6 位验证码。'
+        : 'Please enter the 6-character token.');
       shakeModal();
       return;
     }
     
     if (!/^[A-Z0-9]{6}$/.test(token)) {
+      showMessage(2, getCurrentLanguage() === 'zh'
+        ? '验证码只能包含大写字母和数字。'
+        : 'The token can only contain uppercase letters and numbers.');
       shakeModal();
       return;
     }
     
+    clearMessages();
     setButtonLoading('cv-verify-btn', true);
     
     try {
@@ -464,6 +508,9 @@
       const verifyData = await verifyResponse.json();
       
       if (!verifyData.success) {
+        showMessage(2, verifyData.message || (getCurrentLanguage() === 'zh'
+          ? '验证码无效或已过期。'
+          : 'The token is invalid or expired.'));
         shakeModal();
         setButtonLoading('cv-verify-btn', false);
         return;
@@ -504,6 +551,9 @@
       }, 300);
     } catch (error) {
       console.error('验证失败:', error);
+      showMessage(2, getCurrentLanguage() === 'zh'
+        ? '验证失败，请稍后重试。'
+        : 'Verification failed. Please try again later.');
       shakeModal();
     } finally {
       setButtonLoading('cv-verify-btn', false);
