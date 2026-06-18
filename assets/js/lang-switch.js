@@ -17,6 +17,7 @@
     function setLanguage(lang) {
         localStorage.setItem('site-lang', lang);
         document.documentElement.setAttribute('lang', lang);
+        document.documentElement.setAttribute('data-site-lang', lang);
 
         const languageNodes = getLanguageNodes();
 

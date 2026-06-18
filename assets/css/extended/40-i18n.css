@@ -8,6 +8,33 @@
   display: inline;
 }
 
+html[data-site-lang="zh"] [data-lang="en"] {
+  display: none;
+}
+
+html[data-site-lang="zh"] span[data-lang="zh"],
+html[data-site-lang="zh"] a[data-lang="zh"] {
+  display: inline;
+}
+
+html[data-site-lang="zh"] li[data-lang="zh"] {
+  display: list-item;
+}
+
+html[data-site-lang="zh"] div[data-lang="zh"],
+html[data-site-lang="zh"] p[data-lang="zh"],
+html[data-site-lang="zh"] section[data-lang="zh"],
+html[data-site-lang="zh"] ul[data-lang="zh"],
+html[data-site-lang="zh"] ol[data-lang="zh"] {
+  display: block;
+}
+
+html:not([data-site-lang]) .lang-switch [data-lang-option="en"],
+html[data-site-lang="en"] .lang-switch [data-lang-option="en"],
+html[data-site-lang="zh"] .lang-switch [data-lang-option="zh"] {
+  display: none;
+}
+
 /* 光标样式 */
 .typing-text::after {
   content: '|';

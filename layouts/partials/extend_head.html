@@ -1,5 +1,20 @@
 {{- /* Head custom content area start */ -}}
 
+<script>
+  (function() {
+    var lang = 'en';
+    try {
+      lang = (localStorage.getItem('site-lang') || 'en').toLowerCase();
+    } catch (error) {
+      lang = 'en';
+    }
+    if (lang !== 'zh') {
+      lang = 'en';
+    }
+    document.documentElement.setAttribute('data-site-lang', lang);
+  })();
+</script>
+
 {{ if or
   .IsHome
   (eq .Layout "tools")

@@ -99,10 +99,10 @@
                 {{- $separator := or $label_text (not site.Params.disableThemeToggle)}}
                 <ul class="lang-switch">
                     {{- if $separator }}<li>|</li>{{ end }}
-                    <li>
+                    <li data-lang-option="zh">
                         <a href="#" data-switch-lang="zh" title="中文" aria-label="中文">中文</a>
                     </li>
-                    <li>
+                    <li data-lang-option="en">
                         <a href="#" data-switch-lang="en" title="English" aria-label="English">EN</a>
                     </li>
                 </ul>

@@ -183,7 +183,7 @@ pagerSize = 5
     url = "tel:13409951849"
 
   # 侧边栏状态信息（邮箱和 GitHub 下方）
-  sidebarStats = { visits = "10,268", completedProjects = "43", totalProjects = "56", pendingProjects = "13" }
+  sidebarStats = { visits = "0", completedProjects = "43", totalProjects = "56", pendingProjects = "13" }
 
   # 侧边栏最近更新
   sidebarRecent = [

@@ -82,11 +82,11 @@
   <script src="{{ $statsRoll.RelPermalink }}" integrity="{{ $statsRoll.Data.Integrity }}"></script>
 {{ end }}
 
-{{- /* 本地模拟访问量统�?- 所有环�?*/ -}}
-{{ $localVisits := resources.Get "js/local-visits.js" }}
-{{ if $localVisits }}
-  {{ $localVisits := $localVisits | minify | fingerprint }}
-  <script src="{{ $localVisits.RelPermalink }}" integrity="{{ $localVisits.Data.Integrity }}"></script>
+{{- /* 真实访问量统计 - Cloudflare Worker 异步上报 */ -}}
+{{ $visitCounts := resources.Get "js/visit-counts.js" }}
+{{ if $visitCounts }}
+  {{ $visitCounts := $visitCounts | minify | fingerprint }}
+  <script src="{{ $visitCounts.RelPermalink }}" integrity="{{ $visitCounts.Data.Integrity }}"></script>
 {{ end }}
 
 {{- /* Tool page: OneStepUpdate script */ -}}
