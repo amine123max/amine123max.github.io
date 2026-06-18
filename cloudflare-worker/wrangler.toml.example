@@ -10,9 +10,9 @@ id = "YOUR_KV_NAMESPACE_ID"  # 运行 wrangler kv namespace create CV_TOKENS 获
 [vars]
 ADMIN_EMAIL = "your-email@example.com"  # 接收下载通知的管理员邮箱
 SENDER_NAME = "Your Name"  # 发件人名称
-SENDER_EMAIL = "3366844949@qq.com"  # SMTP 发件邮箱，QQ SMTP 通常需要与登录账号一致
-QQ_SMTP_FROM_ADDRESS = "3366844949@qq.com"
-QQ_SMTP_USERNAME = "3366844949@qq.com"
+SENDER_EMAIL = "2397293187@qq.com"  # SMTP 发件邮箱，QQ SMTP 通常需要与登录账号一致
+QQ_SMTP_FROM_ADDRESS = "2397293187@qq.com"
+QQ_SMTP_USERNAME = "2397293187@qq.com"
 QQ_SMTP_HOST = "smtp.qq.com"
 QQ_SMTP_PORT = 465
 QQ_SMTP_SECURE = true

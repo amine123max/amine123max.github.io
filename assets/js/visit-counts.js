@@ -4,13 +4,11 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!visitNodes.length) return;
 
   const API_URL = 'https://visit-counts.13409951849.workers.dev/api/visit';
-  const K_THRESHOLD = 1000;
   const REQUEST_TIMEOUT_MS = 1800;
   const START_DELAY_MS = 600;
 
   function formatVisits(n) {
     if (!Number.isFinite(n)) return '';
-    if (n >= K_THRESHOLD) return `${(n / 1000).toFixed(1)}K`;
     return String(Math.floor(n));
   }
 

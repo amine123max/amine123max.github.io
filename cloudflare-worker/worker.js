@@ -99,9 +99,9 @@ async function handleRequest(request, env) {
     try {
       await sendEmail(env, {
         to: normalizedEmail,
-        subject: `[PersonalINFO] Your CV download token: ${token}`,
+        subject: `[PersonalINFO] Your CV download Auth Code: ${token}`,
         html: generateVisitorEmail(token),
-        text: `Your CV download token is ${token}. It expires in 5 minutes and can be used once.`
+        text: `Your CV download Auth Code is ${token}. It expires in 5 minutes and can be used once.`
       });
     } catch (error) {
       await env.CV_TOKENS.delete(token);
@@ -120,7 +120,7 @@ async function handleRequest(request, env) {
 
     return jsonResponse({
       success: true,
-      message: '申请已提交！验证码已发送至您的邮箱，请查收（5分钟内有效，仅可下载一次）'
+      message: '申请已提交！Auth Code 已发送至您的邮箱，请查收（5分钟内有效，仅可下载一次）'
     });
   } catch (error) {
     console.error('处理申请失败:', error);
@@ -137,7 +137,7 @@ async function handleVerify(request, env) {
     const normalizedToken = normalizeToken(token);
 
     if (!normalizedToken) {
-      return jsonResponse({ success: false, message: '缺少令牌' }, 400);
+      return jsonResponse({ success: false, message: '缺少 Auth Code' }, 400);
     }
 
     const data = await env.CV_TOKENS.get(normalizedToken);
@@ -145,7 +145,7 @@ async function handleVerify(request, env) {
     if (!data) {
       return jsonResponse({
         success: false,
-        message: '令牌无效或已过期（有效期5分钟）'
+        message: 'Auth Code 无效或已过期（有效期5分钟）'
       }, 401);
     }
 
@@ -170,19 +170,19 @@ async function handleDownload(request, env, ctx) {
     const normalizedToken = normalizeToken(token);
 
     if (!normalizedToken) {
-      return jsonResponse({ success: false, message: '缺少令牌' }, 400);
+      return jsonResponse({ success: false, message: '缺少 Auth Code' }, 400);
     }
 
     const data = await env.CV_TOKENS.get(normalizedToken);
 
     if (!data) {
-      return jsonResponse({ success: false, message: '令牌无效或已过期' }, 401);
+      return jsonResponse({ success: false, message: 'Auth Code 无效或已过期' }, 401);
     }
 
     const tokenData = JSON.parse(data);
 
     if (tokenData.downloaded) {
-      return jsonResponse({ success: false, message: '此令牌已使用过' }, 401);
+      return jsonResponse({ success: false, message: '此 Auth Code 已使用过' }, 401);
     }
 
     tokenData.downloaded = true;
@@ -498,7 +498,7 @@ function generateVisitorEmail(token) {
         <table role="presentation" align="center" width="320" cellpadding="0" cellspacing="0" border="0" style="width:320px; margin:0 auto;">
           <tr>
             <td style="font-size:16px; line-height:1.6; color:#1f2937; text-align:left;">
-              Enter this temporary token to continue:
+              Enter this temporary Auth Code to continue:
             </td>
           </tr>
         </table>
@@ -520,13 +520,13 @@ function generateVisitorEmail(token) {
         <table role="presentation" align="center" width="320" cellpadding="0" cellspacing="0" border="0" style="width:320px; margin:0 auto;">
           <tr>
             <td style="font-size:14px; line-height:1.7; color:#4b5563; text-align:left;">
-              This token expires in 5 minutes and can be used once.
+              This Auth Code expires in 5 minutes and can be used once.
             </td>
           </tr>
         </table>
       </td>
     </tr>
-  `, 'Token', '', { dividerWidth: '320px', dividerCentered: true });
+  `, 'Auth Code', '', { dividerWidth: '320px', dividerCentered: true });
 }
 
 function generateAdminDownloadEmail(email, reason, requestTime, downloadTime) {

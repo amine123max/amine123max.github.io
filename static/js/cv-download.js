@@ -30,7 +30,7 @@
               </h2>
               <p class="cv-modal-subtitle">
                 <span data-lang="en">Please provide your email and reason. A verification code will be sent to your email.</span>
-                <span data-lang="zh">请提供您的邮箱和下载原因，我们将发送验证码到您的邮箱</span>
+                <span data-lang="zh">请提供您的邮箱和下载原因，我们将发送 Auth Code 到您的邮箱</span>
               </p>
             </div>
             
@@ -67,8 +67,8 @@
               </div>
               
               <div class="cv-form-notice">
-                <span data-lang="en">A verification token will be sent to your email (valid for 5 minutes).</span>
-                <span data-lang="zh">令牌将发送至您的邮箱（5分钟内有效）</span>
+                <span data-lang="en">A verification Auth Code will be sent to your email (valid for 5 minutes).</span>
+                <span data-lang="zh">Auth Code 将发送至您的邮箱（5分钟内有效）</span>
               </div>
               
               <div class="cv-form-actions">
@@ -79,7 +79,7 @@
                 <button type="submit" class="cv-btn cv-btn-primary" id="cv-request-btn">
                   <span class="cv-btn-text">
                     <span data-lang="en">Send Code</span>
-                    <span data-lang="zh">发送验证码</span>
+                    <span data-lang="zh">发送 Auth Code</span>
                   </span>
                   <span class="cv-btn-loading" style="display: none;">
                     <span class="cv-spinner"></span>
@@ -96,20 +96,20 @@
           <div id="step-2" class="cv-step" style="display: none;">
             <div class="cv-modal-header">
               <h2>
-                <span data-lang="en">Enter Token</span>
-                <span data-lang="zh">输入令牌</span>
+                <span data-lang="en">Enter Auth Code</span>
+                <span data-lang="zh">输入 Auth Code</span>
               </h2>
               <p class="cv-modal-subtitle">
-                <span data-lang="en">Please check your email and enter the token we sent you.</span>
-                <span data-lang="zh">请查收邮件并输入我们发送给您的令牌</span>
+                <span data-lang="en">Please check your email and enter the Auth Code we sent you.</span>
+                <span data-lang="zh">请查收邮件并输入我们发送给您的 Auth Code</span>
               </p>
             </div>
             
             <form id="cv-verify-form" class="cv-form">
               <div class="cv-form-group">
                 <label for="cv-token-1">
-                  <span data-lang="en">Token *</span>
-                  <span data-lang="zh">令牌 *</span>
+                  <span data-lang="en">Auth Code *</span>
+                  <span data-lang="zh">Auth Code *</span>
                 </label>
                 <div class="cv-token-inputs">
                   <input type="text" class="cv-token-box" id="cv-token-1" maxlength="1" pattern="[A-Z0-9]" autocomplete="off" style="text-transform: uppercase;">
@@ -122,8 +122,8 @@
               </div>
               
               <div class="cv-form-notice">
-                <span data-lang="en">Token is valid for 5 minutes and can only be used once.</span>
-                <span data-lang="zh">令牌5分钟内有效，仅可使用一次</span>
+                <span data-lang="en">Auth Code is valid for 5 minutes and can only be used once.</span>
+                <span data-lang="zh">Auth Code 5分钟内有效，仅可使用一次</span>
               </div>
               
               <div class="cv-form-actions">
@@ -336,7 +336,7 @@
         btn.innerHTML = `
           <span class="cv-btn-text">
             <span data-lang="en">Send Code</span>
-            <span data-lang="zh">发送验证码</span>
+            <span data-lang="zh">发送 Auth Code</span>
           </span>
         `;
         updateLanguage();
@@ -386,7 +386,7 @@
       } else {
         console.log('Request failed:', data.message);
         showMessage(1, data.message || (getCurrentLanguage() === 'zh'
-          ? '发送验证码失败，请稍后重试。'
+          ? '发送 Auth Code 失败，请稍后重试。'
           : 'Failed to send the code. Please try again later.'));
         setButtonLoading('cv-request-btn', false);
         shakeModal();
@@ -479,16 +479,16 @@
     
     if (!token || token.length < 6) {
       showMessage(2, getCurrentLanguage() === 'zh'
-        ? '请输入 6 位验证码。'
-        : 'Please enter the 6-character token.');
+        ? '请输入 6 位 Auth Code。'
+        : 'Please enter the 6-character Auth Code.');
       shakeModal();
       return;
     }
     
     if (!/^[A-Z0-9]{6}$/.test(token)) {
       showMessage(2, getCurrentLanguage() === 'zh'
-        ? '验证码只能包含大写字母和数字。'
-        : 'The token can only contain uppercase letters and numbers.');
+        ? 'Auth Code 只能包含大写字母和数字。'
+        : 'The Auth Code can only contain uppercase letters and numbers.');
       shakeModal();
       return;
     }
@@ -509,8 +509,8 @@
       
       if (!verifyData.success) {
         showMessage(2, verifyData.message || (getCurrentLanguage() === 'zh'
-          ? '验证码无效或已过期。'
-          : 'The token is invalid or expired.'));
+          ? 'Auth Code 无效或已过期。'
+          : 'The Auth Code is invalid or expired.'));
         shakeModal();
         setButtonLoading('cv-verify-btn', false);
         return;

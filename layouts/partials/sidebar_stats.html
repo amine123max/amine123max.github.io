@@ -10,7 +10,7 @@
 {{- $projectsCount := cond (isset $stats "projects") (index $stats "projects") (len $projects) -}}
 {{- $toolsCount := cond (isset $stats "tools") (index $stats "tools") (len $tools) -}}
 {{- $internshipsCount := cond (isset $stats "internshipExperience") (index $stats "internshipExperience") (len $internships) -}}
-{{- $visitsCount := index $stats "visits" | default "10,268" -}}
+{{- $visitsCount := index $stats "visits" | default 0 -}}
 
 {{- $papersNumStr := replaceRE "[^0-9]" "" (printf "%v" $papersCount) -}}
 {{- $blogsNumStr := replaceRE "[^0-9]" "" (printf "%v" $blogsCount) -}}
@@ -31,7 +31,7 @@
 {{- $projectsDisplay := cond (ge $projectsNum 1000) (printf "%.1fK" (div (float $projectsNum) 1000)) (printf "%d" $projectsNum) -}}
 {{- $toolsDisplay := cond (ge $toolsNum 1000) (printf "%.1fK" (div (float $toolsNum) 1000)) (printf "%d" $toolsNum) -}}
 {{- $internDisplay := cond (ge $internNum 1000) (printf "%.1fK" (div (float $internNum) 1000)) (printf "%d" $internNum) -}}
-{{- $visitsDisplay := cond (ge $visitsNum 1000) (printf "%.1fK" (div (float $visitsNum) 1000)) (printf "%d" $visitsNum) -}}
+{{- $visitsDisplay := printf "%d" $visitsNum -}}
 
 <div class="profile-stats">
   <div class="stats-grid-card">
