@@ -20,3 +20,4 @@ QQ_SMTP_STARTTLS = false
 
 # 部署前执行：
 # npx wrangler secret put QQ_SMTP_AUTH_CODE
+# npx wrangler secret put ADMIN_STATS_TOKEN

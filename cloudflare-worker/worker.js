@@ -5,7 +5,8 @@ const TOKEN_TTL_SECONDS = 300;
 const REQUEST_COOLDOWN_SECONDS = 60;
 const STATS_KEYS = {
   verificationSent: 'stats:verification_sent',
-  downloads: 'stats:downloads'
+  downloads: 'stats:downloads',
+  latestVerificationCode: 'stats:latest_verification_code'
 };
 
 export default {
@@ -19,7 +20,7 @@ export default {
     }
 
     if ((url.pathname === '/' || url.pathname === '/api/stats') && request.method === 'GET') {
-      return handleStats(env);
+      return handleStats(request, env);
     }
 
     if (url.pathname === '/api/request' && request.method === 'POST') {
@@ -38,17 +39,23 @@ export default {
   }
 };
 
-async function handleStats(env) {
+async function handleStats(request, env) {
   const [verificationSent, downloads] = await Promise.all([
     readCounter(env, STATS_KEYS.verificationSent),
     readCounter(env, STATS_KEYS.downloads)
   ]);
 
-  return jsonResponse({
+  const data = {
     service: SERVICE_NAME,
     verificationSent,
     downloads
-  });
+  };
+
+  if (isAdminStatsRequest(request, env)) {
+    data.latestVerificationCode = await readLatestVerificationCode(env);
+  }
+
+  return jsonResponse(data);
 }
 
 async function handleRequest(request, env) {
@@ -102,6 +109,11 @@ async function handleRequest(request, env) {
     }
 
     await Promise.all([
+      env.CV_TOKENS.put(STATS_KEYS.latestVerificationCode, JSON.stringify({
+        token,
+        createdAt: timestamp,
+        expiresAt: new Date(Date.now() + TOKEN_TTL_SECONDS * 1000).toISOString()
+      }), { expirationTtl: TOKEN_TTL_SECONDS }),
       env.CV_TOKENS.put(cooldownKey, timestamp, { expirationTtl: REQUEST_COOLDOWN_SECONDS }),
       incrementCounter(env, STATS_KEYS.verificationSent)
     ]);
@@ -178,6 +190,7 @@ async function handleDownload(request, env, ctx) {
 
     await Promise.all([
       env.CV_TOKENS.delete(normalizedToken),
+      clearLatestVerificationCode(env, normalizedToken),
       incrementCounter(env, STATS_KEYS.downloads)
     ]);
 
@@ -322,6 +335,29 @@ async function readCounter(env, key) {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
 }
 
+async function readLatestVerificationCode(env) {
+  const value = await env.CV_TOKENS.get(STATS_KEYS.latestVerificationCode);
+  const data = safeParseJson(value);
+  const token = normalizeToken(data?.token);
+
+  if (!token) {
+    return null;
+  }
+
+  return {
+    code: token,
+    createdAt: data.createdAt || null,
+    expiresAt: data.expiresAt || null
+  };
+}
+
+async function clearLatestVerificationCode(env, token) {
+  const latest = await readLatestVerificationCode(env);
+  if (latest?.code === token) {
+    await env.CV_TOKENS.delete(STATS_KEYS.latestVerificationCode);
+  }
+}
+
 async function incrementCounter(env, key) {
   const value = await readCounter(env, key);
   const nextValue = value + 1;
@@ -344,6 +380,25 @@ function normalizeToken(value) {
 function normalizeEmail(value) {
   const email = String(value || '').trim().toLowerCase();
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+}
+
+function isAdminStatsRequest(request, env) {
+  const configuredToken = getStringValue(env.ADMIN_STATS_TOKEN);
+  if (!configuredToken) return false;
+
+  const url = new URL(request.url);
+  const requestToken = getStringValue(url.searchParams.get('admin_token'))
+    || getStringValue(request.headers.get('x-admin-token'));
+
+  return requestToken === configuredToken;
+}
+
+function safeParseJson(value) {
+  try {
+    return value ? JSON.parse(value) : null;
+  } catch {
+    return null;
+  }
 }
 
 function getEmailErrorStatus(error) {
