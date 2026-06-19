@@ -1,13 +1,15 @@
 // Sidebar metric rolling digits animation.
 // Uses per-digit timing and right-to-left carry-style sequencing.
 document.addEventListener('DOMContentLoaded', function () {
-  var metrics = Array.prototype.slice.call(document.querySelectorAll('.metric-value')).filter(function (metric) {
-    return !metric.hasAttribute('data-visits-counter');
-  });
+  var metrics = Array.prototype.slice.call(document.querySelectorAll('.metric-value'));
   if (!metrics.length) return;
 
   var SLOT_HEIGHT = 1.18; // em, must match CSS
   var DIGIT_STEP_MS = 130; // per digit-step duration
+  var VISITS_DIGIT_STEP_MS = 82;
+  var VISITS_STAGGER_MS = 55;
+  var VISITS_MIN_DURATION_MS = 260;
+  var VISITS_MAX_DURATION_MS = 640;
   var ENTRY_REPLAY_DELAY_MS = 220;
   var ENTRY_REPLAY_RETRY_MS = 180;
   var ENTRY_REPLAY_MAX_RETRIES = 8;
@@ -19,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function isDigit(ch) {
     return /^[0-9]$/.test(ch || '');
+  }
+
+  function isVisitsMetric(metric) {
+    return metric && metric.hasAttribute('data-visits-counter');
   }
 
   function isMetricVisible(metric) {
@@ -71,6 +77,30 @@ document.addEventListener('DOMContentLoaded', function () {
       order += 1;
     }
     return orderByIndex;
+  }
+
+  function buildCompactDigitTimings(oldChars, nextChars, oldOffset) {
+    var timings = [];
+    var digitOrderMap = buildDigitOrderMap(nextChars);
+
+    for (var i = nextChars.length - 1; i >= 0; i -= 1) {
+      var nextCh = nextChars[i];
+      if (!isDigit(nextCh)) continue;
+
+      var oldCh = oldChars[i + oldOffset] || '0';
+      var oldDigit = isDigit(oldCh) ? Number(oldCh) : 0;
+      var nextDigit = Number(nextCh);
+      var steps = oldDigit === nextDigit ? 0 : calcDigitSteps(oldDigit, nextDigit);
+      var order = digitOrderMap[i] || 0;
+
+      timings[i] = {
+        steps: steps,
+        duration: Math.min(VISITS_MAX_DURATION_MS, Math.max(VISITS_MIN_DURATION_MS, steps * VISITS_DIGIT_STEP_MS)),
+        delay: order * VISITS_STAGGER_MS
+      };
+    }
+
+    return timings;
   }
 
   function applyLengthClass(metric, value) {
@@ -129,9 +159,13 @@ document.addEventListener('DOMContentLoaded', function () {
     return slot;
   }
 
-  function buildDigitTimings(oldChars, nextChars, oldOffset, animate, oldValue, nextValue) {
+  function buildDigitTimings(metric, oldChars, nextChars, oldOffset, animate, oldValue, nextValue) {
     var timings = [];
     if (!animate) return timings;
+
+    if (isVisitsMetric(metric)) {
+      return buildCompactDigitTimings(oldChars, nextChars, oldOffset);
+    }
 
     var oldModel = parseRollNumberModel(oldValue);
     var nextModel = parseRollNumberModel(nextValue);
@@ -206,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var nextChars = value.split('');
     var oldOffset = oldChars.length - nextChars.length;
     var canAnimate = !!(shouldAnimate && oldChars.length);
-    var digitTimings = buildDigitTimings(oldChars, nextChars, oldOffset, canAnimate, oldValue, value);
+    var digitTimings = buildDigitTimings(metric, oldChars, nextChars, oldOffset, canAnimate, oldValue, value);
 
     var frag = document.createDocumentFragment();
 
@@ -237,6 +271,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function replayMetricOnEntry(metric) {
+    if (isVisitsMetric(metric)) {
+      metric.dataset.rollEntryPlayed = '1';
+      return false;
+    }
+
     if (!isMetricVisible(metric)) return false;
     if (metric.dataset.rollEntryPlayed === '1') return false;
 
@@ -298,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var initial = normalizeValue(metric.textContent);
     if (!initial) return;
 
-    metric.dataset.rollEntryPlayed = '0';
+    metric.dataset.rollEntryPlayed = isVisitsMetric(metric) ? '1' : '0';
     renderMetric(metric, initial, false);
     bindMutationWatch(metric);
   });

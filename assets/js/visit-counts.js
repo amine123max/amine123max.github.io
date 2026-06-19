@@ -8,15 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const REQUEST_TIMEOUT_MS = 4500;
   const START_DELAY_MS = 120;
   const LOADING_ROLL_TARGET = 6;
-  const LOADING_ROLL_DURATION_MS = 1200;
-  const FINAL_ROLL_DURATION_MS = 1100;
-  const MAX_FINAL_ROLL_DURATION_MS = 1800;
 
-  const reducedMotion = window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const baseVisits = readInitialVisits();
   let currentVisits = baseVisits;
-  let activeAnimation = 0;
   let hasReliableValue = false;
 
   function formatVisits(n) {
@@ -32,7 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function readInitialVisits() {
     return visitNodes.reduce((max, node) => {
-      return Math.max(max, readNumber(node.dataset.baseVisits), readNumber(node.textContent));
+      const visibleText = node.classList.contains('metric-roll') ? 0 : readNumber(node.textContent);
+      return Math.max(
+        max,
+        readNumber(node.dataset.currentVisits),
+        readNumber(node.dataset.rollValue),
+        readNumber(node.dataset.baseVisits),
+        visibleText
+      );
     }, 0);
   }
 
@@ -54,63 +55,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function setVisits(value) {
+  function updateVisits(value) {
     const visits = Math.max(0, Math.floor(value));
     currentVisits = visits;
     const display = formatVisits(visits);
     if (!display) return;
 
     visitNodes.forEach((node) => {
-      node.textContent = display;
       node.dataset.currentVisits = String(visits);
+      if (node.dataset.rollValue === display) return;
+      node.textContent = display;
     });
-  }
-
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
-  }
-
-  function animateVisits(targetValue, duration) {
-    const target = Math.max(0, Math.floor(targetValue));
-    activeAnimation += 1;
-    const animationId = activeAnimation;
-
-    if (reducedMotion || target === currentVisits || duration <= 0) {
-      setVisits(target);
-      return;
-    }
-
-    const start = currentVisits;
-    const delta = target - start;
-    const startedAt = window.performance.now();
-
-    function tick(now) {
-      if (animationId !== activeAnimation) return;
-
-      const progress = Math.min(1, (now - startedAt) / duration);
-      const next = start + delta * easeOutCubic(progress);
-      setVisits(Math.round(next));
-
-      if (progress < 1) {
-        window.requestAnimationFrame(tick);
-        return;
-      }
-
-      setVisits(target);
-    }
-
-    window.requestAnimationFrame(tick);
   }
 
   function warmUpCounter() {
     const cachedVisits = readCachedVisits();
     if (cachedVisits > currentVisits) {
-      animateVisits(cachedVisits, Math.min(MAX_FINAL_ROLL_DURATION_MS, FINAL_ROLL_DURATION_MS + cachedVisits * 25));
+      updateVisits(cachedVisits);
       return;
     }
 
     if (currentVisits < LOADING_ROLL_TARGET) {
-      animateVisits(LOADING_ROLL_TARGET, LOADING_ROLL_DURATION_MS);
+      updateVisits(LOADING_ROLL_TARGET);
     }
   }
 
@@ -134,18 +100,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
       hasReliableValue = true;
       writeCachedVisits(visits);
-      animateVisits(visits, Math.min(MAX_FINAL_ROLL_DURATION_MS, FINAL_ROLL_DURATION_MS + Math.abs(visits - currentVisits) * 35));
+      updateVisits(visits);
     } catch (_) {
       if (!hasReliableValue) {
         const cachedVisits = readCachedVisits();
-        animateVisits(cachedVisits || baseVisits, FINAL_ROLL_DURATION_MS);
+        updateVisits(cachedVisits || baseVisits);
       }
     } finally {
       window.clearTimeout(timer);
     }
   }
 
-  setVisits(currentVisits);
+  updateVisits(currentVisits);
   window.setTimeout(warmUpCounter, START_DELAY_MS);
   window.setTimeout(fetchVisits, START_DELAY_MS);
 });
