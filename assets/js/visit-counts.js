@@ -7,11 +7,17 @@ document.addEventListener('DOMContentLoaded', function () {
   const CACHE_KEY = 'personalinfo:visits:last';
   const REQUEST_TIMEOUT_MS = 4500;
   const START_DELAY_MS = 120;
-  const LOADING_ROLL_TARGET = 6;
+  const PRE_ROLL_TARGETS = [3, 6];
+  const PRE_ROLL_INTERVAL_MS = 560;
+  const FINAL_MIN_DELAY_MS = START_DELAY_MS + PRE_ROLL_TARGETS.length * PRE_ROLL_INTERVAL_MS + 260;
 
   const baseVisits = readInitialVisits();
   let currentVisits = baseVisits;
   let hasReliableValue = false;
+  let pendingFinalVisits = null;
+  let finalValueReady = false;
+  let finalApplied = false;
+  const startedAt = window.performance.now();
 
   function formatVisits(n) {
     if (!Number.isFinite(n)) return '';
@@ -68,16 +74,40 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function warmUpCounter() {
-    const cachedVisits = readCachedVisits();
-    if (cachedVisits > currentVisits) {
-      updateVisits(cachedVisits);
+  function startPreRoll() {
+    PRE_ROLL_TARGETS.forEach((target, index) => {
+      window.setTimeout(() => {
+        if (finalApplied) return;
+        updateVisits(Math.max(baseVisits, target));
+      }, START_DELAY_MS + index * PRE_ROLL_INTERVAL_MS);
+    });
+  }
+
+  function queueFinalVisits(visits, reliable) {
+    pendingFinalVisits = Math.max(0, Math.floor(visits));
+    finalValueReady = true;
+
+    if (reliable) {
+      hasReliableValue = true;
+      writeCachedVisits(pendingFinalVisits);
+    }
+
+    applyFinalVisitsWhenReady();
+  }
+
+  function applyFinalVisitsWhenReady() {
+    if (!finalValueReady || finalApplied) return;
+
+    const elapsed = window.performance.now() - startedAt;
+    const remaining = FINAL_MIN_DELAY_MS - elapsed;
+
+    if (remaining > 0) {
+      window.setTimeout(applyFinalVisitsWhenReady, remaining);
       return;
     }
 
-    if (currentVisits < LOADING_ROLL_TARGET) {
-      updateVisits(LOADING_ROLL_TARGET);
-    }
+    finalApplied = true;
+    updateVisits(pendingFinalVisits);
   }
 
   async function fetchVisits() {
@@ -91,20 +121,18 @@ document.addEventListener('DOMContentLoaded', function () {
         credentials: 'omit',
         signal: controller.signal,
       });
-      if (!response.ok) return;
+      if (!response.ok) throw new Error('Visit counter request failed');
 
       const data = await response.json();
       const visits = Number(data && data.visits);
       const display = formatVisits(visits);
       if (!display) return;
 
-      hasReliableValue = true;
-      writeCachedVisits(visits);
-      updateVisits(visits);
+      queueFinalVisits(visits, true);
     } catch (_) {
       if (!hasReliableValue) {
         const cachedVisits = readCachedVisits();
-        updateVisits(cachedVisits || baseVisits);
+        queueFinalVisits(cachedVisits || baseVisits, false);
       }
     } finally {
       window.clearTimeout(timer);
@@ -112,6 +140,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   updateVisits(currentVisits);
-  window.setTimeout(warmUpCounter, START_DELAY_MS);
+  startPreRoll();
   window.setTimeout(fetchVisits, START_DELAY_MS);
 });

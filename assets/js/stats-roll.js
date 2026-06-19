@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var SLOT_HEIGHT = 1.18; // em, must match CSS
   var DIGIT_STEP_MS = 130; // per digit-step duration
-  var VISITS_DIGIT_STEP_MS = 82;
-  var VISITS_STAGGER_MS = 55;
-  var VISITS_MIN_DURATION_MS = 260;
-  var VISITS_MAX_DURATION_MS = 640;
+  var VISITS_DIGIT_STEP_MS = 105;
+  var VISITS_STAGGER_MS = 70;
+  var VISITS_MIN_DURATION_MS = 420;
+  var VISITS_MAX_DURATION_MS = 820;
   var ENTRY_REPLAY_DELAY_MS = 220;
   var ENTRY_REPLAY_RETRY_MS = 180;
   var ENTRY_REPLAY_MAX_RETRIES = 8;
