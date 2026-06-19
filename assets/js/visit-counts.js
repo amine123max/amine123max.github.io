@@ -7,17 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
   const CACHE_KEY = 'personalinfo:visits:last';
   const REQUEST_TIMEOUT_MS = 4500;
   const START_DELAY_MS = 120;
-  const PRE_ROLL_TARGETS = [3, 6];
-  const PRE_ROLL_INTERVAL_MS = 560;
-  const FINAL_MIN_DELAY_MS = START_DELAY_MS + PRE_ROLL_TARGETS.length * PRE_ROLL_INTERVAL_MS + 260;
 
   const baseVisits = readInitialVisits();
   let currentVisits = baseVisits;
   let hasReliableValue = false;
-  let pendingFinalVisits = null;
-  let finalValueReady = false;
-  let finalApplied = false;
-  const startedAt = window.performance.now();
 
   function formatVisits(n) {
     if (!Number.isFinite(n)) return '';
@@ -74,42 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  function startPreRoll() {
-    PRE_ROLL_TARGETS.forEach((target, index) => {
-      window.setTimeout(() => {
-        if (finalApplied) return;
-        updateVisits(Math.max(baseVisits, target));
-      }, START_DELAY_MS + index * PRE_ROLL_INTERVAL_MS);
-    });
-  }
-
-  function queueFinalVisits(visits, reliable) {
-    pendingFinalVisits = Math.max(0, Math.floor(visits));
-    finalValueReady = true;
-
-    if (reliable) {
-      hasReliableValue = true;
-      writeCachedVisits(pendingFinalVisits);
-    }
-
-    applyFinalVisitsWhenReady();
-  }
-
-  function applyFinalVisitsWhenReady() {
-    if (!finalValueReady || finalApplied) return;
-
-    const elapsed = window.performance.now() - startedAt;
-    const remaining = FINAL_MIN_DELAY_MS - elapsed;
-
-    if (remaining > 0) {
-      window.setTimeout(applyFinalVisitsWhenReady, remaining);
-      return;
-    }
-
-    finalApplied = true;
-    updateVisits(pendingFinalVisits);
-  }
-
   async function fetchVisits() {
     const controller = new AbortController();
     const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -128,11 +85,13 @@ document.addEventListener('DOMContentLoaded', function () {
       const display = formatVisits(visits);
       if (!display) return;
 
-      queueFinalVisits(visits, true);
+      hasReliableValue = true;
+      writeCachedVisits(visits);
+      updateVisits(visits);
     } catch (_) {
       if (!hasReliableValue) {
         const cachedVisits = readCachedVisits();
-        queueFinalVisits(cachedVisits || baseVisits, false);
+        updateVisits(cachedVisits || baseVisits);
       }
     } finally {
       window.clearTimeout(timer);
@@ -140,6 +99,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   updateVisits(currentVisits);
-  startPreRoll();
   window.setTimeout(fetchVisits, START_DELAY_MS);
 });

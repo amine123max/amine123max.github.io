@@ -6,10 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var SLOT_HEIGHT = 1.18; // em, must match CSS
   var DIGIT_STEP_MS = 130; // per digit-step duration
-  var VISITS_DIGIT_STEP_MS = 105;
-  var VISITS_STAGGER_MS = 70;
-  var VISITS_MIN_DURATION_MS = 420;
-  var VISITS_MAX_DURATION_MS = 820;
   var ENTRY_REPLAY_DELAY_MS = 220;
   var ENTRY_REPLAY_RETRY_MS = 180;
   var ENTRY_REPLAY_MAX_RETRIES = 8;
@@ -79,30 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return orderByIndex;
   }
 
-  function buildCompactDigitTimings(oldChars, nextChars, oldOffset) {
-    var timings = [];
-    var digitOrderMap = buildDigitOrderMap(nextChars);
-
-    for (var i = nextChars.length - 1; i >= 0; i -= 1) {
-      var nextCh = nextChars[i];
-      if (!isDigit(nextCh)) continue;
-
-      var oldCh = oldChars[i + oldOffset] || '0';
-      var oldDigit = isDigit(oldCh) ? Number(oldCh) : 0;
-      var nextDigit = Number(nextCh);
-      var steps = oldDigit === nextDigit ? 0 : calcDigitSteps(oldDigit, nextDigit);
-      var order = digitOrderMap[i] || 0;
-
-      timings[i] = {
-        steps: steps,
-        duration: Math.min(VISITS_MAX_DURATION_MS, Math.max(VISITS_MIN_DURATION_MS, steps * VISITS_DIGIT_STEP_MS)),
-        delay: order * VISITS_STAGGER_MS
-      };
-    }
-
-    return timings;
-  }
-
   function applyLengthClass(metric, value) {
     var lenClasses = metric.className.match(/\bmetric-roll-len-\d+\b/g) || [];
     for (var i = 0; i < lenClasses.length; i += 1) {
@@ -162,10 +134,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function buildDigitTimings(metric, oldChars, nextChars, oldOffset, animate, oldValue, nextValue) {
     var timings = [];
     if (!animate) return timings;
-
-    if (isVisitsMetric(metric)) {
-      return buildCompactDigitTimings(oldChars, nextChars, oldOffset);
-    }
 
     var oldModel = parseRollNumberModel(oldValue);
     var nextModel = parseRollNumberModel(nextValue);
