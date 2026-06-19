@@ -1,7 +1,9 @@
 // Sidebar metric rolling digits animation.
 // Uses per-digit timing and right-to-left carry-style sequencing.
 document.addEventListener('DOMContentLoaded', function () {
-  var metrics = Array.prototype.slice.call(document.querySelectorAll('.metric-value'));
+  var metrics = Array.prototype.slice.call(document.querySelectorAll('.metric-value')).filter(function (metric) {
+    return !metric.hasAttribute('data-visits-counter');
+  });
   if (!metrics.length) return;
 
   var SLOT_HEIGHT = 1.18; // em, must match CSS
