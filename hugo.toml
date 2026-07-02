@@ -32,31 +32,36 @@ mainsections = [ "posts", "papermod" ]
       name = "OCEANSIM"
       url = "https://amine123max.github.io/OceanSim_Web/"
       weight = 2
+
+    [[languages.en.menu.main]]
+      name = "AILLIVE AI"
+      url = "https://www.aillive.xyz/"
+      weight = 3
     
     [[languages.en.menu.main]]
       name = "PAPERS"
       url = "/papers/"
-      weight = 3
+      weight = 4
     
     [[languages.en.menu.main]]
       name = "BLOG"
       url = "/posts/"
-      weight = 4
+      weight = 5
     
     [[languages.en.menu.main]]
       name = "EXPERIENCE"
       url = "/experience/"
-      weight = 5
+      weight = 6
     
     [[languages.en.menu.main]]
       name = "PROJECTS"
       url = "/projects/"
-      weight = 6
+      weight = 7
     
     [[languages.en.menu.main]]
       name = "TOOLS"
       url = "/tools/"
-      weight = 7
+      weight = 8
   
   [languages.zh]
     languageCode = 'zh-cn'
@@ -73,31 +78,36 @@ mainsections = [ "posts", "papermod" ]
       name = "OCEANSIM"
       url = "https://amine123max.github.io/OceanSim_Web/"
       weight = 2
+
+    [[languages.zh.menu.main]]
+      name = "AILLIVE AI"
+      url = "https://www.aillive.xyz/"
+      weight = 3
     
     [[languages.zh.menu.main]]
       name = "论文"
       url = "/zh/papers/"
-      weight = 3
+      weight = 4
     
     [[languages.zh.menu.main]]
       name = "博客"
       url = "/zh/posts/"
-      weight = 4
+      weight = 5
     
     [[languages.zh.menu.main]]
       name = "经历"
       url = "/zh/experience/"
-      weight = 5
+      weight = 6
     
     [[languages.zh.menu.main]]
       name = "项目"
       url = "/zh/projects/"
-      weight = 6
+      weight = 7
     
     [[languages.zh.menu.main]]
       name = "工具"
       url = "/zh/tools/"
-      weight = 7
+      weight = 8
 
 [minify]
 disableXML = true

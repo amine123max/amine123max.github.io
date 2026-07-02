@@ -143,6 +143,13 @@ body:not(.dark) .interests-list li::before {
   /* 不要在这里设置border相关属性 */
 }
 
+#menu li a .nav-external-icon,
+.mobile-nav-panel-link .nav-external-icon {
+  display: inline-block;
+  margin-inline-start: 4px;
+  vertical-align: -0.1em;
+}
+
 /* 右侧图标区域 - 确保在最右侧 */
 .logo-switches {
   display: flex;

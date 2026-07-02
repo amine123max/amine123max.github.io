@@ -135,14 +135,9 @@
                 <a href="{{ .URL | absLangURL }}" title="{{ .Title | default .Name }} {{- cond $is_search (" (Alt + /)" | safeHTMLAttr) ("" | safeHTMLAttr ) }}"
                 {{- if $is_active }} class="active"{{- end }}
                 {{- cond $is_search (" accesskey=/" | safeHTMLAttr) ("" | safeHTMLAttr ) }}>
-                    <span {{- if $is_active }} class="active" {{- end }}>
-                        {{- .Pre }}
-                        <span data-lang="en">{{- .Name -}}</span>
-                        <span data-lang="zh">{{- $zhName -}}</span>
-                        {{ .Post -}}
-                    </span>
-                    {{- if (findRE "://" .URL) }}&nbsp;
-                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                    <span{{- if $is_active }} class="active"{{- end -}}>{{- .Pre -}}<span data-lang="en">{{- .Name -}}</span><span data-lang="zh">{{- $zhName -}}</span>{{- .Post -}}</span>
+                    {{- if (findRE "://" .URL) -}}
+                    <svg class="nav-external-icon" fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
                         stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
                         <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
                         <path d="M15 3h6v6"></path>
